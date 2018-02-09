@@ -1,8 +1,42 @@
-Learning
-========
+Today I Learned
+===============
 
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon@wisoft.io
 :Date: 2018.02.09
 :Revision: 1.0
+
+실력있는 개발자가 되기 위해 매일 학습한 내용이나 개발에 관련된 간단한 기록을 남긴다.
+
+link:https://github.com/namjunemy/TIL[Kim NamJune]
+선배님의 조언과 Github TIL을 보고 많은걸 느껴 시작하게 되었다.
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+= 작성 규칙
+
+** 폴더와 파일명은 영문으로 작성한다.
+** *간결하고 명확*하게 작성한다.
+** 보충 설명이 필요하거나 정리가 필요한 내용은
+link:http://bs-development.tistory.com/[블로그]
+에 포스팅한다.
+
+= 분류
+
+== Java
+
+** Java 8 다운로드 및 환경변수 설정
+
+== Javascript
+
+== Typescript
+
+== Algorithm
+
+== DesignPattern
+
+== Git
