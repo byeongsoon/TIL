@@ -1,0 +1,89 @@
+java8 다운로드 및 설치방법
+==================
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.02.01
+:Revision: 1.0
+:imagesdir: ./image
+
+JDK는 Java 응용프로그램을 실행하거나 **프로그램을 개발**하기 위해서 필요로하는 경우가있다.
+Java는 1995년에 탄생한 프로그래밍 언어이자 컴퓨팅 플랫폼이며, 프로그램을 개발하기 위해서는
+*Java Development Kit(JDK)*가 필요하다
+
+= Java or JDK 1.8 for Windows
+
+먼저 JDK 설치파일을 다운받기 위해서 **오라클 공식 홈페이지** 에 접속한다.
+
+오라클 공식 홈페이지:
+
+link:https://www.oracle.com/index.html[]
+
+오라클 공식 홈페이지에 접속하면 다음과 같은 화면이 나온다.
+
+상단의 메뉴중 *Downloads*에 마우스를 오버하면 하위 메뉴를 볼 수 있다.
+하위 메뉴 중 왼쪽의 *'Java SE'*를 클릭한다.
+
+image::tutorial1.png[tutorial,700]
+
+아래의 'JDK DOWNLOAD'아이콘을 클릭하면 다운로드 페이지로 이동한다.
+여기서 왼쪽의 메뉴 중 Java SE, Java EE, Java ME와 같은 다양한 에디션을
+확인할 수있다. 자바는 활용 용도에 따라서 SE, EE, ME 버전으로 구분된다.
+
+
+
+image::tutorial2.png[tutorial,700]
+
+'Accept License Agreement'를 체크한 뒤, 자신의 *운영체제에 알맞는 버전*을 다운로드 한다.
+
+
+
+image::tutorial3.png[tutorial,700]
+
+다운로드 받은 JDK 설치파일을 실행한 화면이다.
+
+
+
+image::tutorial4.png[tutorial,700]
+
+특별한 사항이 없으면 기본설정된 상태에서 설치를 진행한다.
+
+
+
+image::tutorial5.png[tutorial,700]
+
+설치가 진행되는 화면이다. 약 5분정도 소요된다.
+
+
+
+image::tutorial6.png[tutorial,700]
+
+설치할 경로를 설정하는 화면이다.
+
+
+
+image::tutorial7.png[tutorial,700]
+
+설치가 완료된 화면이다.
+
+
+
+image::tutorial8.png[tutorial,700]
+
+= 자바 환경변수 설정
+
+.java 환경변수
+[cols="1,2", option = "header"]
+|===
+^|환경 변수 이름 ^|환경 변수 값
+
+^|JAVA_HOME
+^|C:/Program Files/Java/jdk1.8.0_40\bin;
+
+^|JRE_HOME
+^|C:/Program Files/Java/jre8\bin;
+
+|===

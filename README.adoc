@@ -1,0 +1,8 @@
+Learning
+========
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.02.09
+:Revision: 1.0
