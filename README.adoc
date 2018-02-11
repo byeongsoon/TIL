@@ -20,7 +20,7 @@ Byeongsoon Jang<byeongsoon@wisoft.io>
 = 작성 규칙
 
 ** 폴더와 파일명은 영문으로 작성한다.
-** *간결하고 명확*하게 작성한다.
+** *간결하고 명확* 하게 작성한다.
 ** 보충 설명이 필요하거나 정리가 필요한 내용은
 link:http://bs-development.tistory.com/[블로그]
 에 포스팅한다.
