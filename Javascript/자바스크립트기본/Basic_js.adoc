@@ -12,7 +12,7 @@ javascript Basic
 
 Byeongsoon Jang<byeongsoon@wisoft.io>
 
-|===
+|=== 
 |===
 
 === 출력
