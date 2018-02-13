@@ -1,0 +1,129 @@
+= 조건문과 반복문
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.02.13
+:Revision: 1.0
+
+javascript에서의 조건문과 반복문을 알아본다.
+
+다른 언어와 비슷하여 이해하기가 편리하다.
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+=== if문
+
+조건문으로 괄호()안에 들어가는 조건을 만족할 경우 중괄호{}
+안에 있는 코드들이 실행된다.
+
+[source, javascript]
+----
+let name = "jang";
+
+let input = String(prompt('성을 입력하세요.'));
+
+if(input === name){
+  alert("같이 같습니다.");
+}else{
+  alert("값이 다릅니다.")
+}
+----
+
+=== switch-case문
+
+switch-case문은 표현식의 값에 따라 맞는 case문이 실행된다.
+
+[source,javascript]
+----
+let number = Number(prompt('1과 2중에 하나를 입력하세요.'));
+
+switch(number){
+  case 1:
+    alert("1을 입력하셨습니다.");
+    break;
+  case 2:
+    alert("2를 입력하셨습니다.");
+    break;
+  default:
+    alert("1 또는 2가 아닙니다.");
+    break;
+}
+----
+
+=== 삼항연산자
+
+(조건) ? A : B;
+
+삼한연산자는 조건이 참일경우 A를 거짓일경우 B를 실행한다.
+
+[source, javascript]
+----
+let number = Number(prompt('숫자를 입력해주세요.'));
+
+(number > 0)? alert("양수입니다.") : alert("음수입니다.");
+----
+
+=== while문
+
+[source,javascript]
+----
+let count = 0;
+
+while(count<3){
+  alert((count+1)+"번째 반복");
+  count++;
+}
+----
+
+=== do-while문
+
+[source,javascript]
+----
+let count = 0;
+
+do{
+  alert((count+1)+"번째 반복");
+} while(count < 3);
+----
+
+=== for문
+
+[source,javascript]
+----
+let array = ["하나", "둘", "셋"];
+
+for(let count=0; count < array.length; count++){
+  alert(array[count]);
+}
+----
+
+=== for in 문
+
+[source,javascript]
+----
+let array = ["하나", "둘", "셋"];
+
+for(let count in array){
+  alert(array[count]);
+}
+----
+
+=== 짧은 조건문
+
+조건을 짧게 이용하는 것인데 잘 사용하지 않는다.
+처음 A에서는 true를 먼저 만나기 때문에 뒤에 문장이 실행이 안된다.
+
+[source, javascript]
+----
+true || alert("A");
+false || alert("B");
+// A는 실행 안되고 B만 실행된다.
+
+true && alert("A");
+false && alert("B");
+// A는 실행되고 B는 실행되지 않는다.
+----
