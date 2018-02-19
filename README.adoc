@@ -49,4 +49,6 @@ link:http://bs-development.tistory.com/[블로그]
 
 == DesignPattern
 
+** link:https://github.com/ByeongSoon/TIL/blob/master/DesignPattern/SingletonPattern.adoc[싱글톤 패턴]
+
 == Git
