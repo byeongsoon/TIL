@@ -1,0 +1,64 @@
+equals() Method
+===============
+
+equals() 메소드는 Object 클래스에 정의되어 있고 다른 클래스들에서 오버라이딩되어 있다.
+
+일반적으로는 주소값을 비교하지만 String 클래스에서는 실제 값을 비교한다.
+
+하지만 equals() 메서드의 문제점이 있다. 다음의 코드를 보자.
+
+[source, java]
+----
+String name = "Byeongsoon Jang";
+
+boolean boolOne = name.equals("Byeongsoon Jang");
+boolean boolTwo = "Byeongsoon Jang".equals(name);
+
+system.out.println(boolOne);
+system.out.println(boolTwo);
+----
+
+----
+true
+true
+----
+
+당연히 boolOne과 boolTwo가 모두 true를 출력하는것을 볼 수 있다.
+
+하지만 다음과 같은 경우에 어떻게 되는지 살펴보자.
+
+[source, java]
+----
+String name = null;
+
+boolean boolOne = name.equals("Byeongsoon Jang");
+boolean boolTwo = "Byeongsoon".equals(name);
+
+system.out.println(boolOne);
+system.out println(boolTwo);
+----
+
+----
+Exception in thread "main" java.lang.NullPointerException
+----
+
+boolOne에서 NullPointerException이 발생하게 된다.
+boolTwo만 출력해보면 false가 출력 되는것을 볼 수 있다.
+
+이처럼 변수에 담은 문자열이 null일 경우엔 프로그램이
+NullPointerException이 발생하며 비정상적으로 종료되게된다.
+
+그래서 Java 개발자들은 보통 다음과 같은 방법으로 코드를 작성한다.
+
+[source, java]
+----
+String 변수 = "변수";
+
+boolean bool = "상수".equals(변수);
+----
+
+이런식으로 작성하게 된다면 적어도 NullPointerException은 발생하지
+않을것이다.
+
+앞으로 equals() Method를 사용하게 된다면 상수값이
+앞에 위치하게 하는 방법을 이용해야한다.
