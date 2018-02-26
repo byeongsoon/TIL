@@ -1,0 +1,75 @@
+= 코틀린 시작하기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.02.26
+:Revision: 1.0
+:imagesdir: ./img
+
+코틀린 프로그래밍 - 스티븐 사무엘, 스테판 보큐리우 지음
+
+1장 코틀린 시작하기
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+OS X를 사용하고 homebrew가 설치되어 있다는 가정하에 다음과 같은 명령어로 코틀린을 다운받는다.
+
+[source]
+----
+& brew update
+& brew install kotlin
+----
+
+=== Hello, World!
+
+첫 번째 코틀린 프로그램을 작성할 수 있게 되었다.
+
+콘솔에 Hello, World!를 출력하는 코드를 작성해보자.
+
+우선 IntelliJ에서 new project를 누르고 Java 모듈에서 Kotlin을 선택한다.
+
+그리고 src에 오른쪽 마우스를 가져가 클릭한 뒤에 New -> Kotlin File/Class를 클릭한다.
+
+책에서는 new project -> gradle -> kotlin(java)를 생성해서 하는데 이 방법은
+Java 버전이 9버전이면 안된다. 8버전 까지는 지원되는 것을 확인했다.
+
+.HelloWorld.kt
+[source, kotlin]
+----
+fun main(args: Array<string>){
+  println("Hello, World!")
+}
+----
+
+==== 커맨드라인에서 코틀린 코드를 컴파일하고 실행하기
+
+커맨드라인에서 컴파일러를 호출해 JAR 어셈블리를 만들게한다.
+
+----
+& kotlinc HelloWorld.kt -include-runtime -d HelloWorld.jar
+----
+
+이렇게하면 커맨드라인에서 다음의 명령어를 입력하는 것으로 프로그램을 실행할 준비가 됐다.
+
+----
+& java -jar HelloWrold.jar
+----
+
+결과는 다음과 같다.
+
+----
+Hello, World!
+----
+
+이 방법 말고도 IntelliJ를 이용해 run하면 결과는 같게나온다.
+
+=== REPL
+
+최근에 대부분의 언어는 대화형 쉘을 제공하며 코틀린도 예외는 아니다.
+재사용하지 않는 코드를 빠르게 작성하고자 한다면 REPL은 쓰기 좋은 도구이다.
+
+=== 프로젝트에서 코틀린과 자바 혼용하기
