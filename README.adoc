@@ -39,6 +39,8 @@ link:http://bs-development.tistory.com/[블로그]
 
 == Kotlin
 
+** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/ch01_GettingStartedKotlin.adoc[코틀린 시작하기]
+
 == Algorithm
 
 == Javascript
