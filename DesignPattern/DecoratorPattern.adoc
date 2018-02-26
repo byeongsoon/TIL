@@ -1,0 +1,132 @@
+= 데커레이터 패턴
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.02.26
+:Revision: 1.0
+:imagesdir: ./img
+
+데커레이터 패턴이란 주어진 상황 및 용도에 따라 어떤 객체에 책임을 덧붙이는 패턴
+
+기능 확장이 필요할 때 서브클래싱 대신 쓸 수 있는 유연한 대안이 될 수 있다.
+
+출처 : 위키백과
+
+커피자판기 프로그램에서 원두, 설탕, 프림 등의 재료가 조합에 따라서 밀크커피, 블랙커피, 설탕커피, 프림커피 등으로
+바뀐다는 점에서 기본을 원두로 지정한 뒤에 설탕, 프림을 확장으로 더하는 식으로 진행한다.
+
+|===
+|===
+
+우선 Decorator 클래스를 다음과 같이 정의한다. 여기서 Material은 재료 클래스이다.
+
+.Decorator.java
+[source, java]
+----
+public class Decorator extends Material{
+  private Material decoratorMaterial;
+  Decorator(final Material material){
+    this.decoratorMaterial = material;
+  }
+
+  @Override
+  public void doing(){
+    decoratorMaterial.doing();
+  }
+}
+----
+
+이제 이 Decorator를 상속 받을 설탕, 프림 클래스를 생성한다.
+원두 클래스는 재료 클래스를 상속받는다.
+
+.Bean.java
+[source, java]
+----
+public class Bead extends Material{
+  @Override
+  public void doing(){
+    system.out.println("원두");
+    Material.beanCount--; // 원두의 개수를 하나 줄이는 코드이다.
+  }
+}
+----
+
+.Sugar.java
+[source, java]
+----
+public class Sugar extends Decorator{
+  Sugar(Material material){
+    super(material);
+  }
+
+  public void doing(){
+    super.doing();
+    doingSugar();
+  }
+
+  private void doingSugar(){
+    system.out.println("\t+ 설탕");
+    Material.sugarCount--;
+  }
+}
+----
+
+.Creamer.java
+[source, java]
+----
+public class Creamer extends Decorator {
+  Creamer(Material material) {
+    super(material);
+  }
+
+  public void doing() {
+    super.doing();
+    doingCreamer();
+  }
+
+  private void doingCreamer() {
+    System.out.println("  \t+ 프림");
+    Material.creamerCount--;
+  }
+}
+----
+
+위의 코드들과 같이 재료에 대한 클래스들이 준비가 되면 다음과 같은 방법으로 호출할 수 있다.
+
+.Client.java
+[source, java]
+----
+public class Client {
+  public static void main(String[] args) {
+    CoffeeMachine coffeeMachine = CoffeeMachine.getInstance();//싱글톤으로 단 한개의 객체 생성
+
+    Material blackCoffee = new Bean();//블랙커피
+    Material sugarCoffee = new Sugar(new Bean());//설탕커피
+    Material creamerCoffee = new Creamer(new Bean());//프림커피
+    Material milkCoffee = new Creamer(new Sugar(new Bean()));//밀크커피
+
+    milkCoffee.doing();
+  }
+}
+----
+
+위와 같이 객체를 선언함과 동시에 생성자 매개변수로 다른 재료클래스의 객체를 전달하는 것이다.
+이렇게 하면 doing() 메서드를 호출하면 각각의 doing() 메서드가 가장 뒤쪽에 있는것부터 실행된다.
+
+예를들면 milkCoffee 객체를 생성한 뒤에 milkCoffee.doing()을 하게되면
+
+----
+실행결과
+원두
++ 설탕
++ 프림
+----
+
+다음과 같이 실행결과가 출력된다.
+
+이와 같은 데커레이터 패턴은 네비게이션에서도 활용할 수 있다.
+
+네비게이션의 옵션들이 여러가지 존재하지만 기본형은 도로의 상환만 알려줄 것이고, 실시간 교통량, 교차로정보 등
+여러가지 추가적인 확장 기능을 만들때 독립적인 클래스가 아닌 데커레이터 패턴을 이용하여 유지보수도 쉽고 각각의 재료기 되는
+클래스들이 수정을 안해도되는 코드를 만들 수 있다.
