@@ -43,6 +43,8 @@ link:http://bs-development.tistory.com/[블로그]
 
 == Algorithm
 
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/FindIndex.adoc[두 수의 합]
+
 == Javascript
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Javascript/javascriptBasic/Basic_js.adoc[자바스크립트기본]
