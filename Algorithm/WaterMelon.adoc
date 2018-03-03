@@ -1,0 +1,48 @@
+= 수박수박수박수?
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.03
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/109[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+water_melon함수는 정수 n을 매개변수로 입력받습니다.
+길이가 n이고, 수박수박수...와 같은 패턴을 유지하는 문자열을 리턴하도록 함수를 완성하세요.
+
+예를들어 n이 4이면 '수박수박'을 리턴하고 3이라면 '수박수'를 리턴하면 됩니다.
+
+=== 1차 풀이
+
+String result를 선언한 뒤에 for문을 돌면서 홀수 번째 자리에는 '수'를
+짝수 번째 자리에는 '박'을 넣으며 String 뒤에 이어붙여 준다.
+
+[source, java]
+----
+public class WaterMelon {
+  public String waterMelon(int number) {
+    String result = null;
+
+    for(int i = 0; i < number; i++) {
+      if(i%2 == 1){
+        result += "박";
+      }else{
+        result += "수";
+      }
+    }
+    return result;
+  }
+
+  public static void main(String[] args) {
+    WaterMelon WM = new WaterMelon();
+
+    System.out.println("n이 3인 경우" + WM.waterMelon(3));
+    System.out.println("n이 4인 경우" + WM.waterMelon(4));
+  }
+}
+
+----

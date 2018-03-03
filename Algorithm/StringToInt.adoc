@@ -1,0 +1,39 @@
+= 문자열을 숫자로
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.03
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/112[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+strToInt 메소드는 String형 str을 매개변수로 받습니다.
+str을 숫자로 변환한 결과를 반환하도록 strToInt를 완성하세요.
+예를들어 str이 1234이면 1234를 반환하고, -1234이면 -1234를 반환하면 됩니다.
+str은 부호(+,-)와 숫자로만 구성되어 있고, 잘못된 값이 입력되는 경우는 없습니다.
+
+=== 1차 풀이
+
+인자로 넘겨받은 String을 Integer.parseInt() 메소드를 활용해 int형으로 바꾼 뒤에
+리턴해준다.
+
+[source, java]
+----
+public class StrToInt {
+  public int getStrToInt(String str) {
+    int result = 0;
+    result = Integer.parseInt(str);
+    return result;
+  }
+  // 아래는 테스트로 출력해 보기 위한 코드입니다.
+  public static void main(String args[]) {
+    StrToInt strToInt = new StrToInt();
+    int result = strToInt.getStrToInt("-1234");
+    System.out.println(result);
+  }
+}
+----

@@ -1,0 +1,46 @@
+= 서울에서 김서방 찾기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.03
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/106[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+findKim 함수(메소드)는 String형 배열 seoul을 매개변수로 받습니다.
+
+seoul의 element중 Kim의 위치 x를 찾아, 김서방은 x에 있다는 String을 반환하세요.
+seoul에 Kim은 오직 한 번만 나타나며 잘못된 값이 입력되는 경우는 없습니다.
+
+=== 1차 풀이
+
+인자로 전달받은 seoul에 대해 그 길이만큼 for문을 돌면서
+만일 찾으려는 Kim과 같은 값이 있다면 그 인자를 저장하고 break문으로
+반복문을 빠져나오는식으로 풀이하였다.
+
+[source, java]
+----
+public class FindKim {
+  public String findKim(String[] seoul){
+    int x = 0;
+    for(int i = 0;i<seoul.length; i++){
+      if("Kim".equals(seoul[i])){
+        x = i;
+        break;
+      }
+    }
+    return "김서방은 "+ x + "에 있다";
+  }
+
+  public static void main(String[] args) {
+    FindKim kim = new FindKim();
+    String[] names = {"Queen", "Tod","Kim"};
+    System.out.println(kim.findKim(names));
+  }
+}
+
+----
