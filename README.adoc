@@ -44,10 +44,10 @@ link:http://bs-development.tistory.com/[블로그]
 == Algorithm
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/FindIndex.adoc[두 수의 합]
-** link:
-** link:
-** link:
-** link:
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/FindKim.adoc[서울에서 김서방 찾기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/MatrixSum.adoc[행렬의 덧셈]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/StringToInt.adoc[문자열을 숫자로]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/WaterMelon.adoc[수박수박수?]
 
 == Javascript
 
