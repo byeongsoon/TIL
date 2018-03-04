@@ -17,7 +17,7 @@ link:https://programmers.co.kr/learn/challenge_codes/112[여기]에
 
 유클리드 호제법을 사용하여 두 수의 최대공약수와 최소공배수를 구한다.
 
-메소드에 전달된 두 값중 큰 값과 작은 값을 구분한다. 
+메소드에 전달된 두 값중 큰 값과 작은 값을 구분한다.
 
 [source, java]
 ----
@@ -27,6 +27,7 @@ public class GcdLcm {
     int big,small;
     int temp = 1;
     int lcm = numberOne * numberTwo;
+
     if(numberOne > numberTwo){
       big = numberOne;
       small = numberTwo;
@@ -36,11 +37,11 @@ public class GcdLcm {
     }
     while(temp != 0){
       temp = big % small;
-      numberTwo = numberOne;
-      numberOne = temp;
+      big = small;
+      small = temp;
     }
-    answer[0] = numberTwo;
-    answer[1] = lcm/numberTwo;
+    answer[0] = big;
+    answer[1] = lcm/big;
 
 
     return answer;
@@ -51,4 +52,5 @@ public class GcdLcm {
     System.out.println("21과 30의 최대공약수는 "+result[0]+" 최소공배수는 "+result[1]);
   }
 }
+
 ----
