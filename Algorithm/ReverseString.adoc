@@ -1,0 +1,53 @@
+= 문자열 내림차순으로 배치하기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.05
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/98[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+reverseStr 메소드는 String형 변수 str을 매개변수로 입력받습니다.
+str에 나타나는 문자를 큰것부터 작은 순으로 정렬해 새로운 String을 리턴해주세요.
+str는 영문 대소문자로만 구성되어 있으며, 대문자는 소문자보다 작은 것으로 간주합니다.
+예를들어 str이 Zbcdefg면 gfedcbZ을 리턴하면 됩니다.
+
+=== 1차 풀이
+
+reverse() 메소드 로 String을 인자로 넘긴 뒤에 받아온 String 값을
+split("") 메소드를 이용해 한 글자씩 잘라서 array에 값을 넣는다.
+
+** String[] split(String regex)
+
+Arrays.sort()를 이용해 정렬을 하면서 Collections.reverseOrder()를 이용해
+내림차순으로 정렬한다.
+
+마지막으로 나누어져 있는 한 글자 글자를 String.join("", array)를 통해서
+다시 하나의 문자열로 합쳐서 리턴한다.
+
+[source, java]
+----
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+public class ReverseString {
+  public static void main(String[] args){
+    ReverseString reverseString = new ReverseString();
+    String str = "Zbcdefg";
+    String result = reverseString.reverse(str);
+    System.out.println(result);
+  }
+  public String reverse(String str){
+    String[] array = str.split("");
+    Arrays.sort(array, Collections.reverseOrder());
+
+   return String.join("",array);
+  }
+}
+
+----
