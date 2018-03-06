@@ -50,6 +50,7 @@ link:http://bs-development.tistory.com/[블로그]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/WaterMelon.adoc[수박수박수?]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/GcdLcm.adoc[최대공약수와 최소공배수]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/ReverseString.adoc[문자열 내림차순으로 배치하기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/GetMaxMinString.adoc[문자열에서 최댓값 최소값]
 
 == Javascript
 
