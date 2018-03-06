@@ -1,0 +1,57 @@
+= 문자열 내림차순으로 배치하기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.06
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/125[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+getMinMaxString 메소드는 String형 변수 str을 매개변수로 입력받습니다.
+str에는 공백으로 구분된 숫자들이 저장되어 있습니다.
+str에 나타나는 숫자 중 최소값과 최대값을 찾아 이를 (최소값) (최대값)형태의 String을 반환하는 메소드를 완성하세요.
+예를들어 str이 1 2 3 4라면 1 4를 리턴하고, -1 -2 -3 -4라면 -4 -1을 리턴하면 됩니다.
+
+=== 1차 풀이
+
+먼저 minMax() 메소드에서 인자로 받아온 스트링을 공백(" ")을 기준으로 나눈다.
+
+그 뒤에 String을 int[] arrayNumber에 하나씩 int형으로 형변환을 시키면서 넣어준다.
+
+형변환된 arrayNumber를 정렬한 후에 가장 처음이 작은 값이고 마지막에 있는 인자가 가장 큰 값인것을
+알고있기에 max, min에 각각 넣어준 뒤에 리턴해준다.
+
+[source, java]
+----
+import java.util.Arrays;
+
+public class GetMinMaxString {
+  public String minMax(final String str){
+    String[] array = str.split(" ");
+    int[] arrayNumber = new int[array.length];
+    for(int i=0;i<array.length;i++){
+      arrayNumber[i] = Integer.parseInt(array[i]);
+    }
+    Arrays.sort(arrayNumber);
+
+    int max = arrayNumber[arrayNumber.length-1];
+    int min = arrayNumber[0];
+
+    return "["+max+","+min+"]";
+  }
+  public static void main(String[] args){
+    String strOne = "10 4 17 2";
+    String strTwo = "-10 -20 -5 -17";
+    GetMinMaxString getMinMaxString = new GetMinMaxString();
+    System.out.println(strOne);
+    System.out.println("최대값과 최소값은? "+getMinMaxString.minMax(strOne));
+    System.out.println(strTwo);
+    System.out.println("최대값과 최소값은? "+getMinMaxString.minMax(strTwo));
+
+  }
+}
+----
