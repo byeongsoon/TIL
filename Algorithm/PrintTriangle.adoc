@@ -1,0 +1,52 @@
+= 삼각형 출력하기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.08
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/103[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+printTriangle 메소드는 양의 정수 num을 매개변수로 입력받습니다.
+다음을 참고해 *(별)로 높이가 num인 삼각형을 문자열로 리턴하는 printTriangle 메소드를 완성하세요
+printTriangle이 return하는 String은 개행문자('\n')로 끝나야 합니다.
+
+높이가 3일때
+----
+*
+**
+***
+----
+
+=== 1차 풀이
+
+몇층으로 만들지를 인자 num으로 전달받는다.
+
+String을 반환해 줘야 하므로 result에 반복문을 통하여 처음에는 1개 다음 층엔 2개...
+식으로 *을 붙여주고 한 층이 끝난 부분에서는 개행문자를 붙여준다.
+
+[source, java]
+----
+public class PrintTriangle {
+  public String printTriangle(int num){
+    String result = "";
+    for(int i = 0; i< num ;i++){
+      for(int j=0;j<i+1;j++){
+        result += "*";
+      }
+      result += "\n";
+    }
+    return result;
+  }
+
+  public static void main(String[] args) {
+    PrintTriangle pt = new PrintTriangle();
+    System.out.println( pt.printTriangle(3) );
+    System.out.println( pt.printTriangle(5) );
+  }
+}
+----

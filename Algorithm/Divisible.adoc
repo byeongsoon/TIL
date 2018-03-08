@@ -1,0 +1,54 @@
+= 삼각형 출력하기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.08
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/103[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+divisible 메소드는 int형 배열 array와 int divisor를 매개변수로 받습니다.
+array의 각 element 중 divisor로 나누어 떨어지는 값만 포함하는 새로운 배열을 만들어서 반환하도록 divisible에 코드를 작성해 보세요.
+
+예를들어 array가 {5, 9, 7, 10}이고 divisor가 5이면 {5, 10}을 리턴해야 합니다.
+
+=== 1차 풀이
+
+나눠줄 값과 배열을 인자로 받은 뒤에 반복문을 이용하 각 인덱스 별로 %연산자를 이용해
+나머지가 없으면 ArrayList에 add를 이용해 보관한다.
+
+반환형인 int[] ret에 담아주기 위해서 다시 반복문을 이용해 arrayList의 값들을 get으로
+꺼내 준다.
+
+[source, java]
+----
+import java.util.ArrayList;
+import java.util.Arrays;
+
+class Divisible {
+  public int[] divisible(final int[] array,final int divisor) {
+    ArrayList<Integer> arrayList = new ArrayList<>();
+    for(int i = 0; i < array.length; i++){
+      if((array[i] % divisor) == 0){
+        arrayList.add(array[i]);
+      }
+    }
+
+    int[] ret = new int[arrayList.size()];
+    for(int i = 0; i < arrayList.size();i++){
+      ret[i] = arrayList.get(i);
+    }
+    return ret;
+  }
+
+  public static void main(String[] args) {
+    Divisible div = new Divisible();
+    int[] array = {5, 9, 7, 10};
+    System.out.println( Arrays.toString( div.divisible(array, 5) ));
+  }
+}
+----

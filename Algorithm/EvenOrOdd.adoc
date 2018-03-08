@@ -1,0 +1,41 @@
+= 짝수와 홀수
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.08
+:Revision: 1.0
+
+=== 문제
+
+evenOrOdd 메소드는 int형 num을 매개변수로 받습니다.
+num이 짝수일 경우 Even을 반환하고 홀수인 경우 Odd를 반환하도록 evenOrOdd에 코드를 작성해 보세요.
+num은 0이상의 정수이며, num이 음수인 경우는 없습니다.
+
+=== 1차 풀이
+
+인자로 받은 값을 %연산자를 이용하여 나머지가 0인 경우엔 짝수, 그렇지 않은 경우엔 홀수로
+간주하여 짝수일때는 Even, 홀수일때는 Odd를 반환해준다.
+
+[source, java]
+----
+public class EvenOrOdd {
+  String evenOrOdd(int num) {
+    String result = null;
+    if(num % 2 == 0){
+      result = "Even";
+    }else{
+      result = "Odd";
+    }
+    return result;
+  }
+
+  public static void main(String[] args) {
+    EvenOrOdd evenOrOdd = new EvenOrOdd();
+
+    System.out.println("결과 : " + evenOrOdd.evenOrOdd(3));
+    System.out.println("결과 : " + evenOrOdd.evenOrOdd(2));
+  }
+}
+
+----
