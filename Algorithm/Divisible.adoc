@@ -1,4 +1,4 @@
-= 삼각형 출력하기
+= 나누어 떨어지는 숫자 배열
 
 :icons: font
 :Author: Byeongsoon Jang
