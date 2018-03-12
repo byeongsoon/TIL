@@ -1,0 +1,381 @@
+= 빈 검증(Bean Validation) Tutorial
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.02.09
+:Revision: 1.0
+:imagesdir: ./img
+
+테스트 주도 개발(Test-driven development TDD)은 매우 짧은 개발 사이클을 반복하는
+소프트웨어 개발 프로세스 중 하나이다.
+
+개발을 진핼할 때 테스트 코드를 만드는 작업에 대한 튜토리얼을 진행한다.
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+=== 준비 작업(gradle)
+
+우선 gradle과 maven을 homebrew를 이용해 다운로드 받는다.
+
+----
+& brew install gradle
+& brew install maven
+----
+
+NewProject -> gradle -> Java로 새로운 프로젝트를 만든다.
+
+GroupId, ArtifactId를 써주고 프로젝트를 생성한다.
+
+gradle.build 파일에서 시작 전 기초 작업을 수행하도록 buildscript, dependencies를 작성한다.
+
+단위 테스트를 위해서 junit에 관련된 plugin을 다운로드 받고,
+link:http://search.maven.org/[여기]에서 각종 api를 받을 수 있다.
+
+----
+buildscript{
+    repositories{
+        maven {
+            url "https://nexus.wisoft.io/repositories/maven-public/" // maven은 연구실에 있는 것을 사용한다.
+        }
+        jcenter()
+    }
+    dependencies{
+        classpath "org.junit.platform:junit-platform-gradle-plugin:1.1.0"
+    }
+}
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "org.junit.platform.gradle.plugin"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
+
+junitPlatform{
+    filters {
+        engines{
+
+        }
+        tags{
+            exclude "slow"
+        }
+    }
+}
+repositories {
+    maven {
+        url "https://nexus.wisoft.io/repositories/maven-public/"
+    }
+    jcenter()
+}
+
+dependencies {
+    compile 'javax.validation:validation-api:2.0.1.Final'
+    compile 'org.hibernate.validator:hibernate-validator:6.0.8.Final'
+    compile 'javax.el:javax.el-api:3.0.0'
+    compile 'org.glassfish:javax.el:3.0.0'
+
+    testCompile 'org.assertj:assertj-core:3.9.0'
+    testCompileOnly "org.junit.jupiter:junit-jupiter-params:5.1.0"
+    testCompileOnly "org.junit.platform:junit-platform-runner:1.1.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.0"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+}
+
+task wrapper(type: Wrapper){
+    distributionUrl = "https://services.gradle.org/distributions/gradle-4.6-bin.zip"
+} // wrapper을 준비해서 돌리면 준비가 끝난다.
+----
+
+=== Bean Validation
+
+사전에 추가한 api를 통해서 코드에 어노테이션을 사용하여 검증을 실시한다.
+
+예를 들면 다음과 같은 Account 클래스를 만든다고 가정하자.
+
+변수는 id, username, name, email 등이 있다.
+각각의 변수의 특성에 맞게 @NotNull, @NotBlank, @Size 등으로 검증을 위한
+조건을 달아주고 이 사항을 지키지 않았을 때 보내줄 message도 함께 써준다.
+
+.Account.java
+[source, java]
+----
+package io.wisoft.tutorial.domain;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.UUID;
+
+public class Account {
+  @NotNull
+  private UUID id;
+
+  @Size(min = 4, max = 10, message = "Username must be between 4 and 10 charaters long.")
+  @NotBlank(message = "Username may not be empty.")
+  private String username;
+
+  @Size(min = 4, max = 20, message = "Name must be between 4 and 20 charaters long.")
+  @NotBlank(message = "Name may not be empty.")
+  private String name; // notnull, not blank
+
+  //@Email(message = "Not Email form.")
+  @NotBlank(message = "Email may not be empty.")
+  @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(?:[a-zA-Z]{2,6})$", message = "Email must be a well-formed email address")
+  private String email; // notnull, not blank
+
+  public Account() {
+
+  }
+
+  public Account(String username, String name, String email) {
+    this.id = UUID.randomUUID();
+    this.username = username;
+    this.name = name;
+    this.email = email;
+  }
+
+  public UUID getId() {
+    return id;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+}
+
+----
+
+=== JUnit
+
+JUnit은 자바용 단위 테스트 작성을 위한 산업 표준 프레임워크다.
+
+단위 테스트란 소스 코드의 특정 모듈이 개발자가 의도한 대로 정확히 작동하는지
+검증하는 절차다. 변수, 메소드에 대한 테스트 케이스(Test Case)를 작성하는 절차를 말한다.
+
+단위 테스트를 진행하기위해 다음과 같은 import를 작성한다.
+
+
+
+----
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import java.util.List;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+----
+
+위에 작성한 Account 클래스에 대한 테스트 코드를 작성한다. 애노테이션을 통해서 적어두었던
+조건들에 대한 오류 메세지를 정확하게 받아오는지 테스트한다.
+
+Validation을 받아오고 체크하는 부분에 대한 중복을 없애고, Accout 클래스 뿐만 아니라 다른 곳에서도
+사용할 수 있도록 재네릭을 이용해 SimpleBeanValidator 클래스를 만든다.
+
+[source, java]
+----
+public class SimpleBeanValidator {
+  private final static ValidatorFactory VALIDATOR_FACTORY = Validation.buildDefaultValidatorFactory();
+  private final static Validator VALIDATOR = VALIDATOR_FACTORY.getValidator();
+
+  public static <T> String getMessageOfCheckValidate(final @NotNull T t){
+    final Set<ConstraintViolation<T>> violations = VALIDATOR.validate(t);
+
+    String result = null;
+    for (ConstraintViolation<T> violation : violations){
+      result = violation.getMessage();
+    }
+    return result;
+  }
+
+  public static <T> List<String> getMessageListOfCheckValidate(final @NotNull T t){
+    final Set<ConstraintViolation<T>> violations = VALIDATOR.validate(t);
+
+    final List<String> result = new ArrayList<>();
+    for (ConstraintViolation<T> violation : violations){
+      result.add(violation.getMessage());
+    }
+    return result;
+  }
+
+  public static <T> Set<ConstraintViolation<T>> getViolationsOfCheckValidate(final @NotNull T t){
+    return VALIDATOR.validate(t);
+  }
+}
+
+----
+
+*** @DisplayName : 테스트 클래스나 메서드에 대한 설명을 적는다.
+*** @Test : 테스트 코드임을 알려주는 어노테이션
+*** @Nested : 테스트 클래서 내부에 중첩 구성을 위한 어노테이션
+
+Accout 클래스에서 각 변수의 검증을 위해 만들어둔 제약에 대해서 테스트를 진행한다.
+
+
+[source, java]
+----
+@DisplayName("The account validator test case")
+class AccountTest {
+  private Account account;
+
+  @Nested
+  @DisplayName("Account ID Test Case")
+  class idValidation{
+    @org.junit.jupiter.api.Test
+    @DisplayName("정상적인 Account ID")
+    void checkIdValidationSuccess(){
+      account = new Account("Byeongsoon","Byeongsoon Jang","byeongsoon@wisoft.io");
+      assertNotNull(account.getId());
+      assertThat(account.getId()).isNotNull();
+    }
+  }
+
+  @Nested
+  @DisplayName("Account Username Test Case")
+  class UsernameValidation{
+    @Test
+    @DisplayName("정상적인 사용자 Username")
+    void checkUserameValidationSuccess(){
+      account = new Account("Byeongsoon","Byeongsoon Jang","byeongsoon@wisoft.io");
+      SimpleBeanValidator.getViolationsOfCheckValidate(account);
+      assertThat(account.getUsername()).isEqualTo("Byeongsoon");
+    }
+
+    @Test
+    @DisplayName("Username이 NULL 일 때, 'Username may not be empty.'")
+    void checkUserameNullValidationFail(){
+      account = new Account(null,"Byeongsoon Jang","byeongsoon@wisoft.io");
+      String result = SimpleBeanValidator.getMessageOfCheckValidate(account);
+      assertThat(result).isEqualTo("Username may not be empty.");
+    }
+
+    @Test
+    @DisplayName("Username이 Blank 일 때, 'Username may not be empty.'")
+    void checkUserameBlankValidationFail(){
+      account = new Account("","Byeongsoon Jang","byeongsoon@wisoft.io");
+      List<String> result = SimpleBeanValidator.getMessageListOfCheckValidate(account);
+      assertThat(result.contains("Username may not be empty.")).isTrue();
+    }
+
+    @Test
+    @DisplayName("Username의 길이가 4미만일 때, 'Username must be between 4 and 10 charaters long.'")
+    void checkUserameMinLengthValidationFail(){
+      account = new Account("hhh","Byeongsoon Jang","byeongsoon@wisoft.io");
+      String result = SimpleBeanValidator.getMessageOfCheckValidate(account);
+      assertThat(result).isEqualTo("Username must be between 4 and 10 charaters long.");
+    }
+
+    @Test
+    @DisplayName("Username의 길이가 10초과일 때, 'Username must be between 4 and 10 charaters long.'")
+    void checkUserameMaxLengthValidationFail(){
+      account = new Account("byeongsoonbyeongsoon","Byeongsoon Jang","byeongsoon@wisoft.io");
+      String result = SimpleBeanValidator.getMessageOfCheckValidate(account);
+      assertThat(result).isEqualTo("Username must be between 4 and 10 charaters long.");
+    }
+  }
+  @Nested
+  @DisplayName("Account Name Test Case")
+  class NameValidation{
+    @Test
+    @DisplayName("정상적인 사용자 Name")
+    void checkNameValidationSuccess(){
+      account = new Account("jangbong","Byeongsoon Jang","byeongsoon@wisoft.io");
+      SimpleBeanValidator.getViolationsOfCheckValidate(account);
+      assertThat(account.getName()).isEqualTo("Byeongsoon Jang");
+    }
+
+    @Test
+    @DisplayName("Name이 NULL일 때, 'Name may not be empty.'")
+    void checkNameNullValidationFail(){
+      account = new Account("jangbong",null,"byeongsoon@wisoft.io");
+      String result = SimpleBeanValidator.getMessageOfCheckValidate(account);
+      assertThat(result).isEqualTo("Name may not be empty.");
+    }
+
+    @Test
+    @DisplayName("Name이 Blank일 때, 'Name may not be empty'")
+    void checkBlankValidationFail(){
+      account = new Account("jangbong","","byeongsoon@wisoft.io");
+      List<String> result = SimpleBeanValidator.getMessageListOfCheckValidate(account);
+      assertThat(result.contains("Name may not be empty.")).isTrue();
+    }
+
+    @Test
+    @DisplayName("Name의 길이가 4미만일 때 'Name must be between 4 and 20 charaters long.'")
+    void checkNameMinLengthValidationFail(){
+      account = new Account("jangbong", "jbs","byeongsoon@wisoft.io");
+      String result = SimpleBeanValidator.getMessageOfCheckValidate(account);
+      assertThat(result).isEqualTo("Name must be between 4 and 20 charaters long.");
+    }
+
+    @Test
+    @DisplayName("Name의 길이가 20이상일 때 'Name must be between 4 and 20 charaters long.'")
+    void checkNameMaxLengthValidationFail(){
+      account = new Account("jangbong","jangbyeongsoonbyeongsoon","byeongsoon@wisoft.io");
+      String result = SimpleBeanValidator.getMessageOfCheckValidate(account);
+      assertThat(result).isEqualTo("Name must be between 4 and 20 charaters long.");
+    }
+  }
+
+  @Nested
+  @DisplayName("Account Email Test Case")
+  class EmailValication{
+    @Test
+    @DisplayName("정상적인 사용자 Email")
+    void checkEmailValidationSuccess(){
+      account = new Account("jangbong", "Byeongsoon Jang", "byeongsoon@wisoft.io");
+      SimpleBeanValidator.getViolationsOfCheckValidate(account);
+      assertThat(account.getEmail()).isEqualTo("byeongsoon@wisoft.io");
+    }
+
+    @Test
+    @DisplayName("Email 형식이 아닐때, 'Email must be a well-formed email address'")
+    void checkEmailFormValidationFail(){
+      account = new Account("jangbong", "Byeongsoon Jang","byeongsoon@naver");
+      String result = SimpleBeanValidator.getMessageOfCheckValidate(account);
+      assertThat(result).isEqualTo("Email must be a well-formed email address");
+    }
+
+    @Test
+    @DisplayName("Email이 NULL일 때 'Email may not be empty.'")
+    void checkEmailNullValidationFail(){
+      account = new Account("jangbong", "Byeongsoon Jang",null);
+      String result = SimpleBeanValidator.getMessageOfCheckValidate(account);
+      assertThat(result).isEqualTo("Email may not be empty.");
+    }
+
+    @Test
+    @DisplayName("Email이 Blank일 때 'Email may not be empty.'")
+    void checkEmailBlankValidationFail(){
+      account = new Account("jangbong", "Byeongsoon Jang", "");
+      List<String> result = SimpleBeanValidator.getMessageListOfCheckValidate(account);
+      assertThat(result.contains("Email may not be empty.")).isTrue();
+      assertThat(result.contains("Email must be a well-formed email address"));
+    }
+  }
+}
+----
+
+- assertThat : SimpleBeanValidator에서 넘겨받은 메세지가 Accout 클래스에서 던져준 메세지가 맞는지 판단하기 위해서 사용.
+
+- SimpleBeanValidator.getMessageOfCheckValidate : Validator로 부터 넘어오는 메세지가 한 개일 때 사용한다.
+- SimpleBeanValidator.getMessageListOfCheckValidate : Validator로 부터 넘어오는 메세지가 두 개 이상일 때 사용한다.
+- SimpleBeanValidator.getViolationsOfCheckValidate : 정상적인 경우에서 사용한다. Validatdate를 체크한다.
+
+이번 Bean Validation Tutorial을 통해서 평소엔 신경쓰지않고 변수를 선언하고 사용했던 것들이 얼마나 잘못되었는지 알게되었다.
+
+앞으로는 테스트 코드를 작성하는 버릇을 들여야겠다.
