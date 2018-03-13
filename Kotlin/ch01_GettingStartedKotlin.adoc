@@ -83,6 +83,14 @@ Hello, World!
 IntelliJ에서 Tool -> Kotlin -> Kotlin REPL을 클릭하면 아래 콘솔창에 코드를
 간단하게 작성할 수 있는 창이 나타난다.
 
+=== 프로젝트 생성없이 Kotlin 코드를 간단히 테스트하기
+
+Kotlin의 코드를 실행하기위해 반드시 프로젝트를 생성해야 하는 것은 아니다.
+Kotlin에서는 간단한 예제 프로젝트를 제공하고, Kotlin 코드들을 실행시킬 수 있는 웹 페이지를 제공한다.
+
+link:https://try.kotlinlang.org/#/Examples/Hello,%20world!/Simplest%20version/Simplest%20version.kt[Try Kotlin]
+이 곳을 통해서 IDEA가 없더라도 웹에서 간단하게 코드를 작성해서 실행시켜 볼 수 있다.
+
 ==== 요약
 
 1장에선 코틀린을 빌드하고 실행하는데 필요한 도구와 개발 환경을 구축하는 방법을 학습했다.
