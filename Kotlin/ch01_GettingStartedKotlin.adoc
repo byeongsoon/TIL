@@ -16,11 +16,22 @@ Byeongsoon Jang<byeongsoon@wisoft.io>
 |===
 |===
 
+=== 개요
+
+Kotlin은 2011년 Jetbrain사가 공개한 JVM에서 동작하는 프로그래밍 언어이다.
+JVM에서 동작하는 코틀린은 자바와 100%의 호환성을 보인다.
+
+IntelliJ IDEA를 이용해 코틀린을 학습한다. IntelliJ 15버전 부터는 코틀린을 위한 별도의 패키지 설치가 필요없다.
+
+구글에서 안드로이드 공식언어로 지정하기도 했다.
+
+Kotlin은 기존 Java 기반 기술과의 완벽한 호환성을 유지하면서 간결하게 코드를 작성할 수 있는
+서버 측 응용 프로그램 개발에 매우 적합하다.
+
 OS X를 사용하고 homebrew가 설치되어 있다는 가정하에 다음과 같은 명령어로 코틀린을 다운받는다.
 
 [source]
 ----
-& brew update
 & brew install kotlin
 ----
 
@@ -33,9 +44,6 @@ OS X를 사용하고 homebrew가 설치되어 있다는 가정하에 다음과 �
 우선 IntelliJ에서 new project를 누르고 Java 모듈에서 Kotlin을 선택한다.
 
 그리고 src에 오른쪽 마우스를 가져가 클릭한 뒤에 New -> Kotlin File/Class를 클릭한다.
-
-책에서는 new project -> gradle -> kotlin(java)를 생성해서 하는데 이 방법은
-Java 버전이 9버전이면 안된다. 8버전 까지는 지원되는 것을 확인했다.
 
 .HelloWorld.kt
 [source, kotlin]
@@ -65,29 +73,15 @@ fun main(args: Array<string>){
 Hello, World!
 ----
 
-이 방법 말고도 IntelliJ를 이용해 run하면 결과는 같게나온다.
+이 방법 말고도 IntelliJ에서 run하면 결과는 같게나온다.
 
 === REPL
 
 최근에 대부분의 언어는 대화형 쉘을 제공하며 코틀린도 예외는 아니다.
 재사용하지 않는 코드를 빠르게 작성하고자 한다면 REPL은 쓰기 좋은 도구이다.
 
-=== 프로젝트에서 코틀린과 자바 혼용하기
-
-같은 프로젝트에서 다른 언어를 사용하는 것은 매우 흔한일이라고 하지만 필자는
-웹을 제외한 프로젝트에서 두 가지의 언어를 사용해 본적이 없었다.
-
-코틀린과 자바는 호환성이 100%라는 발표가 있을 정도로 그 상호관계가 완벽하다고 한다.
-
-코틀린에서 자바코드를 작성하고 gradle.build에 자바 컴파일러가 코틀린 소스를 찾을 수 있게
-----
-sourceSets{
-  main.java.srcDirs += 'src/main/kotlin'
-}
-----
-
-를 추가해 준다. 이 후에는 메이브 플러그인 파일을 자바 코드를 컴파일 할 수 있게 만드는
-소스를 추가해 준다.
+IntelliJ에서 Tool -> Kotlin -> Kotlin REPL을 클릭하면 아래 콘솔창에 코드를
+간단하게 작성할 수 있는 창이 나타난다.
 
 ==== 요약
 
