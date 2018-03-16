@@ -1,0 +1,16 @@
+= 코틀린 기본기 (2/2)
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.14
+:Revision: 1.0
+
+코틀린 프로그래밍 - 스티븐 사무엘, 스테판 보큐리우 지음
+
+2장 코틀린 기본기
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===

@@ -1,0 +1,100 @@
+= 소수 찾기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.16
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/171[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+numberOfPrime 메소드는 정수 n을 매개변수로 입력받습니다.
+
+1부터 입력받은 숫자 n 사이에 있는 소수의 개수를 반환하도록 numberOfPrime 메소드를 만들어 보세요.
+
+소수는 1과 자기 자신으로만 나누어지는 수를 의미합니다.
+(1은 소수가 아닙니다.)
+
+10을 입력받았다면, 1부터 10 사이의 소수는 [2,3,5,7] 4개가 존재하므로 4를 반환
+5를 입력받았다면, 1부터 5 사이의 소수는 [2,3,5] 3개가 존재하므로 3를 반환
+
+=== 1차 풀이
+
+소수란, 1과 자기 자신 이외로는 나누어지지 않는 숫자를 말한다.
+
+1 부터 number까지의 숫자 중에 소수의 개수를 반환하는 문제이므로
+첫 번째 for문에서는 2 부터 number까지 반복을 시켜주면서 count 변수를
+항상 0으로 바꿔준다.
+
+두 번째 for문에서는 2 부터 number에서 하나 씩을 다시 2부터 현재의 숫자보다 작을 때까지
+for문을 이용해 나머지를 구해본다. 만약 나머지가 있다면 count를 1 증가 시킨다.
+
+count가 0이 아니라면 1과 자기 자신이외에 나누어 떨어지는 값이 존재하는 것이므로 소수에서 제외한다.
+
+count가 0일 때에만 소수의 개수인 result 값을 1 증가 시킨다.
+
+[source, java]
+----
+class NumOfPrime {
+  int numberOfPrime(int number) {
+    int result = 0;
+    int count = 0;
+    for(int i = 2; i <= number ; i++){
+      count = 0;
+      for(int j = 2;j < i;j++){
+        if(i%j == 0){
+          count++;
+        }
+      }
+      if (count == 0)
+        result++;
+    }
+
+    return result;
+  }
+
+  public static void main(String[] args) {
+    NumOfPrime prime = new NumOfPrime();
+    System.out.println( prime.numberOfPrime(10) );
+    System.out.println( prime.numberOfPrime(5) );
+  }
+}
+----
+
+=== 2차 풀이
+
+1차와 달라진 점은 이중 for문에서 count값을 계속 증가시키기 보다는
+count 값이 증가했다면 break문을 통해서 빠져 나오는 것이 불필요한 연산을 줄인다고 생각했다.
+
+[source, java]
+----
+class NumOfPrime {
+  int numberOfPrime(int number) {
+    int result = 0;
+    int count = 0;
+
+    for(int i = 2; i <= number ; i++){ // 2차 풀이
+      count = 0;
+      for(int j = 2;j < i;j++){
+        if(i%j == 0){
+          count++;
+          break;
+        }
+      }
+      if (count == 0)
+        result++;
+    }
+    return result;
+
+  }
+
+  public static void main(String[] args) {
+    NumOfPrime prime = new NumOfPrime();
+    System.out.println( prime.numberOfPrime(10) );
+    System.out.println( prime.numberOfPrime(5) );
+  }
+}
+----

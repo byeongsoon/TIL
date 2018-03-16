@@ -1,0 +1,49 @@
+= 정수 내림차순으로 배치하기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.16
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/118[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+reverseInt 메소드는 int형 n을 매개변수로 입력받습니다.
+n에 나타나는 숫자를 큰것부터 작은 순으로 정렬한 새로운 정수를 리턴해주세요.
+예를들어 n이 118372면 873211을 리턴하면 됩니다.
+n은 양의 정수입니다.
+
+=== 1차 풀이
+
+기본 제공하는 API가 있는줄 알았지만 int형 변수안에 있는 내용에 대한 정렬은
+찾아볼수가 없었다.
+
+정말 기본에 집중하여 접근하는 방식이다.
+
+result 변수에 10을 곱하고, 인자로 넘어온 number를 10으로 나눈 나머지
+즉, 1의자리 숫자만을 가져와 더한 뒤에 number를 10으로 나누어 1의자리 숫자를
+없앤다. 이와같은 방법을 number가 0이 될 때까지 반복하면 number로 넘어온 숫자의
+reverse 된 결과가 result 변수에 저장된다.
+
+[source, java]
+----
+public class ReverseInt {
+  public int reverseInt(int number){
+    int result = 0;
+    while (number != 0){
+      result = result * 10 + number % 10;
+      number /= 10;
+    }
+    return result;
+  }
+
+  public static void  main(String[] args){
+    ReverseInt ri = new ReverseInt();
+    System.out.println(ri.reverseInt(118372));
+    System.out.println(ri.reverseInt(123456789));
+  }
+}
+----
