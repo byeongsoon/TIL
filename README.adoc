@@ -60,6 +60,9 @@ link:http://bs-development.tistory.com/[블로그]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Fibonacci.adoc[피보나치 수]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Divisible.adoc[나누어 떨어지는 숫자 배열]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/GetMean.adoc[평균구하기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Collatz.adoc[콜라츠 추측]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/ReverseInt.adoc[정수 내림차순으로 배치하기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NumOfPrime.adoc[소수 찾기]
 
 == Javascript
 
