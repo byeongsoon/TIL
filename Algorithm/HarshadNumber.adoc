@@ -1,0 +1,61 @@
+= 하샤드수
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.20
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/130[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+양의 정수 x가 하샤드 수이려면 x의 자릿수의 합으로 x가 나누어져야 합니다. 예를들어 18의 자릿수 합은 1+8=9이고, 18은 9로 나누어 떨어지므로 18은 하샤드 수입니다.
+
+Harshad함수는 양의 정수 n을 매개변수로 입력받습니다. 이 n이 하샤드수인지 아닌지 판단하는 함수를 완성하세요.
+예를들어 n이 10, 12, 18이면 True를 리턴 11, 13이면 False를 리턴하면 됩니다.
+
+=== 1차 풀이
+
+인자로 넘어온 값을 number 변수에 담고 number가 0이 아닐때만 반복하는 while문을 만든다.
+
+divisor라는 인자를 나눌 값을 만들어야 하는데 각 자릿수를 더해야하기 때문에 number를 10으로
+나눈 나머지르 먼저 더하고 number를 10으로 나누어 자릿수를 옮긴다.
+
+이 과정을 number가 0이 아닐때 까지 반복한 뒤에 얻어진 divisor를 이용해
+num을 divisor로 나눈 나머지가 0이면 true를 그렇지 않으면 false를 반환한다.
+
+[source, java]
+----
+public class HarshadNumber{
+  public boolean isHarshad(int num){
+    boolean result = false;
+    int divisor = 0;
+    int number = num;
+
+    while (number != 0){
+      divisor = divisor + number % 10;
+      number /= 10;
+    }
+
+    if (num % divisor == 0){
+      result = true;
+    }
+    return result;
+  }
+
+  public static void  main(String[] args){
+    HarshadNumber sn = new HarshadNumber();
+    System.out.println(sn.isHarshad(18));
+    System.out.println(sn.isHarshad(10));
+    System.out.println(sn.isHarshad(12));
+
+    System.out.println();
+
+    System.out.println(sn.isHarshad(11));
+    System.out.println(sn.isHarshad(13));
+
+  }
+}
+----
