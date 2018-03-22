@@ -179,7 +179,7 @@ val inv = 1.inv()           // 역은 단항 연산자이기 때문에 숫자에
 - 불리언
 
 불리언은 부정, 논리곱, 논리합 연산자를 지원한다. 논리곱과 논리합은 왼쪽에서 조건을 만족한다면 오른쪽은
-평가되지 않을 것이다.
+평가되지 않을 것이다. (short-circuit 이라고 한다.)
 
 [source, java]
 ----
@@ -225,5 +225,80 @@ val char = 'A'
 ----
 val string = "string with \n new line"
 
-var rawString = """raw string is super useful for strings that span many lines"""
+var rawString = """raw string is super useful
+      |for strings that span
+      |many lines""".trimMargin() // """ 에서 Enter 누르면 자동으로 trimMargin이 붙음
+----
+
+결과, 이스케이프 문자 없이도 엔터를 칠 수 있다.
+
+----
+raw string is super useful
+for strings that span
+many lines
+----
+
+=== 배열
+
+코틀린에서는 라이브러리 함수인 arrayOf()를 사용해 배열을 생성힐 수 있다.
+
+[source, java]
+----
+var array = arrayOf(1,2,3)
+----
+
+다른 방법으로는 초기 크기와 각 요소를 생성하는 데 함수를 이용해 배열을 생성할 수 있다.
+
+[source, java]
+----
+var funtionArray = Array(10,{k -> k * k})
+// 0, 1, 4, 9, ..., 81
+
+// 배열 출력은
+funtionArray.forEach{
+  println(it)
+}
+for (a in funtionArray){
+  println(a)
+}
+
+----
+
+코틀린에서는 자바와는 다르게 언어 차원에서 배열을 특별하게 다루지 않으며, 배열은 일반적인 컬렉션 클래스일 뿐이다.
+배열의 인스턴스는 이터레이터 함수와 get 함수, set 함수, size 함수를 제공한다.
+
+또한 get 함수와 set 함수는 다른 C 스타일 언어에서와 마찬가지로 괄호 문법을 지원한다.
+
+[source, java]
+----
+val element1 = array[0]
+val element2 = array[1]
+array[2] = 5
+----
+
+코틀린에서는 ByteArray, CharArray, ShortArray, IntArray, LongArray, BooleanArray, FloatArray, DoubleArray를 제공한다.
+
+=== 주석
+
+코틀린에서 사용하는 주석은 자바나 자바스크립트, C 같은 언어에서 사용하는 주석과 같다.
+
+[source, java]
+----
+// 라인 주석
+
+/*
+블록 주석
+여러 줄을 포함할 수 있다.
+*/
+----
+
+=== 패키지
+
+패키지 네임스페이스 단위로 코드를 나눌 수 있게 해준다. 모든 파일은 패키지를 선언하는 것으로 시작하게 될 것이다.
+
+[source, ruby]
+----
+package com.packt.myproject
+class Foo
+fun bar(): String = "bar"
 ----
