@@ -1,0 +1,68 @@
+= 행렬의 곱셈
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.23
+:Revision: 1.0
+
+=== 문제
+
+행렬의 곱셈은, 곱하려는 두 행렬의 어떤 행과 열을 기준으로,
+좌측의 행렬은 해당되는 행, 우측의 행렬은 해당되는 열을 순서대로
+곱한 값을 더한 값이 들어갑니다. 행렬을 곱하기 위해선
+좌측 행렬의 열의 개수와 우측 행렬의 행의 개수가 같아야 합니다.
+곱할 수 있는 두 행렬 A,B가 주어질 때, 행렬을 곱한 값을 출력하는
+productMatrix 함수를 완성해 보세요.
+
+=== 1차 풀이
+
+행렬의 2x2의 곱셈을 한다면 다음과 같다.
+
+(00 x 00 + 01 x 10)   (00 x 01 + 01 x 11)
+
+(10 x 00 + 11 x 10)   (10 x 01 + 11 x 11)
+
+여기서 중복되는 값들을 제외한 나머지를 문자로 치환 한다면
+
+(ㅁ0 x 0ㅁ + ㅁ1 x 1ㅁ) 이다.
+
+ㅁ에 들어갈 숫자들을 보면 첫 번째와 세번째는 2행에서 증가하는 것을볼 수 있고, 두번째와 네번째 ㅁ은
+각 행 마다 2열에서 증가하는 것을 볼 수 있다.
+
+따라서, 1,3번째 ㅁ은 i, 2,4번째 ㅁ은 j로 이중 for문을 돌리며 값을 넣어주고 반환한다.
+
+[source, java]
+----
+class ProductMatrix {
+  public int[][] productMatrix(int[][] A, int[][] B) {
+    int[][] answer = new int[A[0].length][A[1].length];
+
+    for (int i = 0; i < A.length;i++){
+      for (int j = 0; j < A[i].length; j++){
+        answer[i][j] = A[i][0] * B[0][j] + A[i][1] * B[1][j];
+      }
+    }
+
+    return answer;
+  }
+
+  public static void main(String[] args) {
+    ProductMatrix c = new ProductMatrix();
+    int[][] a = { { 1, 2 }, { 2, 3 } };
+    int[][] b = { { 3, 4 }, { 5, 6 } };
+
+    int[][] result = c.productMatrix(a,b);
+
+   //System.out.println("행렬의 곱셈 : " + c.productMatrix(a, b));
+
+    for (int i = 0; i < result.length;i++){
+      for (int j = 0; j < result[i].length; j++){
+        System.out.print(result[i][j]+"\t");
+      }
+      System.out.println();
+    }
+  }
+}
+
+----
