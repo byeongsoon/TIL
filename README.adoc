@@ -64,6 +64,7 @@ link:http://bs-development.tistory.com/[블로그]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/ReverseInt.adoc[정수 내림차순으로 배치하기]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NumOfPrime.adoc[소수 찾기]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/HarshadNumber.adoc[하샤드수]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/ProductMatrix.adoc[행렬의 곱셈]
 
 == Javascript
 
