@@ -1,0 +1,77 @@
+= 2018년
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.03.23
+:Revision: 1.0
+
+=== 문제
+
+2016년 1월 1일은 금요일입니다. 2016년 A월 B일은 무슨 요일일까요? 두 수 A,B를 입력받아 A월 B일이 무슨 요일인지 출력하는 getDayName 함수를 완성하세요. 요일의 이름은 일요일부터 토요일까지 각각
+
+SUN, MON, TUE, WED, THU, FRI, SAT
+
+를 출력해주면 됩니다. 예를 들어 A=5, B=24가 입력된다면 5월 24일은 화요일이므로 TUE를 반환하면 됩니다.
+
+=== 1차 풀이
+
+2018년의 달마다 몇일씩 있는지를 monthDay라는 숫자 배열에 넣어주고 인자로 넘어온 a라는 변수는
+달에 해당하므로 반복문을 통해 해당 달 이전까지의 날짜들을 모두 더해준다.
+
+day에 인자로 넘어온 b값 까지 더해준다면 모든 날짜의 합이 나온다.
+
+2018년 1월 1일은 월요일 이므로 day를 7로 나눈 나머지에 따라서 switch-case문을 이용해
+answer에 요일 이름을 넣어서 반환해준다.
+
+[source, java]
+----
+public class DayName {
+  public String getDayName(int a, int b)
+  {
+    String answer = "";
+    int [] monthDay = {31,28,31,30,31,30,31,31,30,31,30,31}; // 2018년 월별 날짜
+    int day = 0;
+
+    for (int i = 0; i < a-1 ; i++){
+      day += monthDay[i];
+    }
+    day += b;
+
+    switch (day % 7){
+      case 1:
+        answer = "MON";
+        break;
+      case 2:
+        answer = "TUE";
+        break;
+      case 3:
+        answer = "WED";
+        break;
+      case 4:
+        answer = "THU";
+        break;
+      case 5:
+        answer = "FRI";
+        break;
+      case 6:
+        answer = "SAT";
+        break;
+      default:
+        answer = "SUN";
+        break;
+    }
+
+    return answer;
+  }
+  public static void main(String[] args)
+  {
+    DayName test = new DayName();
+    int a=5, b=24;
+    System.out.println(test.getDayName(a,b));
+    System.out.println(test.getDayName(3,23));
+    System.out.println(test.getDayName(7,16));
+  }
+}
+
+----
