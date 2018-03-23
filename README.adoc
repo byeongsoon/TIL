@@ -65,6 +65,8 @@ link:http://bs-development.tistory.com/[블로그]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NumOfPrime.adoc[소수 찾기]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/HarshadNumber.adoc[하샤드수]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/ProductMatrix.adoc[행렬의 곱셈]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/MinSum.adoc[최솟값 만들기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/GetDayName.adoc[요일 알아내기(2018년)]
 
 == Javascript
 
