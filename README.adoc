@@ -42,6 +42,7 @@ link:http://bs-development.tistory.com/[블로그]
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/ch01_GettingStartedKotlin.adoc[코틀린 시작하기]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/ch02_KotlinBasics(1:2).adoc[코틀린 기본기 (1/2)]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/ch02_KotlinBasics(2:2).adoc[코틀린 기본기 (2/2)]
 
 == Algorithm
 
