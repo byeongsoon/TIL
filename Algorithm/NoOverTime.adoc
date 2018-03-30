@@ -1,0 +1,52 @@
+= 야근 지수
+
+=== 문제
+
+야근 지수
+회사원인 수민이는 많은 일이 쌓여 있습니다. 수민이는 야근을 최소화하기 위해 남은 일의 작업량을 숫자로 메기고,
+일에 대한 야근 지수를 줄이기로 결정했습니다.
+야근 지수는 남은 일의 작업량을 제곱하여 더한 값을 의미합니다.
+수민이는 1시간 동안 남은 일 중 하나를 골라 작업량 1만큼 처리할 수 있습니다.
+수민이의 퇴근까지 남은 N 시간과 각 일에 대한 작업량이 있을 때,
+noOvertime 함수를 제작하여 수민이의 야근 지수를 최소화 한 결과를 출력해 주세요.
+예를 들어, N=4 일 때, 남은 일의 작업량이 [4, 3, 3] 이라면 야근 지수를
+최소화하기 위해 일을 한 결과는 [2, 2, 2]가 되고
+야근 지수는 각각의 일을 제곱해서 4 + 4 + 4 = 12가 되어 12를 반환해 줍니다.
+
+=== 1차 풀이
+
+균형적으로 남은 작업량을 줄여야만 야근 지수가 최소값을 가질 수 있다.
+
+그러므로 정렬을 통해서 큰 값을 뒤로 보내주고, 가장 뒤에 있는 값을 하나 감소 시킨다.
+다시 정렬을 해서 큰 값을 뒤로 보내고 감소 시키기를 인자로 넘어온 no만큼 반복한다.
+
+이렇게 되면 남은 일의 작업량이 균형있게 작아질 것이고, 야근 지수는 남은 일의 작업량을
+각각 제곱하여 더해준다.
+
+[source, java]
+----
+import java.util.Arrays;
+
+class NoOvertime {
+  public int noOvertime(int no, int[] works) {
+    int result = 0;
+    int length = works.length;
+    Arrays.sort(works);
+    for (int i = 0; i< no;i++){
+      works[length-1] = works[length-1] - 1;
+      Arrays.sort(works);
+    }
+    for (int i = 0; i < works.length;i++){
+      result += Math.abs(works[i]);
+    }
+    return result;
+  }
+  public static void main(String[] args) {
+    NoOvertime c = new NoOvertime();
+    int []test = {4,3,3};
+    int []testTwo = {5,4,3};
+    System.out.println(c.noOvertime(4,test));
+    System.out.println(c.noOvertime(5,testTwo));
+  }
+}
+----
