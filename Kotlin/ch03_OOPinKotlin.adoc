@@ -111,9 +111,8 @@ class Person(firstName: String, lastName: String, age: Int?){
 [source, java]
 ----
 class OuterClassName {
-
   class NestedClassName {
-
+    
   }
 }
 ----
