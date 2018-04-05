@@ -155,7 +155,7 @@ if(address == null){
 }
 ----
 
-코틀링ㄴ에서 이에 대한 대체자로 제공하는 것을 흔히 엘비스 연산자(Elvis operator)라고 하며,
+코틀린에서 이에 대한 대체자로 제공하는 것을 흔히 엘비스 연산자(Elvis operator)라고 하며,
 ?: 로 표기한다.
 
 이 연산자의 사용법은 자바의 if문에 있는 삼항식과 매우 유사하다.
@@ -193,3 +193,17 @@ val safeInt: Int? = location as? Int
 ----
 
 결과는 safeString은 London이 출력되지만 safeInt는 null이 출력되는 것을 볼 수 있다.
+
+==== 널이 가능한 컬렉션
+
+널이 허용가능한 컬렉션에서 널을 허용하지 않는 컬렉션으로 값을 전달해야 한다면 filterNotNul() 함수를 이용해서
+널 값을 제거하고 널을 허용하지 않는 컬렉션으로 값을 전달할 수 있다.
+
+[source, java]
+----
+val nullableList: List<Int?> = listOf(1, 2, null, 4)
+val intList: List<Int> = nullableList.filterNotNul()
+----
+
+위와 같이 해주면 nullableList에 세 번째 인덱스에 존재하는 null 값만을 제외하고
+{1, 2, 4}의 값이 들어간다.
