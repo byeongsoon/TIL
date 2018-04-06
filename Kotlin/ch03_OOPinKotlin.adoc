@@ -112,7 +112,7 @@ class Person(firstName: String, lastName: String, age: Int?){
 ----
 class OuterClassName {
   class NestedClassName {
-    
+
   }
 }
 ----

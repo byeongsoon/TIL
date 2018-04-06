@@ -1,0 +1,104 @@
+= 코틀린이란?
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.04.06
+:Revision: 1.0
+:imagesdir: ./image
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+==== 목차
+- 코틀린이란?
+- Kotlin vs Java
+- Hello, Kotlin!
+- 앞으로의 Kotlin
+
+|===
+|===
+
+==== 코틀린이란?
+
+image::kotlin.png[kotlin,800]
+
+- Kotlin은 2011년 Jetbrain사가 공개한 JVM에서 동작하는 프로그래밍 언어이다.
+JVM에서 동작하는 코틀린은 자바와 100%의 호환성을 보인다.
+
+- 구글에서 2017년 5월 18일 구글 I/O 행사에서 안드로이드 공식언어로 지정하기도 했다.
+
+- Kotlin은 기존 Java 기반 기술과의 완벽한 호환성을 유지하면서 간결하게 코드를 작성할 수 있는
+서버 측 응용 프로그램 개발에 매우 적합하다.
+
+- NullPointerException이 일어나지 않는다.
+
+==== Kotlin vs Java
+
+- 변수
+
+[source, java]
+----
+// Java
+static String name = "byeongsoon";
+int age = 21;
+String address = null;
+
+// Kotlin
+val name: String = "byeongsoon"
+var age: Int = 21
+var address: String? = null
+----
+
+var로 선언된 변수는 값이 변할 수 있는 변수이고 val로 선언된 변수는 값이 변할 수 없다.
+자바에서의 static과 같은 역할이다.
+
+자바에서는 String 변수에 널 값을 넣는 것에 아무런 제약이 없었다면, 코틀린에서는
+NPE(Null Pointer Exception)이 일어나지 않게 보장해주기 때문에 널 값을 넣을 수 있는
+변수에 대해서는 ? 라는 키워드를 이용해 널을 허용해준다.
+
+코틀린은 자바보다 코드를 간결하게 작성할 수 있다.
+다음의 코드에서 볼 수 있듯이 클래스를 만들고 생성자를 만드는 것에서도 차이가 난다는 것을 알 수 있다.
+
+[source, java]
+----
+// Java
+class Person {
+  String name;
+  int age;
+  String address;
+
+  Person(String name, int age, String address) {
+    this.name = name;
+    this.age = age;
+    this.address = address;
+  }
+}
+
+// Kotlin
+class Person constructor(var name: String, var age: Int, var address: String) {}
+----
+
+==== Hello, Kotlin!
+
+. IntelliJ에서 새 프로젝트 만들기를 클릭 -> Kotlin/JVM을 클릭해 프로젝트를 생성한다.
+. src에 오른쪽 마우스 클릭 -> New -> Kotlin File/Class를 클릭한다.
+. 코드 입력 시, main만 치고 tab을 누르면 메인 함수가 자동으로 완성된다.
+[source, java]
+----
+fun main(args: Array<String) {
+  println("Hello, Kotlin!")
+}
+----
+
+==== 앞으로의 Kotlin
+
+현재 코틀린은 국내에서도 해외에서도 많은 사랑을 받고 있으며
+특히, 안드로이드 어플리케이션 개발에선 자바 -> 코틀린으로 넘어가는 추세이다.
+
+image::kotlinRate.jpg[Rate,1000]
+
+스택오버플로우에서 발표한 연간 리포트에 따르면 코틀린은 사랑받는 언어 2위에 위치해 있는걸 볼 수 있다.
+
+image::stackoverflow.png[stackoverflow,700]
+
+가장 태표적인 서비스로는 '요기요' 어플리케이션은 현재 자바 -> 코틀린 으로의 변환 작업이 30% 이상 진행된 상황이다.
