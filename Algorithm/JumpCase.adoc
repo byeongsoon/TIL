@@ -1,0 +1,62 @@
+= 멀리 뛰기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.04.09
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/31[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+효진이는 멀리 뛰기를 연습하고 있습니다. 효진이는 한번에 1칸, 또는 2칸을 뛸 수 있습니다. 칸이 총 4개 있을 때, 효진이는
+
+(1칸, 1칸, 1칸, 1칸)
+
+(1칸, 2칸, 1칸)
+
+(1칸, 1칸, 2칸)
+
+(2칸, 1칸, 1칸)
+
+(2칸, 2칸)
+
+의 5가지 방법으로 맨 끝 칸에 도달할 수 있습니다.
+
+멀리뛰기에 사용될 칸의 수 n이 주어질 때, 효진이가 끝에 도달하는 방법이 몇 가지인지 출력하는 jumpCase 함수를 완성하세요. 예를 들어 4가 입력된다면, 5를 반환해 주면 됩니다.
+
+
+=== 1차 풀이
+
+멀리 뛰기에 사용될 칸수에 대한 방법은 피보나치 수열로 표현할 수 있음을 먼저 알아냈다.
+
+jumpCase()에서 우선 피보나치 수열을 인자로 넘어온 number에 해당하는 index까지 만든 뒤에
+array[number]를 반환해준다.
+
+[source, java]
+----
+public class JumpCase {
+  public static void main(String[] args){
+    JumpCase test = new JumpCase();
+
+    System.out.println(test.jumpCase(4));
+    System.out.println(test.jumpCase(5));
+  }
+
+  public int jumpCase(int number) {
+    int answer = 0;
+    int[] array = new int[number+1];
+
+    for (int i = 0; i <= number; i++) {
+      if (i < 2) {
+        array[i] = 1;
+      }else {
+        array[i] = array[i-2] + array[i-1];
+      }
+    }
+    return array[number];
+  }
+}
+----

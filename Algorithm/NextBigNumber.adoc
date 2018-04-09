@@ -1,0 +1,51 @@
+= 다음 큰 숫자
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.04.09
+:Revision: 1.0
+
+link:https://programmers.co.kr/learn/challenge_codes/170[여기]에
+위치한 알고리즘 문제 풀이를 기록한다.
+
+=== 문제
+
+어떤 수 N(1≤N≤1,000,000) 이 주어졌을 때, N의 다음 큰 숫자는 다음과 같습니다.
+
+- N의 다음 큰 숫자는 N을 2진수로 바꾸었을 때의 1의 개수와 같은 개수로 이루어진 수입니다.
+
+- 1번째 조건을 만족하는 숫자들 중 N보다 큰 수 중에서 가장 작은 숫자를 찾아야 합니다.
+
+
+예를 들어, 78을 2진수로 바꾸면 1001110 이며, 78의 다음 큰 숫자는 83으로 2진수는 1010011 입니다.
+N이 주어질 때, N의 다음 큰 숫자를 찾는 nextBigNumber 함수를 완성하세요.
+
+=== 1차 풀이
+
+우선 while문을 통해 반복을 진행하면서 인자로 넘어온 값 n에 1씩 더해가면서
+자바에서 제공하는 Integer.bitCount() 메소드를 이용해 1의 갯수를 구해서
+n과 1의 갯수가 같은 n보다 큰 숫자를 반환한다.
+
+[source, java]
+----
+class NextBigNumber
+{
+  public int nextBigNumber(int n)
+  {
+    int answer = n;
+    while(true){
+      answer += 1;
+      if(Integer.bitCount(n) == Integer.bitCount(answer))
+        break;
+    }
+    return answer;
+  }
+  public static void main(String[] args)
+  {
+    NextBigNumber test = new NextBigNumber();
+    int n = 78;
+    System.out.println(test.nextBigNumber(n));
+  }
+}
+----
