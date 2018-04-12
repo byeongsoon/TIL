@@ -61,7 +61,7 @@ fun main(args: Array<String>) {
 new 키워드를 사용할 필요가 없다.
 
 constructor 키워드는 생성자를 가리키기 위한 표현이다. 코틀린에서는 접근 제어자나 애노테이션을 명시하지 않는
-이상 사용하지 않아도 된다. 생성자의 입력 매개변수가 유효한지 체크는 init 블로에서 한다. require 메소드는
+이상 사용하지 않아도 된다. 생성자의 입력 매개변수가 유효한지 체크는 init 블록에서 한다. require 메소드는
 주어진 표현식이 false일 경우, 작성한 메시지와 함께 IllegalAragumentException을 발생시킨다.
 
 [source, java]
@@ -80,8 +80,7 @@ fun main(args: Array<String>) {
   val person1 = Person("Alex", "Smith", 29)
   val person2 = Person("Jang", "Smith", null)
   println("${person1.firstName},${person1.lastName} is ${person1.age} years old.")
-  println("${person2.firstName},${person2.lastName} is ${person2.age.toString
-  ()?: "?"} years old.")
+  println("${person2.firstName},${person2.lastName} is ${person2.age.toString()?: "?"} years old.")
 }
 ----
 
@@ -91,7 +90,7 @@ fun main(args: Array<String>) {
 ----
 class Person(firstName: String, lastName: String, age: Int?){
   private name: String
-  private age: Int?
+  private age: Int?                                                              ;
 
   init{
     this.name = "$firstName, $lastName"
@@ -99,7 +98,7 @@ class Person(firstName: String, lastName: String, age: Int?){
   }
 
   fun getName(): String = this.name
-  fun getAge(): Int? = this.age
+  fun getAge(): Int? = this.age                                                  ; // 아스키독에서 코틀린 코드를 지원하지 않으므로 붙인다.
 }
 ----
 
@@ -116,3 +115,351 @@ class OuterClassName {
   }
 }
 ----
+
+자바에서는 정적 클래스와 비정적 클래스, 두 가지 형태의 중첩 클래스를 제공한다.
+static 키워드를 사용해 선언한 중첩 클래스는 정적 중첩 클래스라 부르지만, 비 정적으로 선언핸 클래스는 내부 클래스라 부른다.
+
+[source, java]
+----
+// 자바
+class Outer{
+  static class StaticNested { } // 정적 중첩 클래스
+  class Inner { } // 내부 클래스
+}
+
+// 코틀린에서의 정적 중첩클래스와 유사한 클래스
+class Outer(val name: String){
+  class StaticNested(val x: Int, val y: Int) {
+    fun draw(): Unit {
+      println("Drawing Line from $x to $y")
+    }
+  }
+  fun draw() {
+    println("Drawing the graph $name")
+  }
+}
+
+fun main(args: Array<String>) {
+  val line = Outer.StaticNested(1,0)
+  line.draw
+}
+
+// 코틀린에서의 내부 클래스 (inner 키워드를 추가해서 내부 클래스로 만들어준다.)
+class Outer(val name: String) {
+  private val lastname: String                                            ;
+
+  init {
+    lastName = name
+  }
+
+  inner class Inner(val x: Int, val y: Int) {
+    fun draw(): Unit {
+      println("Drawing Line from $x to $y for graph $name")
+    }
+  }
+
+  fun draw() {
+    println("Drawing the graph $name")
+  }
+}
+----
+
+코틀린에는 기존 자바의 this보다 더 강력한 this 표현식이 있다.
+this@label이라는 레이블 구조를 사용하면 this를 사용해 바깥 스코프를 참조할 수 있다.
+
+[source, java]
+----
+class A {
+  private val somefield: Int = 1
+  inner class B {
+    private val somefield: Int = 2                                             ;
+    fun foo(s: String) {
+      println("Field <somefield> from B" + this.somefield)
+      println("Field <somefield> from B" + this@B.somefield)
+      println("Field <somefield> from B" + this@A.somefield)
+    }
+  }
+}
+----
+
+위의 경우 외부 클래스와 내부 클래스 모두 같은 이름의 필드를 갖고 있다.
+위와 같은 표현식은 의미를 명확하게 하는 데 도움이 된다.
+
+- 데이터 클래스
+
+데이터를 저장하기 위한 목적으로 클래스를 정의하는 경우는 빈번하게 발생한다.
+책 뒷부분에서 이러한 클래스 타입을 좀 더 자세히 살펴볼 텐데 지금은 다음과 같이 정의할 수 있다.
+
+[source, kotlin]
+----
+data class Customer(val id: Int, val name: String, var address: String)
+----
+
+- 열거형 클래스
+
+열거형 클래스의 구체적인 타입으로 주어진 enum 타입 변수는 미리 정의된 상수로 제한된다.
+상수는 타입에 의해 정의되어 있다. 열거형을 정의하기 위해서는 일주일의 모든 요일을 나타내는 타입을 생성하는
+다음 예제 처럼 enum class 키워드를 사용한다.
+
+[source, java]
+----
+enum class Day { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY}
+----
+
+- 코틀린에서의 싱글톤 정의
+
+싱글톤은 주어진 클래스의 인스턴스를 1개로 제하하는 디자인 패턴이다.
+한번 생성되면 프로그램 내내 살아 있을 것이다.
+
+다음의 코드는 코틀린에서 싱글톤을 어떻게 정의하는지 보여준다.
+
+[source,java]
+----
+object Singleton {
+  private var count = 0
+  fun doSomething(): Unit {
+    println("Calling a doSomething (${count++} call/-s in total)")
+  }
+}
+----
+
+단순하게 class 말고 object 클래스를 사용해서 생성하면 싱글톤을 정의할 수 있다.
+object 키워드는 class를 정의하고 인스턴스를 만드는 것을 동시에 진행한다.
+
+호출하는 방법은 프로그램 내내 인스턴스가 만들어져 있으므로
+
+[source, java]
+----
+Singleton.doSomething()
+----
+
+위와 같이 클래스 이름으로 접근하면 된다.
+
+==== 인터페이스
+
+인터페이스는 일종의 계약이다. 인터페이스를 구현하는 쪽은 약속된 인터페이스를 준수하고 필요한 메소드를 구현해야 한다.
+자바와 마찬가지로 코틀린 인터페이스도 추상 메소드를 선언하는 것뿐만 아니라 메소드 구현체를 가질 수도 있다.
+추상 클래스와는 달리 인터페이스는 상태를 가질 수는 없으나 프로퍼티는 가질 수 있다.
+
+[source, kotlin]
+----
+interface Document {
+  val version: Long
+  val size: Long
+
+  val name: String
+  get() = "NoName"
+
+  fun save(input : InputStream)
+  fun load(stream: OutputStream)
+  fun getDescripion(): String { return "Document $name has $size byte(-s)" }
+}
+----
+
+위의 인터페이스에서는 프로퍼티 3개와 메소드 3개를 각각 정의하고 있으며,
+name 프로퍼티와 getDescripion 메소드는 기본 구현(default implementation)을 제공한다.
+
+자바에서 이 인터페이스를 구현해본다.
+
+[source, java]
+----
+public class MyDocument implement Document {
+  public long getVersion() {
+    return 0;
+  }
+
+  public long getSize() {
+    return 0;
+  }
+
+  public void save(@NotNull InputStream input) {
+  }
+
+  public void load(@NotNull OutputStream output){
+  }
+
+  public String getName() {
+    return null;
+  }
+
+  public String getDescription() {
+    return null;
+  }
+}
+----
+
+위 코드를 보면 프로퍼티가 게터 메소드로 변환 됐음을 확인할 수 있다.
+getDescripion 역시 name과 마찬가지로 기본 구현을 제공하지만 자바 코드에서는 이를 구현해야만 한다.
+
+이는 코틀린 클래스에서 인터페이스를 구현하는 경우에는 해당하지 않는다.
+
+[source, kotlin]
+----
+class DocumentImpl : Document {
+  override val size: Long
+  get() = 0
+
+  override fun load(stream: OutputStream){
+  }
+
+  override fun save(input: InputStream){
+  }
+
+  override val version: Long
+  get() = 0
+}
+----
+
+위의 코드와 같이 기본 구현을 해놓은 코드에 대해서는 구현을 하지 않는다.
+
+==== 상속
+
+상속은 객체 지향 프로그래밍의 핵심이다.
+상속은 기존 클래스를 재활용 또는 확장해 새로운 클래스를 생성하게 해준다.
+기존 클래스를 슈퍼 클래스(기본클래스, 부모 클래스)라 부르고 생성된 새로운 클래스를
+파생된 클래스(자식 클래스)라 부른다.
+
+클래스를 상속받은 자식 클래스는 부모 클래스의 모든 필드, 프로퍼티, 메소드를 암시적으로 받게 된다.
+
+코틀린에서는 부모 클래스를 갖지 않는 개체를 생성할 때마다 자동으로 Any를 부모 클래스로 갖게 될 것이다.
+
+[TIP]
+====
+Any가 자바에 정의되어 있는 모든 클래스의 부모 클래스인 Object 클래스라고 생각할 수 있지만 이는 사실이 아니다.
+
+Any에 정의된 메소드를 깊게 살펴보면 이러한 메소드가 자바 Object 클래스 메소드의 서브셋임을 확인할 수 있다.
+====
+
+상속에 대한 코드를 구현해 본다.
+
+[source, kotlin]
+----
+enum class CardType {
+  VISA, MASTERCARD, AMEX
+}
+
+open class Payment(val amount: BigDecimal)
+class CardPayment(amount: BigDecimal, val number: String, val expiryDate: DateTime, val type: CardType) : Payment(amount)
+----
+
+위의 코드에서 CardType은 열거형 타입으로 정의 되었다.
+Payment 정의 에서는 open이라는 키워드를 붙였다.
+open은 해당 클래스는 기본적으로 상속이 가능하다는 사실을 알려주는 것이다.
+
+CardPayment클래스 뒤에 ':Payment'를 통해서 상속을 표시한다.
+
+[IMPORTANT]
+====
+코틀린 설계자들은 클래스가 상속에 대해 닫혀 있는 것이 기본 동작이라고 결정했다.
+
+자바와는 정반대 성향이 있는 final로 클래스를 만든 것과 같은 것이다.
+====
+
+위의 코드에서는 CardPayment가 주 생성자를 갖고 있다.
+그러므로 부모 클래스인 Payment(amount) 처럼 부모 생성자를 상속을 표시하는 자리에서 호출해야만 한다.
+
+이번에는 상속을 받는 클래스가 주 생성자를 가지고 있지 않는 상황이다.
+
+[source, kotlin]
+----
+class NewPayment : Payment {
+  constructor(amount: BigDecimal, name: String, bankId: String) : super(amount) {
+    this.name = name
+    this.bankId = bankId
+  }
+  var name: String
+    get() = this.name
+  var bankId: String
+    get() = this.bankId
+}
+----
+
+주 생성자를 만들지 않았기 때문에 두 번째 생성자 정의에서 부모 클래스의 생성자를 호출해야만 한다.
+생성자가 해야하는 일은 부모 생성자를 호출하는 일이다.
+
+그러므로 생성자의 몸체보다 super(args1,...)가 앞서게 된다.
+
+코틀린에서는 하나 이상의 클래스는 상속할 수 없다.
+그러나 인터페이스는 동시에 여러 개를 상속할 수 있다.
+
+다음의 코드에서는 두 개의 인터페이스를 상속한다.
+
+[source, kotlin]
+----
+interface Drivable {
+  fun drive()
+}
+
+interface Sailable {
+  fun saill()
+}
+
+class AmphibiousCar(val name: String) : Drivable, Sailable {
+  override fun drive() {
+    println("Driving...")
+  }
+  override fun saill() {
+    println("Sailling...")
+  }
+}
+----
+
+클래스는 자동으로 Any를 상속받는 점을 기억하자.
+AmphibiousCar 클래스는 AmphibiousCar(val name: String) : Any, Drivable, Sailable로 작성한 것과 같다.
+
+인터페이스를 얼마나 상속하느냐에 대해서는 제한이 없고 이를 명시하는 순서에 대해서도 제약이 없다.
+자바와 달리 클래스를 하나 상속하고 하나 이상의 인터페이스를 상속할 경우 부모 목록에서 클래스가 제일 앞에 위치할 필요는 없다.
+
+==== 가시성 제어자(접근 제한자)
+
+코틀린에서는 네 종류의 사용 가능한 값이 있다.
+
+- public: public은 어디서든지 접근할 수 있다.
+- internal: internal은 모듈 코드에서만 접근할 수 있다.
+- protected: protected는 이를 정의한 클래스와 파생된 클래스에서만 접근할 수 있다.
+- private: private는 이를 정의한 클래스 스코프 내에서만 접근할 수 있다.
+
+만약 부모 클래스에서 필드를 open으로 명시했다면, 상속받은 자식 클래스에서는 가시성 레벨을 변경할 수 있을 것이다.
+
+[source, kotlin]
+----
+open class Container {
+  protected open val fieldA: String = "Some value"
+}
+class DerivedCotainer : Container() {
+  public override val fieldA: String = "Something else"
+}
+----
+
+==== 추상 클래스
+
+클래스 정의를 할 때 앞에 abstract 키워드를 추가하면 클래스를 추상 클래스로 표시하는 것이다.
+추상 클래스는 부분적으로 정의된 클래스로 파생된 클래스 또한 abstract 클래스로 선언하더라도 구현부가 없는 프로퍼티와
+메소드는 자식 클래스에서 반드시 구현해야만 한다.
+
+[source, kotlin]
+----
+abstract class A {
+  abstract fun doSomething()
+}
+----
+
+위의 코드는 코틀린에서 추상 클래스를 정의하는 방법을 보여준다.
+
+인터페이스와 다르게 함수의 몸체 정의부를 제공하지 않는 경우에는 해당 함수를 추상 함수로 표시해야 한다.
+
+추상 클래스는 인스턴스를 생성할 수 없다. 이러한 클래스의 규칙은 여러 상속 받은 클래스가 공유하는 공통의 메소드 집합을 제공하기 위해서다.
+
+==== 다형성
+
+다형성은 타입 단계에서 '어떻게'로부터 '무엇을'을 분리한다.
+다형성이 제공하는 장점 중 하나는 코드 조직화와 가독성이 향상된다는 점이다.
+나중에 새로운 기능 구현이 필요한 경우 언제든지 프로그램을 확장할 수 있다.
+
+[TIP]
+====
+다형성이라는 단어는 그리스어에서 유래됐다.
+ploy는 많다는 것을 의미하고 morphe는 형태나 모양을 의미한다.
+다형성에는 다양한 형태가 있으나 이번 장에서는 지연 바인딩(동적 바인딩 또는 런타임 바인딩)으로 알려진
+형태에 관해서만 학습한다.
+====
