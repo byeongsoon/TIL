@@ -1,0 +1,523 @@
+= 코틀린과 함수
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.04.02
+:Revision: 1.0
+
+==== 내용
+
+- 함수와 함수 리터럴
+- 확장 함수
+- 이름이 있는 매개변수와 기본 매개변수
+- (연산자 오버로딩)
+- (재귀와 꼬리 재귀)
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+==== 함수 정의하기
+
+함수는 선택적으로 매개변수 및 반환 값과 합ㄴ께 fun 키워드를 사용해 정의한다.
+예를 들어, 다음 함수는 매개변수가 없으며 String 값을 반환한다.
+
+[source, java]
+----
+fun hello(): String = "hello, world"
+----
+
+각 매개변수는 '이름: 타입'과 같은 형식으로 이뤄진다.
+다음 함수에서는 String 타입인 매개변수 2개를 받고 String 값을 반환한다.
+
+[source, java]
+----
+fun hello(name: String, location: String): String = "hello to you $name at $location"
+----
+
+만약 함수가 의미 있는 값을 반환하지 않는다면 Unit을 반환하도록 정의한다.
+
+Unit은 자바와 C에 있는 void 타입과 유사하다.
+
+Unit을 반환하는 함수는 개발자가 원할 경우에는 프로시저 스타일의 문법인 반환 타입을 생략할 수 있다.
+다음 두 함수 선언은 서로 같다.
+
+[source, java]
+----
+fun print1(str: String): Unit {
+  println(str)
+}
+
+fun print2(str: String) {
+  println(str)
+}
+----
+
+==== 단일 표현식 함수
+
+일반적으로 함수는 반드시 자신의 반환 타입을 선언해야 하지만, 단일 표현식으로 이뤄진 함수에 대해서만읜 예외가 존재한다.
+이는 한 줄짜리 함수나 단일 함수로 불린다.
+이러한 함수는 중괄호를 생략하고 return 키워드 대신에 표현식 앞에 = 심볼을 사용하는 축약된 문법을 사용할 수 있다.
+
+[source, java]
+----
+fun square(k: Int) = k * k
+----
+
+함수가 Int의 반환 값 선언을 필요로 하지 않는다는 점에 주목하자.
+이는 컴파일러가 추론한다.
+
+원한다면 단일표현식 함수는 언제든지 일반 스타일로 작성할 수 있다.
+예를 들어 다음 두 함수는 서로 똑같으며 같은 바이트 코드로 컴파일 된다.
+
+[source, java]
+----
+fun concat1(a: String, b: String) = a + b
+
+fun concat2(a: String, b: String): String {
+  return a + b
+}
+----
+
+[IMPORTANT]
+====
+컴파일러는 오직 단일 표현식 함수에만 반환 타입을 생략할 수 있도록 규약한다.
+
+Unit은 있던 없던 상관없지만 다른 반환 타입들은 항상 명시해줘야 한다.
+====
+
+==== 멤버 함수
+
+함수의 첫 번째 형태는 멤버 함수라 부른다.
+이러한 함수는 클래스나 객체 또는 인터페이스 내부에 선언된다.
+멤버 함수는 점 연산자와 함께 함수를 가진 클래스 이름이나 객체 인스턴스
+이름과 그 뒤를 이어 함수 이름과 괄호 안에 매개변수를 사용해 실행된다.
+
+예를 들어 testString 인스턴스에 있는 length라는 함수를 호출하기 위해서는 코드를 다음과 같이 작성한다.
+[source, java]
+----
+var testString = "hello"
+var testLength = testString.length
+----
+
+멤버 함수는 그들 자신끼리 참조될 수 있으며, 이를 참조하는 데는 인스턴스 이름이 필요하지 않다.
+
+[source, java]
+----
+object Rectangle {
+  fun printArea(width: Int, height: Int): Unit {
+    val area = calculateArea(width, height)
+    println("The area is $area")
+  }
+
+  fun calculateArea(width: Int, height: Int): Int {
+    return width * height
+  }
+}
+----
+
+==== 지역 함수
+
+함수에 담긴 개념은 매우 간단하다. 이 개념은 큰 프로그램을 더 작은 덩어리로 나누는 것으로, 작은 덩어이로 나누면 좀 더 쉽게
+추론할 수 있는 코드를 재사용해 반복을 피할 수 있게 ㅎ준다. 이 개념의 두 번째 포인트는 흔히 DRY 이론으로 알려진
+'반복하지 마라'이다. 같은 코드를 여러 번 작성할수록 버그를 만들어낼 확률이 높아진다.
+
+함수 안에 있는 코드에도 같은 이론을 적용할 수 있다.
+
+코틀린은 다른 함수 내부에 함수를 선언하도록 지원함으로써 이러한 이론에서 한 발 더 나아가게 해준다.
+이러한 함수를 지역 함수 또는 중첩 함수라 부른다.
+심지어 함수는 여러 번 중첩될 수도 있다.
+
+넓이를 출력하는 이전의 예제는 다음과 같은 스타일로 작성할 수 있다.
+
+[source, java]
+----
+fun printArea(width: Int, height: Int): Unit {
+  fun calculateArea(width: Ing, height: Int): Int = width * height
+  var area = calculateArea(width, height)
+  println("The area is $area")
+}
+----
+
+지역 함수는 스코프 바깥에 선언한 매개변수나 변수에 접근할 수 있다.
+
+[source, java]
+----
+fun printArea(width: Int, height: Int): Unit {
+  fun calculateArea(): Int = width * height
+  var area = calculateArea(width, height)
+  println("The area is $area")
+}
+----
+
+위 코드에서는 calculateArea 함수에 있던 매개변수를 삭제하고 자신을 둘러싸고 있는 스코프에 정의된 매개변수를 직접 사용하고 있다는 점을확인하자.
+
+이번에는 지역 함수를 사용해 나누어질 함수 예제를 작업해본다.
+
+[source, java]
+----
+fun fizzbuzz1(start: Int, end: Int): Unit {
+  for( k in start..end) {
+    if( k % 3 == 0 && k % 5 == 0)
+      println("Fizz Buzz")
+    else if( k % 3 == 0)
+      println("Fizz")
+    else if( k % 5 == 0)
+      println("Buzz")
+    else
+      println(k)
+  }
+}
+----
+
+이 예제는 유명한 Fizz Buzz 문제다.
+요구 사항은 시작 값부터 마지막 값까지 정수를 출력하는 것이다.
+그러나 정수가 3의 배수인 경우에는 Fizz를 출력하고, 정수가 5의 배수인 경우에는 Buzz를 출력해야 한다.
+만약 정수가 3과 5의 배수인 경우에는 Fizz와 Buzz를 함께 출력해야 한다.
+
+위의 코드도 가독성이 괜찮은 편이지만 몇몇 코드가 중복된다.
+
+나머지를 검사하는 기능은 지역 함수로 선언할 수 있으며 이로 인해 코드를 한 번만 작성하면 된다.
+이러한 구현은 우리를 반복적인 해결방안의 다음 단계로 인도한다.
+
+[source, java]
+----
+fun fizzbuzz2(start: Int, end: Int): Unit {
+
+  fun isFizz(k: Int): Boolean = k % 3 == 0
+  fun isBuzz(k: Int): Boolean = k % 5 == 0
+
+  for( k in start..end) {
+    if( isFizz(k) && isBuzz(k))
+      println("Fizz Buzz")
+    else if( isFizz(k) )
+      println("Fizz")
+    else if( isBuzz(k) )
+      println("Buzz")
+    else
+      println(k)
+  }
+}
+----
+
+여기서 if ~ else 분기는 이제 중첩 함수인 isFizz와 isBuzz를 호출한다.
+
+그러나 여전히 매번 함수에 k를 전달해야하는 번거로움이 있다.
+
+지역 함수는 for 루프나 while 루프 그리고 그 밖의 블로 내부에도 정의할 수 있다.
+
+[source, java]
+----
+fun fizzbuzz3(start: Int, end: Int): Unit {
+
+  for( k in start..end) {
+
+    fun isFizz(): Boolean = k % 3 == 0
+    fun isBuzz(): Boolean = k % 5 == 0
+
+    if( isFizz() && isBuzz())
+      println("Fizz Buzz")
+    else if( isFizz() )
+      println("Fizz")
+    else if( isBuzz() )
+      println("Buzz")
+    else
+      println(k)
+  }
+}
+----
+
+세 번째 코드에서는 함수 정의를 for 루프 내부로 옮겼다.
+그러므로 이제는 매개변수를 생략하고 k에 직접 접근할 수 있다.
+
+마지막으로 if ~ else 키워드에 있는 몇몇 코드를 제거하기위해 when 구문을 사용한다.
+
+[source, java]
+----
+fin fizzbuzz4(start: Int, end: Int): Unit {
+  for (k in start..end) {
+    fun isFizz(): Boolean = k % 3 == 0
+    fun isBuzz(): Boolean = k % 5 == 0
+
+    when {
+      isFizz && isBuzz -> println("Fizz Buzz")
+      isFizz -> println("Fizz")
+      isBuzz -> println("Buzz")
+      else -> println(k)
+    }
+  }
+}
+----
+
+위 코드가 최종 해결방안으로 코드 반복을 피하고 초기 반복 코드보다 좀 더 읽기 쉬워 졌다.
+
+==== 최상위 함수
+
+코틀린은 멤버 함수와 지역 함수뿐만 아니라 최상위 함수를 선언하는 것도 지원한다.
+최상위 함수는 클래스, 객체, 또는 인터페이스 바깥에 존재하는 함수이며 파일 내부에서 바로 정의한다.
+'최상위'라는 이름은 함수가 어떠한 구조로 내부에 중첩되어 있지 않고 클래스와 함수 계층 구조의 맨 꼭대기에 있다는 데에서 유래했다.
+
+최상위 함수는 특히 도우미 함수나 유틸리티 함수를 정의하는 데 유용하다. 포함된 객체가 아무런 값을 갖지 않는다면 객체를 꼭 다른 함수와 그룹화하거나 생성할 필요는 없다.
+
+==== 이름이 있는 매개변수
+
+이름이 있는 매개변수는 함수에 인자를 전달할 때 인자에 이름을 명시할 수 있게 해준다.
+매개 변수가 여러 개인 함수의 경우 명시적으로 이름을 붙이면 각 인자의 의도가 명확해진다는 장점이 있다.
+
+다음 예제에서는 첫 번째 문자열이 두 번째 문자열의 일부를 포함하는지를 확인한다.
+
+[source, java]
+----
+val string = "a kindness of ravens"
+string.regionMatches(14, "Red Ravens", 4, 6, true)
+----
+
+이름이 있는 매개변수를 사용하기 위해서는 인자 값 앞에 있는 매개변수 이름을 넣으면 된다.
+아래는 함수를 다시 한번 호출하는데, 이번에는 이름 있는 매개변수를 사용했다.
+
+[source, java]
+----
+string.regionMatches(thisOffset = 14, other = "Red Ravens", otherOffset = 4, length = 6, ignoreCase = true)
+----
+
+두 번째 예제는 좀 더 장황해진 대신 가독성이 더 좋아졌으며 이제 각 매개변수가 의미하는 것이 무엇인지 명확해졌다.
+
+또 다른 장점으로는 타입이 같은 매개변수가 여러 개인 함수의 경우에 이름과 값이 서로 연관이 있는 것처럼 하여 에러를 덜 발생하게 해준다는 점이다.
+
+다음 예제에서는 함수가 다수의 Boolean 매개변수를 어떻게 받는지를 확인 할 수 있을 것이다.
+그리고 이름이 있는 매개변수를 사용하지 않는다면 인자를 잘못하여 바꾸기가 쉽다.
+
+[source, java]
+----
+fun deleteFiles(filePattern: String, recursive: Boolean, ignoreCase: Boolean, deleteDirectories: Boolean): Unit
+
+// 이름이 없는 매개변수
+deleteFiles("*.jpg",true, true, false)
+
+// 이름이 있는 매개변수
+deleteFiles("*.jpg", recursive = true, ignoreCase = true, deleteDirectories = false)
+----
+첫 번째 매개변수에 이름이 없지만 다른 매개뵤ㅕㄴ수에는 이름이 있음을 보았다.
+함수를 호출할 때 모든 매개변수에 이름을 지정해야 하는 것은 아니다.
+
+규칙은 매개변수에 이름을 지정하면 그 뒤의 매개변수들은 이름을 지정해줘야한다.
+
+이름이 있는 매개변수는 호출자에 맞춰 매개변수 순서를 변경하는 것도 허용한다.
+예를 들어 다 음 두 코드는 서로 같다.
+
+[source, java]
+----
+val stringTest = "a kindness of ravens"
+string.endWiht(suffix = "ravens", ignoreCase = true)
+string.endWiht(ignoreCase = true, suffix = "ravens")
+----
+
+==== 기본 값을 갖는 매개변수
+
+때로는 함수에 있는 매개변수에 기본 값을 제공하는 것이 편리한 경우가 있다.
+스레드 풀을 만들어본다고 생각해보자.
+스레드의 개수를 설정하는 매개변수는 CPU 코어 개수가 기본이 될 것이다.
+
+언어에서 기본 값을 갖는 매개변수를 사용하지 않고 이를 달성하기 위한 방법은 함수를 오버로딩한 버전을 제공하는 방법이 있다.
+
+코틀린에서 함수는 하나 이상의 매개변수가 기본 값을 갖도록 정의할 수 있으며, 각 값은 인자가 지정되지 않을 경우 사용된다.
+아래는 divide 함수가 나오는데 이번에는 기본 값을 갖는 매개변수를 사용함으로써 함수 정의를 단일 함수로 줄일 수 있다.
+
+[source, java]
+----
+fun divide(divisor: BigDecimal, scale: Int = 0, roundingMode: RoundingMode = RoundingMode.UNNECESSARY): BigDecimal
+----
+
+이 함수를 호출할 때는 몇몇 매개변수 또는 매개변수 전부를 생략할 수 있으나 매개변수를 한번 생략하면 뒤따라오는 모든 매개변수 또한 반드시 생략해야 한다.
+예를 들어 이 함수는 다음과 같은 방법으로 호출할 수 있다.
+
+[source, java]
+----
+divide(BigDecimal(12.34))
+divide(BigDecimal(12.34), 8)
+divide(BigDecimal(12.34), 8, RoundingMode.HALF_DOWN)
+----
+
+그러나 다음과 같은 호출은 적절하지 않다.
+
+[source, java]
+----
+divide(BigDecimal(12.34), RoundingMode.HALF_DOWN)
+----
+
+이름이 있는 매개변수와 기본 값이 있는 매개변수를 혼합하면 이러한 문제를 해결할 수 있다.
+
+[source, java]
+----
+divide(BigDecimal(12.34), roundingMode = RoundingMode.HALF_DOWN)
+----
+
+일반적으로 이름이 있는 매개변수와 기본 값이 있는 매개변수를 혼합해 사용하면 매우 강력한 효과를 발휘한다.
+이는 하나의 함수를 제공하면서도 사용자는 사용자가 원할 경우 선택적으로 기본 값을 오버라이딩하게 해준다.
+
+또한 기본 값이 있는 매개변수는 생성자에도 사용될 수 있으며 이로 인해 두 번째 생성자가 여러 개 필요하지 않도록 해준다.
+
+==== 확장 함수
+
+사용자들은 String에 reverse()가 있기를 바라거나, list에서 처음 k 요소가 제거된 list의 복사본을 반환하는 drop이라는 함수가 있기를 바랄지도 모른다.
+(실제 list 요소에서 뒤의 k개를 제거하고 반환하는 함수는 존재 -> dropLast(k))
+
+객체 지향적인 접근 방법으로는 필요로 하는 새로운 함수를 포함하는 서브타입을 생성해 타입을 확장하는 방법이 있다.
+
+[source, java]
+----
+abstract class DroppableList<E>  : ArrayList<E>() { // 입력으로 받는 매개변수 k만큼 원본 리스트에서 앞부분을 잘라낸 뒤에 list를 반환한다.
+  fun drop(k : Int): List<E> {
+    val resultSize = size - k // size는 자동으로 get을 이용해 나의 사이즈값을 반환한다.
+    when {
+      resultSize <= 0 -> return emptyList()
+      else -> {
+        val list = ArrayList<E>(resultSize)
+        for (index in k..size-1) {
+          list.add(this[index])
+        }
+        return list
+      }
+    }
+  }
+}
+----
+
+그러나 이런 방법이 항상 가능한 것은 아니다.
+클래스가 final로 정의되어 있을 수도 있으며 그런 경우에는 해당 클래스를 확장할 수 없다.
+또한 인스턴스를 생성했을 때 제어하지 못하는 경우도 있으므로 사용자들의 서브타입을 이미 존재하는 타입으로 교체할 수 없다.
+
+이러한 상황에서 일반적인 해결책은 인스턴스를 또 다른 인자로 받는 분리된 클래스에 함수를 생성하는 것이다.
+
+예를 들어, 자바에서는 다른 인스턴스를 위한 도우미 함수로만 구성된 클래스를 흔하게 볼 수 있다.
+java.util.Collections 클래스가 좋은 예다.
+이 클래스는 컬렉션과 함께 동작하는 기능을 제공하는 수많은 정적 함수를 갖고 있다.
+
+[source, java]
+----
+  fun <E> drop(k : Int, list: List<E>): List<E> {
+    val resultSize = list.size - k
+    when {
+      resultSize <= 0 -> return emptyList<E>()
+      else -> {
+        val newlist = ArrayList<E>(resultSize)
+        for (index in k..list.size - 1) {
+          newlist.add(list[index])
+        }
+        return newlist
+      }
+    }
+  }
+----
+
+위 해결책의 문제점은 두 가지로 분류할 수 있다.
+
+. 어떠한 함수가 사용 가능한지 보기 위해 IDE에서 제공하는 코드 완성을 사용할 수 없다.
+. 이러한 함수가 여러 개 있고 이를 구성하고자 할 경우 결국에는 가독성이 떨어지는 코드가 되고 만다.
+
+[source, java]
+----
+reverse(take(3, drop(2, list)))
+// 다음과 같이 사용하고 싶다.
+list.drop(2).take(3).reverse()
+----
+
+확장 함수는 새로운 서브타입을 만들거나 원래 타입을 변경하거나 래퍼(wrapper) 클래스를 만들지 않으면서도 위와 같은 기능을 완벽하게 제공한다.
+
+확장 함수는 이름 앞에 의도하고자 하는 타입을 접두사로 추가한다.
+함수가 사용될 인스턴스 타입은 수신자 타입이라 불린다.
+
+앞에서 봤던 drop 함수를 다시 구현한다.
+
+[source, java]
+----
+fun <E> List<E>.drop(k : Int): List<E> {
+  val resultSize = size - k
+  when {
+    resultSize <= 0 -> return emptyList<E>()
+    else -> {
+      val list = ArrayList<E>(resultSize)
+      for (index in k..size - 1) {
+        list.add(this[index])
+      }
+      return list
+    }
+  }
+}
+----
+
+함수 몸체에서 this 키워드를 사용하고 있음을 유의하자.
+이는 수신자 인스턴스를 참조하기 위해 사용되며 수신자 인스턴스란 함수가 호출되는 객체를 말한다.
+
+====== 확장 함수의 우선순위
+
+확장 함수는 클래스나 인스턴스에 정의된 함수를 오버라이딩 할 수 없다.
+완전히 같은 시그니처로 확장 함수를 정의할 경우(이름, 매개변수, 타입, 순서와 반환 타입까지 모두 같은 경우)
+컴파일러는 이를 절대로 호출하지 못할 것이다.
+
+컴파일러는 일치하는 멤버 함수를 발견하지 못했을 때만 스코프 안에 있는 확장 임포트를 고려할 것이다.
+
+[source, java]
+----
+class Submarine {
+  fun fire(): Unit {
+    println("Firing torpedoes")
+  }
+
+  fun submerge(): Unit {
+    println("Submerging")
+  }
+}
+
+fun Submarine.fire(): Unit{
+  println("Fire on board!")
+}
+
+fun Submarine.submerge(depth: Int): Unit {
+  println("Submerging to a depth of $depth fathoms")
+}
+----
+
+위 예제에는 fire()와 submerge()라는 두 함수를 가진 Submarine이라는 타입이 있다.
+또한 Submarine에 이름이 같은 확장 함수도 정의했다.
+
+위 코드를 출력하기 위해 다음과 같은 코드를 사용한다.
+
+[source, java]
+----
+val sub = Submarine()
+sub.fire()
+sub.submerge()
+----
+
+출력 값은 Firing torpedoes와 Submerging이 될 것이다.
+컴파일러는 Submarine 클래스에 정의된 fire() 함수를 바인딩할 것이다.
+위 예제에서 확장 함수는 클래스에 있는 함수와 차이점이 없으므로 절대로 호출될 수 없다.
+
+그러나 submerge() 함수는 함수 시그니처가 다르기 때문에 컴파일러는 사용하는 매개변수의 수에 따라 함수를 바인딩 할 수 있다.
+
+[source, java]
+----
+val sub = Submarine()
+sub.submerge()
+sub.submerge(10)
+----
+
+위 코드는 Submerging과 Submerging to a depth of 10 fathoms를 출력할 것이다.
+
+===== 널 값에서의 확장 함수
+
+코틀린은 널 값에서도 확장 함수를 지원한다.
+이러한 상황에서는 참조가 널 값을 갖게 되므로 참조를 안전하게 처리하지 못하는 Any 함수는 널 포인터 익셉션을 발생시킬 것이다.
+아래 기능은 널 값을 갖더라도 안전하게 사용할 수 있도록 equals 함수를 오버로딩하는 방법을 보여준다.
+
+[source, java]
+----
+fun Any?.safeEquals(other: Any?): Boolean {
+  if(this == null && other == null) return true
+  if(this == null) return false
+  return this.equals(other)
+}
+----
