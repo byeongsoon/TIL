@@ -1,0 +1,344 @@
+= 고차 함수와 함수형 프로그래밍
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.04.25
+:Revision: 1.0
+
+==== 내용
+
+- 고차 함수와 클로저
+- 익명 함수
+- 함수 참조
+- 함수형 프로그래밍 관용구
+- 커스텀 DSL
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+==== 고차 함수
+
+고차 함수는 그저 다른 함수를 매개변수로 받거나, 반환 값으로 함수를 반환하거나 둘 다 행하는 함수다.
+
+[source, java]
+----
+fun foo(str: String, fn: (String) -> String): Unit {
+  val applied = fn(str)
+  println(applied)
+}
+----
+
+위 예제는 2개의 매개변수를 갖는 foo라는 함수를 정의했다.
+첫 번째 매개변수는 문자열이고, 두 번째 매개변수는 함수로 문자열로부터 문자열을 반환한다.
+문자열로부터 문자열을 반환한다는 것은 함수가 입력으로 문자열을 받고 출력으로 다른 문자열을 반환한다는 뜻이다.
+또한 함수 매개변수를 정의하는 데 사용한 문법에 주목하자.
+입력 타입은 소괄호로 감싸며, *화살표를 사용해 출력 타입* 과 분리된다.
+
+[source, java]
+----
+fun foo2(str: String) {
+  val reversed = str.reversed()
+  println(reversed)
+}
+----
+
+이 코드의 결과는 첫 번째 코드와 일치한다.
+그러나 고차 함수의 장점은 여러 시나리오에서 동작할 수 있는 함수를 작성하고자 하는 경우에 명확해진다.
+
+다음의 예제는 리스트에 있는 요소를 홀수와 짝수 요소로 필터링하는 예제를 생각해본다.
+
+[source, java]
+----
+val ints = listOf(1, 2, 3, 4, 5, 6)
+
+val evens = mutableListOf<Int>()
+val odds = mutableListOf<Int>()
+
+for(k in ints) {
+  if(k % 2 == 0)
+    evens.add(k)
+  else
+    odds.add(k)
+}
+----
+
+위와 같은 방법 대신 다음과 같이 고차 함수를 사용할 수도 있다.
+
+[source, java]
+----
+val ints = listOf(1, 2, 3, 4, 5, 6)
+val odds = ints.fillter { it % 2 == 1 }
+val evens = ints.fillter { it % 2 == 0 }
+----
+
+이러한 코드는 빨리 작성되며 읽기 쉬운 적은 수의 프로퍼티를 갖는다. 또한 evens와 odds는 사용자에 의해 구성되기 때문에 결과 값이 불변이라는 장점을 추가로 갖는다.
+
+===== 함수 반환
+
+다른 함수를 반환하는 함수 역시 유효한 고차 함수로 간주한다.
+
+[source, java]
+----
+fun bar(): (String) -> String = {str -> str.reversed()}
+
+val reversi = bar()
+reversi("hello")
+reversi("world")
+----
+
+이 예제에서는 bar()를 호출하여 문자열로부터 문자열을 반환하는 함수를 반환할 것이다.
+
+각기 다른 두 값을 사용해 bar 함수를 호출하기 전에 bar 함수를 reversi라는 변수에 대입했다.
+
+이러한 기술은 다른 값을 받은 다음 원본 함수의 입력 값을 사용하는 함수를 반환하는 함수를 가질 때 그 유용성을 확인할 수 있다.
+
+모듈로 기반의 필터를 생성하기 위한 함수를 정의해보자.
+
+[source, java]
+----
+fun modulo(k: Int): (Int) -> Boolean = { it % k == 0 }
+----
+
+입력 값 k는 반환되는 함수에서 사용된다는 점을 유의하자.
+이제 위의 함수는 리스트 클래스에 고차 필터 함수와 결합할 수 있다.
+
+[source, java]
+----
+val ints = listOf(1, 2, 3, 4, 5, 6)
+val odds = ints.filter(modulo(1))
+val evens = ints.filter(modulo(2))
+val mod3 = ints.filter(modulo(3))
+----
+
+===== 함수 할당
+
+함수는 좀 더 쉽게 전달하기 위해 함수를 변수에 할당할 수도 있다.
+
+[source, java]
+----
+val isEven: (Int) -> Boolean = modulo(2)
+
+listOf(1, 2, 3, 4).filter(isEven)
+listOf(5, 6, 7, 8).filter(isEven)
+----
+
+여기서는 앞에서 정의한 modulo 함수를 사용하기 위해 함수의 인스턴스를 변수에 할당했다.
+이 예제에서는 독자에게 반환되는 타입이 무엇인지를 명확하게 하려고 타입을 명시적으로 추가 했지만,
+이는 일반적으로 생략할 수 있다.
+
+함수 리터럴 역시 변수에 할당할 수 있다.
+
+[TIP]
+====
+함수 리터럴이란,
+hello 같은 문자열 리터럴을 정의하거나 12.34 같은 double 형 리터럴을 정의하는 것처럼 함수 리터럴도 정의할 수 있다.
+이를 위해서는 단순히 코드를 중괄호로 감싸기만 하면 된다.
+
+.example
+[source, java]
+----
+{ println("I am a function literal")}
+// 함수 리터럴 정의
+
+val printHello = { println("hello") }
+// 함수 리터럴 변수에 정의
+
+printHello()
+// 일반 함수에서 사용하는 것처럼 괄호를 사용해 함수 리터럴을 사용한다.
+
+val printMessage = { message: String -> println(message) }
+printMessage("hello")
+// 함수를 호출할 때 일반 함수와 마찬가지로 매개변수를 전달한다.
+// 가는 화살표 부분은 함수 몸체를 의미한다.
+----
+
+
+====
+
+[source, java]
+----
+val isEven: (Int) -> Boolean = { it % 2 == 0 }
+
+val isEven = { k: Int -> k % 2 == 0}
+----
+
+함수 할당은 여러 번 사용하는 자명하지 않은 함수나 시간이 많이 소요되는 함수를 설정해야 하는 경우에 유용하다.
+
+==== 클로저
+
+함수형 프로그래밍에서 클로저는 바깥 스코프에 정의된 변수와 매개변수에 접근할 수 있는 함수다.
+클로저는 이러한 변수를 '감싼다'라고 표현하기 때문에 클로저라는 이름을 갖게 됐다.
+
+다음 예제는 데이터베이스에서 이름을 가져온 다음 몇가지 검색 기준에 부합하는 이름만 필터링하는 예제이다.
+
+[source, java]
+----
+class Student(val firstName: String, val lastName: String)
+
+fun loadStudents(): List = ...
+// 데이터베이스에서 정보를 가져오는 내용~~~
+
+fun students(nameToMatch: String): List<Student> {
+  return loadStudents().filter {
+    it.lastName == nameToMatch
+  }
+}
+----
+
+필터 메소드로 전달된 함수 리터럴이 바깥 함수에 있는 매개변수를 사용한다는 것을 주목.
+
+클로저는 지역변수에도 접근할 수 있다.
+
+클로저는 클로저가 감싼 변수를 변경할 수도 있다.
+
+[source, java]
+----
+var containNegative = false
+
+va ints = listOf(1, 2, 3, 4, 5, 6)
+ints.forEach {
+  if(it < 0)
+    containNegative = true
+}
+----
+
+==== 익명 함수
+
+고차 함수를 사용하다 보면 특히 함수의 길이가 짧은 경우 함수 리터럴을 사용해 함수를 호출하곤 한다.
+
+[source, java]
+----
+listOf(1, 2, 3).filter { it > 1 }
+----
+
+위와 같이 리터럴을 사용할 때는 반환 값을 명시할 수 없다.
+그러나 코틀린 컴파일러가 반환 타입을 추론할 것이기 때문에 이는 문제가 되지 않는다.
+
+그러나 명시적으로 반환 타입을 명시하고 싶을 수도 있다.
+이러한 상황에서 익명 함수라 불리는 함수를 사용할 수 있다.
+
+[source, java]
+----
+fun(a: String, b: String): String = a + b
+
+val ints = listOf(1, 2, 3)
+val evens = ints.filter(fun(k: Int) = k % 2 == 0)
+// 매개변수 타입도 추론할 수 있다면 매개변수 타입 역시 생략할 수 있다.
+val evens = ints.filter(fun(k) = k % 2 == 0)
+----
+
+==== 함수 참조
+
+===== 최상위 함수 참조
+
+최상위 함수가 있고 이를 사용하고자 할 경우에는 어떨까?
+
+[source, java]
+----
+fun isEven(k: Int): Boolean = k % 2 == 0
+
+val ints = listOf(1, 2 ,3, 4, 5)
+ints.filter { isEven(it) }
+----
+
+또 다른 방법으로는 함수 참조라 불리는 기능을 사용하는 것이다.
+
+[source, java]
+----
+val ints = listOf(1, 2, 3, 4, 5)
+ints.filter(::isEven)
+----
+
+[IMPORTANT]
+====
+'::' 문법이 이름 앞에서 사용된다는 점을 유의하자.
+
+확장 함수나 멤버 함수에도 사용할 수 있다.
+접두사로 클래스명을 적어주면 된다.
+====
+
+===== 멤버 함수 참조와 확장 함수 참조
+
+함수 참조는 확장 함수와 멤버 함수에도 사용될 수 있으며, 이 경우에는 클래스 이름을 접두사로 붙인다.
+
+[source, java]
+----
+// 정슈형에 isOdd라는 확장 함수를 다음과 같으 정의한다.
+fun Int.isOdd(): Boolean = this % 1 == 0
+
+// 함수 리터럴 내부에서도 평소와 같이 이를 사용할 수 있다.
+val ints = listOf(1,2,3,4,5)
+ints.filter { it.isOdd }
+
+// 다음과 같이 사용해도 된다.
+val ints = listOf(1,2,3,4,5)
+ints.filter(Int::isOdd)
+----
+
+여러 매개 변수를 받는 함수의 경우를 보자.
+
+[source, java]
+----
+fun foo(a: Double, b: Double, f: (Double, Double) -> Double) = f(a, b)
+
+// foo 실행하는 코드
+foo(1.0, 2.0, { a, b -> Math.pow(a, b) })
+// foo 실행하는 또 다른 방법
+foo (1.0, 2.0, Math::pow)
+----
+
+===== 바운드 참조
+
+코틀린에서는 특정 인스턴스에 바인딩되는 함수 참조를 가질 수 있다.
+이는 :: 연산자 앞에 표현식을 사용할 수 있다는 뜻이다.
+
+다음의 두 예제를 비교해보자.
+
+[source, java]
+----
+// 언바운드 참조
+fun String.equalsIgnoreCase(other: String) = this.toLowerCase() == other.toLowerCase()
+
+listOf("bar","foo", "moo", "boo").filter {
+  (String::equalsIgnoreCase)("bar",it)
+}
+----
+
+위 예제는 대소문자와 관계없이 동등성을 비교하는 단순한 함수를 가지며, 이 함수에 함수 참조를 만드는 경우
+(String, String) -> Boolean이라는 시그니처를 갖는다.
+
+[source, java]
+----
+// 바운더 참조
+fun String.equalsIgnoreCase(other: String) = this.toLowerCase() == other.toLowerCase()
+
+listOf("bar", "foo", "moo", "boo").filter("bar"::equalsIgnoreCase)
+----
+
+두 번째 예제는 equalsIgnoreCase에 대해 똑같은 정의를 사용했으며,
+수신자인 bar에 바운드 참조를 사용할 수 있었다.
+위 경우는 결과적으로 (String) -> Boolean 시그니처를 갖는 함수를 갖게 된다.
+
+==== 함수 리터럴 수신자
+
+코틀린에서는 함수 매개변수가 호출될 때 수신자를 받도록 함수 매개변수를 정의할 수 있다.
+다음과 같은 문법을 사용해 이러한 동작을 수행하 수 있다.
+
+[source,java]
+----
+// foo 함수 몸체 내수에서 fn 함수를 호출할 경우 문자열 인스턴스에서 해당 함수를 호출하도록 요구된다.
+fun foo(fn: String.() -> Boolean): Unit {
+  "string".fn()
+}
+----
+
+이 기능은 익명함수에서도 동작한다.
+
+[source, java]
+----
+val substring = fun String.(substr: String): Boolean = this.contains(substr)
+"hello".substring("ello")
+----
