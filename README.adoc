@@ -78,6 +78,7 @@ link:http://bs-development.tistory.com/[블로그]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NLCM.adoc[N개의 최소공배수]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/JumpCase.adoc[멀리 뛰기]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NextBigNumber.adoc[다음 큰 숫자]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Expressions.adoc[숫자의 표현]
 
 == Javascript
 
