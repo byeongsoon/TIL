@@ -85,8 +85,6 @@ link:http://bs-development.tistory.com/[블로그]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Javascript/javascriptBasic/Basic_js.adoc[자바스크립트기본]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Javascript/flowControl/flowControl_js.adoc[조건문과 반복문]
 
-== Typescript
-
 == DesignPattern
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/DesignPattern/SingletonPattern.adoc[싱글톤 패턴]
@@ -95,5 +93,3 @@ link:http://bs-development.tistory.com/[블로그]
 == Basic
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/FrameworkVsLibray.adoc[프레임워크와 라이브러리 차이점]
-
-== Git
