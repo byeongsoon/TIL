@@ -236,15 +236,15 @@ fun fizzbuzz3(start: Int, end: Int): Unit {
 
 [source, java]
 ----
-fin fizzbuzz4(start: Int, end: Int): Unit {
+fun fizzbuzz4(start: Int, end: Int): Unit {
   for (k in start..end) {
     fun isFizz(): Boolean = k % 3 == 0
     fun isBuzz(): Boolean = k % 5 == 0
 
     when {
-      isFizz && isBuzz -> println("Fizz Buzz")
-      isFizz -> println("Fizz")
-      isBuzz -> println("Buzz")
+      isFizz() && isBuzz() -> println("Fizz Buzz")
+      isFizz() -> println("Fizz")
+      isBuzz() -> println("Buzz")
       else -> println(k)
     }
   }
