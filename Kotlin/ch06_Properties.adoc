@@ -1,0 +1,499 @@
+= 프로퍼티
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.05.14
+:Revision: 1.0
+
+==== 목차
+
+- 일반적인 프로퍼티
+- 가시성
+- 지연 초기화와 늦은 초기화
+- 델리게이트 프로퍼티
+- 메소드 대신 프로퍼티를 사용하는 경우
+
+byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+자바에서 코틀린 프로퍼티를 사용하는 방법을 알아보고 컴파일러가 하는 일을 이해하기 위해 생성된 바이트 코드를 살펴본다.
+
+
+==== 왜 프로퍼티를 사용하는가?
+
+프로퍼티는 코드에서 메소드를 호출하게 하는 편리한 문법이다.
+
+일반적으로 상태 정보는 필드로 이루어져 있다.
+
+다음은 두개의 필드를 정의하는 전형적인 클래스를 보여주고 있다.
+
+[source, java]
+----
+public class Student {
+  private String name;
+  private int age;
+}
+----
+
+자바에서는 이러한 클래스를 반복적으로 작성하게 된다.
+
+보통 각 필드에 대해 두개의 메소드를 제공하는데 게터(getter)와 세터(setter)이다.
+
+[source, java]
+----
+public class Student {
+  private String name;
+  private int age;
+
+  public Student(String name, int age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public int getAge() {
+    return age;
+  }
+  public void setAge(int age) {
+    this.age = age;
+  }
+}
+----
+
+코틀린에서는
+
+[source, Kotlin]
+----
+class Student(name: String, age: Int) {
+  public var Name = ""
+  set(value) {
+    field = value
+  }
+
+  public var Age = 20
+  set(value) {
+    field = value
+  }
+
+  init {
+    Name = name
+    Age = age
+  }
+}
+----
+
+init 블록은 반드시 프로퍼티를 정의하고 난 후에 정의해야 한다.
+
+프로퍼티를 정의하기 전에 init 블록을 작성하면 컴파일 에러가 발생한다.
+다음은 앞에서 설명한 클래스를 어떻게 사용할 수 있는지를 보여준다.
+
+[source, java]
+----
+val student = Student("Jang" 25)
+print("${student.Name} is ${student.Age} years old")
+student.Age += 1
+print("${student.Name} is ${student.Age} years old")
+----
+
+컴파일러는 get 메소드와 set 메소드뿐만 아니라 name과 age에 대한 백킹 필드도 생성한다.
+set블록에서 field 키워드를 사용하는 건 백킹 필드의 별칭이다.
+
+자바에서 코틀린 코드를 사용하는 경우에는 get~~, set~~를 호출하는 전형적인 패터으로 끝마치게 된다.
+
+[source, java]
+----
+Student student = new Student("jang", 25);
+System.out.println("Student " + student.getName() + " is " + student.getAge() + " years old.");
+student.setAge(student.getAge() + 1);
+----
+
+간단한 프로퍼티의 경우에는 컴파일러의 능력을 전부 사용할 수 있다.
+
+만약 Student 생성자 프로퍼티를 val로 선언할 경우 컴파일러가 모든 작업을 수행하게 할 수 있는데, 이는 세터는 생성하지 않고 게터만 생성하기 때문이다.
+
+==== 문법과 변형
+
+프로퍼티를 정의하기 위한 문법은 다음과 같다.
+
+[source, kotlin]
+----
+var/val <propertyName>: <PropertyType> [=<property_initalizer]
+  [<getter>]
+  [<setter>]
+
+ex)
+var testString: String = "This is test."
+set(value) {
+  field = value
+}
+----
+
+초기화와 세터 부분은 모두 선택사항이다.
+프로퍼티 타입은 컴파일러가 추론할 수 있기 때문에 이 역시 생략할 수 있다.
+그러나 코드의 명확성, 가독성을 위해 프로퍼티 타입을 추가하는 것을 권한다.
+
+val 키워드를 사용해 읽기 전용 프로퍼티를 정의하는 경우, 게터 메소드만 갖게 되고 세터 메소드는 가질 수 없게 된다.
+
+다음은 Rectangle 클래스의 프로퍼티에 대한 일반적인 구현체다.
+
+[source, kotlin]
+----
+interface Shape {
+  val Area: Double
+  get
+}
+
+class Rectangle(val width: Double, val height: Double): Shape {
+  ovrride val Area: Double
+  get() = width * height
+
+  val isSquare: Boolean = width == height
+}
+----
+
+사각형 클래스는 Shape 인터페이스를 구현 상속하고 있으므로 반드시 Area 프로퍼티를 정의해야 한다.
+
+==== 가시성
+
+private, protected, public 프로 퍼티를 가질 수 있다.
+세터는 게터와는 다르면서 좀 더 제한적인 가시성을 가질 수 있다.
+
+[source, java]
+----
+class WithPrivateSetter(property: Int) {
+  var SomeProperty: Int = 0
+  private set(value) {
+    field = value
+  }
+
+  init {
+    SomeProperty = property
+  }
+}
+
+val withPrivateSetter = WithPrivateSetter(10)
+println("withPrivateSetter: ${withPrivateSetter.SomeProperty}")
+----
+
+때로는 프로퍼티가 상속의 대상이 되는 경우가 있다.
+이러한 일이 발생할 경우 적어도 세터의 경우에는 일반적으로 protected 가시성이 적절하다.
+
+[source, java]
+----
+open class WithInheritance {
+  open var isAvailable: Boolean = true
+  get() = field
+  protected set(value) {
+    field = value
+  }
+}
+
+class WithInheritanceDerived(isAvailable: Boolean): WithInheritance() {
+  override var isAvailable: Boolean = isAvailable
+    get() {
+      return super.isAvailable
+    }
+    set(value) {
+      println("WithInhertianceDerived.isAvailable")
+      field = value
+    }
+
+  fun doSomething() {
+    println("start")
+    isAvailable = false
+    println("end")
+  }
+}
+
+fun main(args: Array<String>) {
+  val withInheritance = WithInheritanceDerived(true)
+  withInheritance.doSomething()
+  println("withInheritance:${withInheritance.isAvailable}")
+}
+----
+
+----
+실행 결과
+start
+WithInhertianceDerived.isAvailable
+end
+withInheritance:
+----
+
+isAvailable 프로퍼티를 오버라이딩에 대비해 open으로 표시했지만 세터는 protected로 만들어졌다.
+
+* 세터를 protected로 설정해 놓으면 doSomething에서 값을 바꾸려해도 바뀌지 않는다.
+
+==== 늦은 초기화
+
+널을 갖지 않는 프로퍼티는 모두 생성자 내부에서 초기화돼야 한다.
+만약 프로퍼티 값을 의존성 주입을 통해 주입하면서 매번 프로퍼티에 접근할 때마다 널 검사를 하고 싶지 않다면
+타입에서 노출한 메소드 중 하나에서 프로퍼티 값을 설정할지도 모른다.
+
+코틀린은 지연 초기화를 지원한다.
+
+lateinit 키워드를 사용하는 것이 전부다.
+
+[source, kotlin]
+----
+class Container {
+  lateinit var delayedInitProperty: DelayedInstance
+
+  fun initProperty(instance: DelayedInstance): Unit {
+    this.delayedInitProperty = instance
+  }
+}
+
+class DelayedInstance(val number: Int)
+....
+
+fun main(args: Array<String) {
+  val container = Container()
+  container.initProperty(DelayedInstance(10))
+  println("with delayed initialization:Number=${container.delayedInitProperty.number}")
+}
+----
+
+[TIP]
+====
+var 는 lateinit을 사용할 수 있고, 사용하게 된다면 초기화를 해주지 않아도 된다.
+val은 lateinit을 사용할 수 없다.
+
+lateinit을 사용하지 않는다면 문법적으로 오류가 일어난다.
+(init이나 생성자에서 초기화를 해준다면 상관없다.)
+====
+
+지연 프로퍼티를 사용하는 경우에는 몇 가지 제약이 존재한다.
+
+1. 프로퍼티 타입은 원시 타입이 될 수 없다.
+2. 프로퍼티는 커스텀 게터나 세터 코드를 사용할 수 없다.
+3. 프로퍼티를 초기화하기 전에 접근하면 Kotlin UnunutalizedPropertyAccessException이 발생할 것이다.
+
+==== 델리게이트 프로퍼티
+
+코틀린은 코드 재사용을 촉진하고 개발자의 코딩 업무를 좀 더 쉽게 만들어주기 위해 프로퍼티의 개념을 강화했다.
+
+이상적으로는 다음과 같이 바로 사용할 수 있는 기능을 지녀야 한다.
+
+1. 프로퍼티 값은 처음 값에 접근했을 때 연산되도록 지연돼야 한다.
+2. 프로퍼티 값 중 하나가 변경되면 수신자에게 이를 알려야 한다.
+3. 필드 값을 저장하기 위해서는 구체화한 필드를 사용하기보다 맵을 사용해야 한다.
+
+코틀린의 델리게이트 프로퍼티는 위 내용을 모두 지원한다.
+
+문법은 val/var <property name>: <Type> *by* <expression>이다.
+by 뒤에 오는 표현식이 실제 델리게이트다. by는 위임하는 것이다.
+
+델리게이트는 인터페이스를 구현할 필요가 없다.
+이를 사용하면 상속을 피하고 합성에만 의존할 수 있다.
+
+센서 장치로부터 자료를 수집하는 예제이다.
+각각 생산된 측정 값은 이벤트가 언제 생성됐는지에 대한 timestamp를 갖고 있을 것이다.
+
+[source, Kotlin]
+----
+class TimestampValueDelegate {
+  private var timestamp = 0L
+  operator fun getValue(ref: Any?, property: KProperty<*>): Long {
+    return timestamp
+  }
+
+  operator fun setValue(ref: Any?, property: KProperty<*>, value: Long) {
+    timestamp = value
+  }
+}
+
+class Measure {
+  var writeTimestamp: Long by TimestampValueDelegate()
+}
+
+fun main(args: Array<String>) {
+  val measure = Measure()
+  measure.writeTimestamp = System.currentTimeMillis()
+  println("Current measure taken at: ${measure.writeTimestamp}")
+}
+----
+
+[TIP]
+====
+operator는 클래스를 숫자들의 연산처럼 +, -, %, * 등 다양하게 사용할 수 있다.
+====
+
+위의 코드가 낯설게 느껴질지도 모른다.
+하지만 TimestampValueDelegate의 메소드에서 각 메소드에 첫 번째 매개변수는 ref 접근하고 있는 프로퍼티가 있는 인스턴스다.
+두 번째 매개변수는 val이나 var 선언으로 이름 지어진 프로퍼티를 나타낸다.
+
+::연산자를 사용해 프로퍼티의 정보를 얻을 수 있으며, 앞의 예제에서 할 일은 Measure::writeTimestamp를 사용하는 것이 전부다.
+
+프로퍼티에 대해서 읽기와 쓰기가 가능하다면 위에서처럼 get 메소드와 set 메소드 모두를 제공해야한다.
+만약 val로 선언된 읽기 전용인 프로퍼티라면 get 메소드만 제공하면 된다.
+이러한 함수 모두 operator 키워드를 접두사로 가져야만 한다.
+
+필드는 할상 초기화되거나 사용하지 않는 경우가 발생할 수 있다.
+이러한 이유로 메모리 공간을 절약하기 위해 각 타입에 대한 백킹 필드를 갖지 않도록 성정을 끄는 편이 더 나을지도 모른다.
+
+코틀린에서 맵을 기반으로하는 프로퍼티가 만들어지기 때문에 다음과 같은 코드를 작성할 수 있다.
+
+.읽기 전용 프로퍼티
+[source, java]
+----
+class Player(val map: Map<String, Any?>) {
+  val name: String by map
+  val age: Int by map
+  val height: Double by map
+}
+
+val player = Player(mapOf("name" to "Byeongsoon", "age" to 25, "height" to 1.85))
+println("Player ${player.name} is ${player.age} ages old and is ${player.height}cm tall")
+----
+
+.읽기와 쓰기 프로퍼티
+[source, java]
+----
+class Player(val map: MutableMap<String, Any?>) {
+  var name: String by map
+  var age: Int by map
+  var height: Double by map
+}
+----
+
+코틀린 라이브러리는 델리게이트 프로퍼티에 필요한 메소드 시그니처와 함께 우리를 도와주는 인터페이스를 포함하고 있다.
+만약 읽기 전용 프로퍼티를 다룰 경우 우리가 해야 하는 일은 ReadOnlyProperty 인터페이스로부터 파생되게 하는 것뿐이다.
+읽기와 쓰기 프로퍼티에 대한 델리게이트를 지원하는 인터페이스도 이와 유사하며,
+이를 ReadWriteProperty 인터페이스라 부른다.
+
+이러한 인터페이스를 꼭 사용해야 하는 건 아니며 프레임워크에 들어 있는 이러한 존재는 무엇보다 우리가 올바른 메소드 시그니처를 얻을 수 있게 도와준다.
+
+==== 지연 초기화
+
+가끔 객체를 처음 사용하기 전까지 인스턴스 생성을 지연시키고 싶은 경우가 있다.
+이러한 기술을 지연 초기화 또는 지연 인스턴스화라 부른다.
+
+지연 초기화를 사용하는 주요한 목적은 성능을 향상하고 메모리를 차지하는 공간을 줄이는데 있다.
+
+.건강 보험업자를 위한 소프트웨어
+====
+건강 보험업자를 위한 소프트웨어를 개발하고 있다고 가정해보자.
+고객을 위해 클레임 리스트를 만들어야 할 텐데, 이 리스트를 얻기 위해서는 데이터베이스에서 정보를 읽어와야 한다.
+이는 비용이 많이 드는 과정이며 만약 사용자가 사실은 이러한 정보에 관심이 없다면 이는 CPU 사이클과 메모리를 낭비하는 일이 될것이다.
+사용자가 클레임 리스트를 보기로 했을 때만 가서 클레임 컬렉션을 초기화해야 할 것이다.
+
+지연 구현이 사소해 보일지도 모르지만 동시성을 적용하면 프로퍼티를 초기화하기 위한 코드는 일제히 각기 다른 스레드에서 동작하게 되며,
+복잡성이 좀 다르다는 사실을 확인할 수 있을 것이다.
+
+동시성은 직접 구현한 것보다는 제공되는 구현체를 사용하기를 추천한다.
+코틀린은 원하는 모든 것에 알맞도록 다양한 구현체를 제공한다.
+====
+
+지연 초기화된 델리게이트 프로퍼티를 사용하기 위해 해야 하는 일은 *by lazy* 를 작성하고 인스턴스를 생성하는 로직을 제공하는 것이다.
+
+나머지는 다음과 같이 처리된다.
+
+[source, java]
+----
+class WithLazyProperty {
+  val foo: Int by lazy {
+    println("Initializing foo")
+    2
+  }
+}
+....
+
+fun main(args: Array<String>) {
+  val withLazyProperty = WithLazyProperty()
+  val total = withLazyProperty.foo + withLazyProperty.foo
+  println("Lazy property total:$total")
+}
+----
+
+이 코드를 실행한다면 콘솔 창에 4가 출력되지만, 프로퍼티를 두 번 호출하더라도 Initializing foo 문자열은 오직 한 번만 나타난다는 사실을 확인할 수 있을 것이다.
+lazy 함수는 인스턴스를 생성하는 책임을 갖는 코드를 람다로 가지며 Lazy<T>의 인스턴스를 반환한다.
+Lazy 인터페이스의 정의는 다음과 같다.
+
+[source, kotlin]
+----
+public interface Lazy<out T> {
+  public val value: T
+  public fun isInitialized(): Boolean
+}
+----
+
+프레임워크는 우리에게 세 가지의 lazy 함수 정의를 제공하는데 이들은 가능한 모든 사례를 다룰 수 있을 것이다.
+
+위의 예제에서는 다음과 같은 코드를 사용했다.
+
+[source, java]
+----
+fun <T> lazy(initializer: () -> T): Lazy<T> = SynchronizedLazyImpl(initializer)
+----
+
+반환된 클래스명을 보고 이 클래스가 무엇인지를 유추할 수 있을 것이다.
+구현체를 살펴보지 않고도 초기화 블록이 동기화된 코드 블록에서 동작하리라는 사실을 알 수 있다.
+
+==== lateinit와 lazy
+
+lateinit var와 by lazy {...}는 매우 비슷해 보인다.
+그러나 둘 사이에는 주요한 차이점이 존재한다.
+
+1. lazy {...} 델리게이트는 val 프로퍼티에서만 사용할 수 있다. lateinit은 var 프로페터에서만 사용할 수 있다.
+2. lateinit var 프로퍼티는 final 필드로 컴파일될 수 없으므로 불변성을 얻을 수 없다.
+3. lateinit var 프로퍼티는 값을 저장하기 위한 백킹 필드를 갖지만, lazy {...}는 한번 생성된 값을 위한 컴테이너로 행동하고
+프로퍼티를 위한 게터를 제공하는 델리게이터 객체를 생성한다.
+만약 클래스에서 나타내기 위한 백킹 필드가 필요하다면 lateinit를 사용해야 할 것이다.
+4. lateinit 프로퍼티는 널 값이 가능한 프로퍼티나 자바의 원시 타입에서는 사용할 수 없다.
+이는 초기화되지 않은 값을 위한 널 사용에서 도입된 제약이다.
+5. 프로퍼티가 초기화될 수 있는 곳에 관해서는 lateinit var 프로퍼티가 좀 더 유연하다.
+lazy {...}를 위해서는 프로퍼티를 위한 유일한 초기화를 정의하며 이는 오직 오버라이딩을 통해서만 변경될 수 있다.
+예를 들어 의존성 주입을 사용할 경우 파생된 클래스의 다른 인스턴스를 제공할 수 있는 lateinit var프로퍼티와는 다르게 lazy{...} 인스턴스화는 미리 알려져 있다.
+
+==== 널 값을 갖지 않는 프로퍼티 델리게이트
+
+코틀린은 널 값을 갖지 않는 델리게이트 프로퍼티에 대한 지원을 제공한다.
+다음의 예재처럼 Delegate.notNull을 사용하면 된다.
+
+[source, Kotlin]
+----
+class NonNullProp {
+  var value: String by Delegate.notNull<String>()
+}
+
+val nonNull = NonNullProp()
+nonNull.value = "Kotlin rocks"
+println("Non null value is: ${nonNull.value}")
+
+//null을 넣으려고하면 컴파일되지 않는다.
+nonNull.value = null
+----
+
+프로퍼티 값이 초기화 되기 전에 이에 접근하려고 하면 IllegalStateException이 발생할 것이다.
+해당 프로퍼티에 널 값을 대입하려고 하면 컴파일 에러가 발생할 것이다.
+
+==== 프로퍼티 혹은 메소드?
+
+프로퍼티는 메소드와 매우 비슷하다.
+내부적으로는 결국 게터와 세터 메소드로 끝나게 된다.
+그러나 메소드와 프로퍼티는 사용 패턴이 서로 다르다.
+
+프로퍼티를 강화된 필드로 간주해야 한다. 프로퍼티는 필드처럼 보이지만 프로퍼티를 위한 문법은 필드를 처리하는 것처럼 보인다.
+프로퍼티는 메소드의 유연성을재공한다.
+
+프로퍼티는 데이터를 나타내지만 클래스 메소드는 동작을 나타낸다.
+프로퍼티는 동작이나 행위처럼 사용되면 안되고 필드처럼 사용돼야 한다.
+타입을 설계하거나 하나 이상의 프로퍼티를 정의하고자 할 경우에는 적합성 여부를 결정하기 위해 다음과 같은 가이드 라인을 따라야 한다.
+
+1. 게터 코드 몸체에서는 복잡한 코드를 삼가해라. 호출자는 신속한 반환을 기대한다.
+프로퍼티의 게터 코드에서는 절대로 데이터베이스에 접속하지 말고 그 외 나머지를 호출해야 한다.
+2. 프로퍼티 값을 얻는 것이 부작용의 원인이 되지는 않는다. 그러므로 게터 코드에서 예외를 던지는 행위는 삼가야 한다.
+3. 만약 호출자가 값을 변경하는 것을 원치 않는다면, 즉 캡슐화를 보존하고자 한다면 세터 메소드를 private나 protected로 표시해야 한다.
+만약 프로퍼티 타입이 참조 타입이라면 호출자는 여전히 노출된 public 프로퍼티나 메소드를 통해 프로퍼티의 상태를 변경할 수 있음을 기억하자.
+4. 프로퍼티는 어떠한 명령에서도 설정될 수 있어야 한다. 심지어 객체가 일시적으로 유효하지 않은 상태에 놓이더라도 말이다.
+5. 세터 메소드가 예외를 던져야만 하는 경우에는 프로퍼티의 이전 값을 유지하게 한다.
