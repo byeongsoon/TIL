@@ -1,0 +1,421 @@
+= 제네릭
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.05.23
+:Revision: 1.0
+
+==== 목차
+
+- 타입 매개변수화
+- 타입 경계와 재귀 타입 경계
+- 불변성, 공변성 그리고 반공변성 규칙
+- 대수적 데이터 타입
+
+|===
+|===
+
+재네릭 프로그래밍이란 타입에 대한 함수를 작성할 수 있는 기술을 말한다.
+함수를 작성할 때는 타입을 명시하지 않았다가 나중에 여러 타입에서 해당 함수를 사용한다.
+
+==== 매개변수화된 함수
+
+몇몇 요소를 줬을 때, 무작위로 한 요소를 반환하는 random() 이라는 함수가 있다고 가정해보자.
+사용자는 이 함수를 작성할 때 요소의 타입이 무엇인지 알 필요가 없다.
+
+반환하기 위해 요소 중 하나를 선택할 수 있다. 이러한 방식으로 타입을 사용하는 것을 타입을 추상화한다고 하며,
+타입 매개변수라는 용어를 사용한다.
+
+random() 같은 제네릭 함수를 작성하고자 할 경우 다음과 같이 시작한다.
+
+[source, java]
+----
+fun random(one: Any, two: Any, three: Any): Any
+----
+
+위 함수는 인자로 전달하는 타입이 어떠한 것이든 상관없이 반환된 타입은 Any로 추론될 것이다.
+그럼 사용자는 다시 원래 타입으로 강제 형변환을 해야하는데 이런 처리는 좋지 않고 에러가 발생하기도 쉽다.
+
+타입을 수정하고 컴파일러가 올바르게 반환 타입을 추론할 수 있게 해주는 타입 매개변수를 사용하면 좀 더 나은 코드를 작성할 수 있다.
+
+타입 매개변수를 사용해 함수를 정의하기 위해서는 함수 이름 앞에 꺽쇠괄호(<..>) 문법과 타입 매개변수 이름을 사용한다.
+
+[source, java]
+----
+fun <T> random(one: T, two: T, three: T): T
+----
+
+위 정의에서 3개의 매개변수와 반환 타입 모두에서 사용되는 단일 타입 매개변수 T를 정의했다.
+사용자는 컴파일러에게 어떠한 타입이든 T가 해당 타입이 되도록 수정하라고 알리고 있다.
+
+이는 컴파일러가 반환 타입을 올바르게 추론할 수 있게 해준다.
+
+이 함수를 호출하는 코드는 다음과 같다.
+(인스턴스 간의 관계를 준수하면서 함수에 인스턴스들을 전달)
+
+[source, java]
+----
+val randomGreeting: String = random("hello", "willkommen", "bonjour")
+----
+
+randomGreeting 변수는 String 으로 선언됐음을 확인할 수 있는데 이는 반환 값이 문자열인지 보여주기 위해서다.
+실무에서 반환 타입은 일반적으로 추론된다.
+
+[TIP]
+====
+타입 간의 관계를 준수한다는건 무엇인가?
+- 단순히 특정 타입 매개변수가 사용될 때마다 같은 타입을 참조해야 한다는 뜻이다.
+====
+
+[source, java]
+----
+val any: Any = random("a", 1, false)
+----
+
+위 코드도 문제없이 컴파일된다.
+컴파일러는 T를 Any로 추론할 수 있기 때문이며 여전히 제약 조건도 만족시키고 있다.
+
+그러나 이는 다른 예제에서는 동작하지 않을 수도 있다.
+한 예로, T의 리스트와 리스트에 추가하기 위한 또 다른 T 요소를 받는 경우를 들 수 있다.
+리스트와 요소는 상호 호환이 되어야만 한다.
+구체적인 예제는 '범위를 갖는 다형성' 절에서 살펴본다.
+
+함수 타입 매개변수를 1개 이상 가질 수 있다.
+2개의 각기 다른 타입을 받고 이를 캐시에 넣는 함수를 작성할 수 있다.
+첫 번째 요소는 키로 사용되고, 두 번째 요소는 값으로 사용된다.
+
+[source, java]
+----
+fun <K, V> put(key: K, value: V): Unit
+----
+
+컬렉션 이전에 제네릭을 사용해온 개발자에게는 이러한 특징이 익술할 것이다.
+
+==== 매개변수화된 타입
+
+매개변수화는 함수만 할 수 있는 것이 아니며, 타입 자신도 매개변수화될 수 있다.
+이런 타입은 컬렉션과 밀접한 연관이 있고 하나 이상의 타입 매개변수를 갖고 있다는 사실 때문에 종종 컨테이너 타입이라 불린다.
+
+매개변수화된 다입을 정의하기 위해서는 타입 이름의 오른쪽에 꺽쇠괄호를 위치시킨다.
+예를 들어, 요소 T에 대한 Sequence를 선언하는 경우 다음과 같이 작성할 것이다.
+
+[source, Kotlin]
+----
+class Sequence<T>
+
+// 하나 이상의 타입 매개변수를 선언할 수 있다.
+class Dictionary<K, V>
+----
+
+타입 매개변수로 타입을 선언하면 이를 인스턴스화할 때는 반드시 매개변수를 구체적이거나 적절한 타입으로 교체함으로써 타입을 '기재'해줘야 한다.
+
+[source, java]
+----
+val seq = Sequence<Boolean>()
+
+// Dictionary의 경우에는 다음과 같이 작성할 수 있다.
+val dict = Dictionary<String, String>()
+----
+
+==== 범위를 갖는 다형성
+
+모든 타입에 대해 제네릭한 함수는 유용하긴 하지만 다소 제한된다.
+사용자는 종종 공통 특성을 공유하는 몇몇 타입에 대해 제네릭한 함수를 작성하고 싶어한다.
+
+.모든 값에 대해 두값 중 최솟값을 반환하는 함수
+====
+비교가 가능한 두 값에 대한 타입을 나타내는 타입 매개변수를 갖는 함수를 작성하는 것으로 시작한다.
+그러나 이러한 값들은 Any를 포함해 어떠한 값에 대한 인스턴스도 될 수 있는데 이를 어떻게 비교할 것인가?
+Any는 비교할 수가 없기 때문에 두 값을 비교할 방법이 없다.
+
+해결 방법은 우리가 호출해야 하는 함수를 지원하는 타입으로 제한하는 것이다.
+이런 방법을 사용하면 컴파일러는 인자의 런타임 타입이 무엇이든 간에 관계없이 함수를 사용 가능하다는 사실을 인지한다.
+
+컴파일러는 우리에게 이러한 함수를 호출할 수 있게 해준다.
+이러한 기능을 *범위를 갖는 다형성* 이라고 부른다.
+====
+
+===== 상한
+
+코틀린은 상한으로 알려진 경계를 갖는 타입을 지원한다.
+상한은 해당 범위의 서브클래스로 타입을 제한한다.
+상한을 사용하기 위해서는 타입 매개변수 옆에 이를 선언해주기만 하면 된다.
+
+[TIP]
+====
+타입 매개변수는 T로 나타내는 부분이다.
+====
+
+[source, java]
+----
+fun <T: Comparable<T>> min(first: T, second: T): T {
+  val k = first.compareTo(second)
+  return if (k <= 0) first else second
+}
+----
+
+Comparable은 첫 번째 요소가 더 작으면 0보다 작은 수를,
+두 번째 요소가 더 작으면 0보다 큰 수를,
+그리고 두 요소가 같으면 0을 반환하는 compareTo 메소드를 정의하고 있는 표준 라이브러리 타입이다.
+
+위의 예제에서는 Comparable<T> 상한과 함께 타입 매개변수를 정의했기 때문에 이 함수는 언제든 호출될 수 있다.
+
+[source, java]
+----
+val a: Int = min(4, 5) // a는 4, k는 음수
+val b: String = min("e", "c") // b는 c, k는 양수
+----
+
+Int, String 모두 Comparable을 확장하기 때문에 정수와 문자열을 호출하고 올바른 타입을 다시 받을 수 있다.
+그러나 Pair 같은 타입을 시도할 경우에는 동작하지 않고 컴파일 에러가 발생한다.
+
+다음 코드는 컴파일에 실패할 것이다.
+
+[source, java]
+----
+val a = minSerializable(Year(1969), Year(2001))
+----
+
+==== 타입 변형
+
+타입 변형은 매개변수화된 타입의 서브타입을 허용할지에 대한 기술을 나타낸다.
+
+만약 Fruit의 자식클래스인 Apple이라는 클래스를 고려할 경우, Crate<Apple>은 Crate<Fruit>의 서브 클래스가 될 수 있겠는가?
+
+정답은 아니다.
+
+Crate<Apple>은 어떠한 타입 변형이 사용되느냐에 따라 Crate<Fruit>의 서브타입도 슈퍼타입도 될 수 있으며 또는 둘 다 아닐 수도 있다.
+
+===== 불변성
+
+기본적으로 왜 Crate<Apple>이 Crate<Fruit>의 서브타입이 될 수 없는지를 보자.
+
+[source, kotlin]
+----
+open class Fruit
+class Apple: Fruit()
+class Orange: Fruit()
+
+class Crate<T>(val elements: MutableList<T>) {
+  fun add(t: T) = elements.add(t)
+  fun last(): T = elements.last()
+}
+----
+
+Crate는 그저 MutableList를 감싼 것에 지나지 않는다.
+
+.불변성 설명을 위한 코드(컴파일 안됨)
+[source, java]
+----
+fun foo(crate: Crate<Fruit>): Unit {
+  crate.add(Apple()) // 해당 코드는 컴파일되지 않는다.
+}
+
+fun main(args: Array<String>) {
+  val oranges = Crate<mutableListOf(Orange(), Orange())>
+  foo(oranges) // 문법 오류
+  // foo 함수의 매개변수를 Crate<Orange>로 바꾸라는 문구가 나온다.
+  val orange: Orange = oranges.last()
+}
+----
+
+위의 코드는 표면상으로는 그럴듯해 보인다.
+사과를 add해 놓고 last를 뽑기 때문에 마지막 요소가 오렌지가 아니기 때문에 런타임에서 ClassCastException 에러가 발생한다.
+
+이러한 문제를 해결하는 가장 단순한 해결책으로 코틀린에서 채택한 방식은
+타입 매개변수를 기본적으로 불변성으로 만드는 것이다.
+타입 매개변수가 불변성이면 타입 간에 서브타입 관계가 형성되지 않는다.
+
+===== 공변성
+
+불변성에는 몇가지 문제점이 있다.
+상자 예제로 되돌아가서 verify(검증)라 불릴 또 다른 함수에 대해 생각해보자.
+이 함수는 과일 상자가 있으면 각 과임이 먹기에 안전한지를 검사할 것이다.
+
+Fruit 클래스에 함수를 추가해 보자.
+
+[source, kotlin]
+----
+open class Fruit {
+  fun isSafeToEat(): Boolean = ...
+}
+// 검증을 구현하고자 할 경우에는 과일 상자 측면에서 이를 구현해야 한다.
+// 우리는 먹기에 안전하기만 하면 상자 안에 어떤 과일이 있는지 신경 쓰지 않아도 된다.
+
+fun isSafe(crate: Crate<Fruit>): Boolean = crate.elements.all {
+  it.isSafeToEat()
+}
+
+val oranges = Crate(mutableListOf(Orange(), Orange()))
+isSafe(oranges)
+----
+
+위의 코드가 컴파일 되지 않는다는 것은 알고있다.
+그러나 로직으로는 컴파일이 안 될 이유가 없다.
+단순히 각각 인스턴스에서 isSafeToEat() 함수를 호출하고자 한다.
+해당 함수는 Fruit 클래스에 정의되어 있으므로 모든 인스턴스가 해당 함수를 갖고 있다.
+
+이에 대한 해답은 오렌지 상자가 과일 상자의 서브타입으로 인식되게 하는 것이다.
+이를 가능케 하는 방법을 공변성이라 부른다.
+
+클래스를 정의할때 클래스가 구체적인 타입 매개변수와 서브타입 관계를 유지한다는 뜻으로 공변성을 설정한다.
+이를 위해 타입 매개변수의 접두사로 *out* 키워드를 추가한다.
+
+[source, kotlin]
+----
+class CovariantCrate<out T>(val elements: List<T>) {
+  fun last(): T = elements.last()
+}
+val oranges = CovariantCrate(listOf(Orange(), Orange()))
+isSafe(oranges)
+
+/*
+fun isSafe(crate: CovariantCrate<Fruit>): Boolean = crate.elements.all{
+  it.isSafeToEat()
+}
+*/
+----
+
+===== 공변성 반환하기
+
+함수의 반환 타입 역시 공변성이 될 수 있다.
+이는 기본 값이며, 서브타입이 좀 더 구체적인 타입을 반환하고자 할 경우 그렇게 할 수 있다.
+
+단순히 정의된 함수를 오버라이딩하면 된다.
+
+[source, kotlin]
+----
+open class Animal
+class Sheep: Animal()
+class Frog: Animal()
+
+abstract class Farm {
+  abstract fun get(): Animal
+}
+
+abstract class SheepFarm: Farm() {
+  abstract override fun get(): Shape
+}
+----
+
+===== 반공변성
+
+반공변성은 공변성의 반대다.
+
+타입 매개변수를 반공변성으로 설정하면 타입 자체에서 타입 매개변수 간의 관계가 역전된다.
+이 말은 String은 Any의 서브타입이지만 Box가 반공변성으로 설정된 타입 매개변수를 갖고 있다면 Box<String>은 Box<Any>의 슈퍼타입이 된다는 뜻이다.
+
+타입 매개변수를 반공변성으로 설정하려면 in 키워드와 함께 타입 매개변수를 설정해야 한다.
+
+왜 굳이 관계를 뒤짚으려고 하는가?
+예제를 통해 살펴본다.
+
+T라는 타입의 이벤트를 생산하는 EventStream이라는 클래스가 있다고 생각해보자.
+EventStream 클래스는 이벤트가 생성될 때마다 호출되는 리스너를 하나 받는다.
+
+[source, java]
+----
+interface Listener<T> {
+  fun onNext(t: T): Unit
+}
+
+class EventStream<T>(val listener: Listener<T>) {
+  fun start(): Unit = println("start")
+  fun stop(): Unit = println("stop")
+}
+
+// 문자열에 대한 EventStream을 만들고자 할 경우 다음과 같이 stringListener를 전달할 수 있다.
+
+val stringListener = object: Listener<String> {
+  override fun onNext(t: String) = println(t)
+}
+val stringStream = EventStream<String>(stringListener)
+stringStream.start()
+
+// 여기 까지는 괜찮아 보인다. 또 다른 스트림을 만들어보자.
+val dateListener = object: Listener<Date> {
+  override fun onNext(t: Date) = println(t)
+}
+val dateStream = EventStream<Date>(dateListener)
+dateStream.start()
+
+// 단지 타입 매개변수만 달리하여 정확하게 같은 리스너를 두 번 작성했다.
+// 단일 loggingListener를 작성하고 모든 스트림에 대해 사용할 수는 없을까
+val loggingListener = object: Listener<Any> {
+  override fun onNext(t: Any) = println(t)
+}// 접근을 시도하면 컴파일러는 EventStream의 인자로 이런 리스너를 사용하는 것을 거부할 것이다.
+----
+
+매개변수를 반공변성으로 설정함으로써 주어진 타입 M(Listener)에 대해 U(String)가 T(Any)의 서브타입인 경우
+M<T>는 M<U>의 서브타입이 된다.
+
+위의 경우 String이 Any의 서브타입이므로 Listener<Any>가 Listener<String>의 서브 타입이 됨을 의미한다.
+
+Listener와 EventStream 클래스가 반공변성이 될 수 있게 수정해보자.
+
+[source, java]
+----
+interface Listener<in T> {
+  fun onNext(t: T): Unit
+}
+
+class EventStream<in T>(val listener: Listener<T>) {
+  fun start(): Unit = println("start")
+  fun stop(): Unit = println("stop")
+}
+----
+
+==== Nothing 타입
+
+어떤 타입이 다른 모든 타입의 서브타입이라는 것은 Any가 모든 타입의 슈퍼클래스라는 것과 유사한 맥락으로 볼 수 있다.
+Nothing 타입이 유용한지를 살펴본다.
+
+첫 번째 사례는 절대 정상적으로 완료되지 않는 함수를 나타내기 위해서다.
+값을 반환하는 것을 기대하지 않는다는 뜻이다.
+이러한 함수는 의도적으로 무한 루프를 수행하며, 프로새스나 스레드가 죽었을 때만 종료되거나 예외가 발생하는 경우에만 반환된다.
+
+예를 들어, 코틀린 표준 라이브러리에 정의된 error 함수의 구현은 다음과 같다.
+
+[source, java]
+----
+inline fun error(message: Any): Nothing = throw
+IllegalStateException(message.toString())
+----
+
+그러나 주된 사용은 변형 타입의 타입 매개변수에서다.
+공변 타입을 갖고 있고 모든 슈퍼타입과 호환이 되는 인스턴스를 만들고자 할 경우, 타입 매개변수로 Nothing을 사용할 수 있다.
+
+[source, java]
+----
+class Box<out T>
+
+// 다음 인스턴스는 위오 호환이 될 것이다.
+Box<Nothing>()
+----
+
+Box가 Nothing을 갖는 건 쓸모 없어 보이지만 빈 Box로서의 역할을 완벽하게 제공한다.
+빈 상자는 아무런 요소도 갖고 있지 않을 것이기 때문에 상자에 있는 함수가 Nothing 타입을 반환하더라도 아무런 문제가 되지 않는다.
+만약 빈 상자가 변경 불가능한 상태라면, 우리는 싱글 인스턴스만 필요로 할 것이다.
+
+타입으로서의 Nothing은 사용자가 가진 타입이 해당 타입의 인스턴스가 비어 있거나 연산을 갖고 있지 않기를 바랄 경우, 이러한 트릭을 위해 종종 사용된다.
+메시지 타입이 매개변수화되어 있는 Marshaller가 있다고 생각해보자.
+
+[source, java]
+----
+interface Marshaller<out T> {
+  fun marshall(json: String): T?
+}
+----
+
+다음과 같은 구조를 사용하면 연산을 갖지 않는 싱글 인스턴스를 손쉽게 만들 수 있으며 Marshaller를 요구하는 어떤 곳에든 사용할 수 있다.
+
+[source, java]
+----
+object NoopMarshaller: Marshaller<Nothing> {
+  override fun marshall(json: String) = null
+}
+----
+
+마지막으로 Nothing 인스턴스가 존재하지 않는다는 사실에 주목할 필요가 있다.
+Nothing은 타입으로 정의되어 있지만 인스턴스화할 수는 없다.
