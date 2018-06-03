@@ -5,6 +5,7 @@
 :Email: byeongsoon@wisoft.io
 :Date: 2018.06.03
 :Revision: 1.0
+:imagesdir: ./image
 
 ==== 목차
 
