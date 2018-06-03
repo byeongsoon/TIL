@@ -1,0 +1,612 @@
+= 컬렉션
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.06.03
+:Revision: 1.0
+
+==== 목차
+
+- 클래스 계층 구조
+- 배열
+- 리스트
+- 맵
+- 셋
+- 읽기 전용 뷰
+- 인덱스 접근
+
+대부분의 개발자는 리스트나 맵, 셋 같은 컬렉션 아이템을 처리하는 것으로 끝이나는 수 많은 코드를 작성한다.
+컬렉션에 대한 코틀린 표준 라이브러리에 익숙해지고 이를 이해하는 일은 코틀린 개발자를 열망하는 사람들에게는 필수적이다.
+
+10장에서는 컬렉션을 위한 코틀린 표준 라이브러리를 다루며 매일 하는 코딩을 더욱 쉽게 해주기 위해 자바 컬렉션 라이브러리를 어떻게 확장했는지도 배워볼 것이다.
+
+코틀린은 두 가지 컬렉션 종류를 나타내는데, 변경 가능한 컬렉션과 변경 불가능한 컬렉션이다.
+
+|===
+|===
+
+
+==== 클래스 계층 구조
+
+코틀린 은 변경 가능한 컬렉션과 변경 불가능한 컬렌션을 구분 짓는다.
+변경 가능한 컬렉션은 요소를 추가, 삭제, 교체함으로써 그 자리에서 갱신될 수 있으며, 이는 컬렉션의 상태에 반영될 것이다.
+변경 불가능한 컬렉션은 연산자 함수를 통해 추가, 삭제 교체 같은 연산을 제공하는 반면, 처음 컬렉션은 그대로 유지하면서 새로운 컬렉션을 생산할 것이다.
+
+다음 그림에서 코틀린 컬렉션 클래스 다이어그램을 확인할 수 있다.
+모든 변경 가능한 타입은 Mutable을 접두사로 갖고 있으므로 쉽게 확인할 수 있다.
+뒤 따르는 타입은 모두 매개변수화되어 있다.
+
+image::ch10_1.png[클래스다이어그램,700]
+
+다이어그램에서 설명하지 않는 내용 중 한 가지 기억해야 할 사항은 읽기 전용 인터페이스는 모두 공변성 조건이라는 점이다.
+공변성 조건은 어떤 클래스로부터 해당 클래스의 부모 클래스까지 재네릭 타입 인자를 변경할 수 있는 능력을 나타내는 용어다.
+
+이 말은 List<String>을 가질 수 있고, 이를 List<Any>에 할당할 수 있음을 의미한다.
+(Any클래스는 String의 부모 클래스이기 때문이다.)
+
+코틀린에서는 out 키워드를 사용해 공변 조건의 재네릭 타입 매개변수를 나타낸다.
+
+Iterable 인터페이스가 Iterable<out T>로 선언되어 있다.
+
+클래스 계층 구조의 맨 위에는 Iterable 인터페이스가 자리 잡고 있다.
+이 인터페이스 정의는 다음 코드에서 보는 바와 같이 단순하다.
+
+[source, kotlin]
+----
+public interface Iterable<out T> {
+  public abstract operator fun iterator(): Iterator<T>
+}
+----
+
+Collection 인터페이스는 Iterable을 확장하고 있으며, 컬렉션의 크기와 크기가 0인 컨테이너를 위한 검사뿐만 아니라 컬렉션에 있는 요소의 존재를 알아내기 위한 메소드를 정의하고 있다.
+
+[source, kotlin]
+----
+public interface Collection<out E> : Iterable<E> {
+  public val size: Int
+  public fun isEmpty(): Boolean
+  public operator fun contains(element: @UnsafeVariance E): Boolean
+  override fun iterator(): Iterator<E>
+  public fun containsAll(elements: Collection<@UnsafeVariance E>): Boolean
+}
+----
+
+MutableIterable인터페이스는 Collection과 형제 격인 인터페이스다.
+이 인터페이스가 하는 일은 변경 불가능한 반복자가 아닌 변경 가능한 반복자를 반환하도록 부모 iterator() 메소드를 재정의하는 것이다.
+
+[source, kotlin]
+----
+public interface MutableIterable<out T>: Iterable<T> {
+  override fun iterator(): MutableIterator<T>
+}
+----
+
+Collection으로부터 파생되어 가장 많이 사용되는 타입은 아마 List일 것이다. 리스트는 순서를 갖는 요소의 컬렉션이다.
+이 인터페이스에 있는 메소드는 컬렉션에 대한 읽기 전용 접근을 지원한다.
+
+이 인터페이스에 있는 메소드는 컬렉션에 대한 읽기 전용 접근을 지원한다.
+가장 주목할 만한 함수는 get이다.
+이 함수는 요소의 위치 색인에 기반을 둔 검색을 허용한다.
+
+[source, kotlin]
+----
+public interface List<out E>: Collection<E> {
+  // 질의 연산
+  override val size: Int
+  override fun isEmpty(): Boolean
+  override fun contains(element: @UnsafeVariance E): Boolean
+  override fun iterator(): Iterator<E>
+  override fun containsAll(elements: Collection<@UnsafeVariance E>): Boolean
+  public operator fun get(index: Int): E
+  public fun indexOf(element: @UnsafeVariance E): Int
+  public fun lastIndexOf(element: @UnsafeVariance E): Int
+
+  // 리스트 반복자
+  public fun listIterator(): ListIterator<E>
+  public fun listIterator(index: Int): ListIterator<E>
+
+  // 뷰
+  public fun subList(fromIndex: Int, toIndex: Int): List<E>
+}
+----
+
+그다음 Collection으로부터 파생된 인터페이스로는 Set이 있다.
+셋은 순서가 없는 요소의 컬렉션으로 중복을 허용하지 않는다.
+이 인터페이스에 있는 함수는 셋에 대한 읽기 전용 접근을 지원한다.
+
+[source, kotlin]
+----
+public interface Set<out E>: Collection<E> {
+  // 질의 연산
+  override val size: Int
+  override fun isEmpty(): Boolean
+  override fun contains(element: @UnsafeVariance E): Boolean
+  override fun iterator(): Iterator<E>
+
+  // 대규모 연산
+  override fun containsAll(elements: Collection<@UnsafeVariance E>): Boolean
+}
+----
+
+지금까지는 읽기 전용/변경 불가능한 컬렉션에 대한 타입만 살펴봤다.
+요소의 추가 또는 삭제를 허용ㅎ는 컬렉션을 위한 지원은 MutableCollection 인터페이스로부터 나온다.
+
+다음 코드는 MutableCollection 인터페이스에 정의된 모든 메소드를 보여준다.
+
+[source, kotlin]
+----
+public interface MutableCollection<E>: Collection<E>, MutableIterable<E> {
+  // 질의 연산
+  override fun iterator(): MutableIterator<E>
+
+  // 변경 연산
+  public fun add(element: E): Boolean
+  public fun remove(element: E): Boolean
+
+  // 대규모 변경 연산
+  public fun addAll(elements: Collection<E>): Boolean
+  public fun removeAll(elements: Collection<E>): Boolean
+  public fun retainAll(elements: Collection<E>): Boolean
+  public fun clear(): Unit
+}
+----
+
+MutableList는 MutableCollection 인터페이스로부터 좀 더 특화된 인터페이스다.
+이 인터페이스는 새로운 메소드를 추가함으로써 부모 메소드를 확장해, 아이템 위치 순서에 기반을 두어 아이템 변경 또는 검색을 허용한다.
+
+마찬가지 방식으로 MutableSet 인터페이스를 통해 변경 가능한 셋과 같은 기능을 얻게 된다.
+
+Map과 MutableMap은 앞에서 본 인터페이스를 상속하지 않고 있다는 사실을 확인 할 수 있다.
+
+[source, kotlin]
+----
+public interface Map<K, out V> {
+  ...
+}
+
+public interface MutableMap<K, V>: Map<K, V> {
+  ...
+}
+----
+
+Array 클래스는 클래스 다이어그램에서 그 자체로 있다.
+배열은 단지 주어진 타입에 대해 고정된 개수의 값을 갖기 위한 컨테이너라고 볼 수 있다.
+배열의 길이는 생성하는 시점에 정해지고 변경이 불가능하다.
+
+[source, kotlin]
+----
+public class Array<T>: Cloneable {
+  public inline constructor(size: Int, init: (Int) -> T)
+  public operator fun get(index: Int): T
+  public operator fun set(index: Int, value: T): Unit
+  public val size: Int
+  public operator fun iterator(): Iterator<T>
+  public override fun clone(): Array<T>
+}
+----
+
+클래스 계층 구조 다이어그램의 오른쪽 아래를 보면 반복자 그룹을 발견할 수 있을 것이다.
+컬렉션에 대한 반복자는 요소의 시퀀스에 해당한다.
+코틀린은 변경 불가능한 반복자와 변경 가능한 반복자 모두를 지원한다.
+
+그러므로 각 컬렉션 타입은 이에 상응하는 반복자 구현체를 반환한다.
+
+예를 들어 List는 Iterator 구현체를 반환하는 반면, MutableList는 MutableIterator의 인스턴스를 반환할 것이다.
+
+일반적으로 Iterator는 순방향 읽기만 된다.
+
+한가지 이해하고 있어야 하는 중요한 점은 코틀린은 코틀린 컬렉션 타입을 위한 자체 구현을 제공하지 않고, 그보다는 자바 컬렉션에 존재하는 것을 활용한다는 점이다.
+예를 들어 List 인터페이스에 관한 구현과 관련된 코틀린 소스 코드를 찾으려고 했다면 그건 시간 낭비다.
+그런 코드는 어디에도 없다.
+
+코틀린은 몇 가지 자바 컬렉션 클래스를 특별한 방식으로 처리하는데, 바로 자바 타입과 코틀린 타입을 서로 매핑하는 것이다.
+
+이러한 매핑은 런타임까지 이어지지는 않는다.
+
+런타임에서 자바 타입은 변경되지 않은 상태로 남아 있다.
+
+다음 표에서는 자바 컬렉션 타입과 코틀린의 상응하는 변경 불가는한 타입과 변경 가능한 타입 간의 매핑을 상세하게 보여준다.
+
+image::ch10_2.png[표, 700]
+
+코틀린은 널 값에 안전한 언어로 설계됐다.
+자바와의 상호작용으로 인해 코틀린 팀은 타입 시스템에 약간의 여유를 주어야만 했다.
+
+그로 인해 플랫폼 타입이라는 용어가 소개됐다.
+플랫폼 타입은 원래 자바 플랫폼에서 온 타입에 지나지 않으며 이러한 타입은 특별하게 취급될 것이다.
+
+- 코틀린 컴파일러는 이러한 타입에 대해 널 안정성을 강제하지 않을 것이다.
+그로 인해, 사용자는 자바로부터 온 변수에 대해 NullPointerException을 사용할 수 있다.
+- 코틀린 코드에서 플랫폼 타입에 이름을 지정할 수는 없으나, 인텔리제이에서 String!, ArrayList<Int>!와 같이 느낌표로 끝나도록 표시한 것을 확인할 수 있다.
+- 플랫폼 파팅ㅂ을 저장할 때는 코틀린 타입을 선택해야만 한다.
+(예 - String getName() 이라는 자바 코드 -> val name: String? = getName()으로 작성할 수 있다.)
+- 자바에서 정의된 메소드를 오버라이딩할 때는 코틀린 타입을 제공해야만 한다.
+예를 들어 자바에서 void addFlag(String flag)라 정의한 메소드가 있다고 가정해보자.
+이 메소드를 코틀린에서 오버라이딩 할 경우에는, override fun addFlag(flag: Sring): Unit 이나
+override fun addFlag(flag: String?) 중 하나를 선택해야만 한다.
+
+==== 배열
+
+배열의 선언과 초기화는 다음과 같이 할 수 있다.
+
+[source, java]
+----
+fun main(args: Array<String>){
+  val intArray = arrayOf(1,2,3,4) // 숫자
+
+  println("Int array:${intArray.joinToString(",")}")
+  println("Element at index 1 is:${intArray[1]}")
+
+  val stringArray = kotlin.arrayOfNulls<String>(3) // 문자
+  stringArray[0] = "a"
+  stringArray[1] = "b"
+  stringArray[2] = "b"
+
+  val studentArray = Array<Student>(2) { index ->
+    when(index) {
+      0 -> Student(1, "Alexandra", "Brook")
+      1 -> Student(2, "James", "Smith")
+      else -> throw IllegalArgumentException("Too many")
+    }
+  }
+
+  val longArray = emptyArray<Long>()
+  println("Long array:${longArray.joinToString(",")}")
+
+}
+----
+
+배열 컬렉션을 초기화하는 네 가지 방법을 확인할 수 있을 것이다.
+
+첫번째 접근법은 정수형 배열을 초기화하기 위해 arrayOf 메소드를 사용하는 것이다.
+
+두 번째 방법은 각 요소가 널로 설정된 주어진 크기의 배열을 반환하느 arrayOfNulls를 사용하는 것이다.
+
+배열의 아이템을 검색하기 위해서는 get 연산자를 사용해야 한다.
+
+세 번째 방법은 Array 클래스 생성자를 사용하는 것이다.
+이 생성자는 배열의 크기와 람다 함수를 제공하며, 각 요소를 구성할 수 있게 해준다.
+
+마지막은 코틀린스러운 방식으로 빈 배열을 어떻게 생성할 수 있는 지를 보여준다.
+
+코틀린 표준 라이브러리는 원시 배열을 위해 intArrayOf, longArrayOf, charArrayOf, doubleArrayOf 등과 같이 바로 사용 가능한 지원을 제공한다.
+각각의 원시 배열에 대해 IntArray, LongArray, CharArray, DoubleArray 등과 같이 코틀린 클래스의 인스턴스를 얻게 될 것이다.
+
+정수형의 원시 배열을 구성하는 예제를 살펴보자.
+
+[source, java]
+----
+val ints = intArrayOf(1,2,3,4,5,6,7,8,9,10)
+print("Built in int array:${ints.joinToString(",")}")
+----
+
+[TIP]
+====
+배열을 만들때 생성된 바이트 코드
+
+anewarray <type>
+
+<type>은 클래스 이름이나 인터페이스 이름이 될 수 있다.
+(arrayOf, arrayOfNulls 등으로 선언된)
+
+newarray <type>
+원시 타입의 1차원 배열을 할당하는 데 사용된다.
+
+원시타입을 처리할 때 arrayOf를 사용하는 대신 항상 <type>ArrayOf를 사용해야 한다.
+====
+
+표준 라이브러리의 강력함은 배열을 다루게 하는 풍부한 API로부터 나온다.
+kotlin collection 아래에 있는 코틀린 표준 라이브러리에는 ArraysKt라는 이름의 클래스가 존재한다.
+
+해당 클래스의 내부에서 Array<T>와 원시 타입 배열인 IntArray, FloatArray, ByteArray 등을 다루는 수많은 도우미 함수를 발견할 수 있을 것이다.
+
+[source, jave]
+----
+val ints = arrayOf(1,2,3,4,5)
+
+println("First element in IntArray:${ints.first()}")
+println("Last element in the IntArray:${ints.last()}")
+----
+
+- first() 확장 메소드다. 이 메소드는 컬렉션에 있는 첫 번째 요소를 반환한다.
+- last() 메소드는 컬렉션의 마지막 요소를 반환한다.
+- take(n) 확장 메소드는 호출자에게 타깃 컬렉션의 첫 번째 부터 N번째 까지의 요소들을 반환한다.
+이 메소드는 초기 컬렉션의 서브셋을 반환하는 모든 연산에 적용되나 흥미로운 부분은 반환 타입이 IntArray가 아니라 List<Int>라는 점이다.
+- takeLast(n) 마지막 부터 N개의 요소들을 반환한다.
+
+[source, java]
+----
+println(Take elemets smaller tha 5 of the IntArray: ${ints.takeWhile { it < 5 }.joinToString(",")})
+
+// 조건은 요소가 5보다 작은지를 검사하는 함수다.
+----
+
+표준 라이브러리 API는 배열을 다른 컬렉션 타입으로 변환하는 다양한 메소드를 제공한다.
+이러한 메소드는 확장 메소드로, 모든 배열 타입 클래스를 다루고 있다.
+
+다음은 배열 컬렉션을 어떻게 다른 컬렉션으로 변환할 수 있는지에 대한 예제를 보여준다.
+
+[source, java]
+----
+// longArray to HashSet<Long>
+val longs = longArrayOf(1, 2, 1, 2, 3, 4, 5)
+val hashSet: HashSet<Long> = longs.toHashSet()
+
+println("Java HashSet: ${hashSet.joinToString(",")}")
+
+// longArray to SortedSet<Long>
+val sortedSet: SortedSet<Long> = longs.toSortedSet()
+
+println("SortedSet [${sortedSet.javaClass.canonicalName}]:${sortedSet.joinToString(",")}")
+
+// longArray to Set<Long>
+val set: Set<Long> = longs.toSet()
+
+println("Set[${set.javaClass.canonicalName}]:${set.joinToString(",")}")
+
+//longArray to mutableSet
+val mutableSet = longs.toMutableSet()
+
+println("MutableSet[${mutableSet.javaClass.canonicalName}]:${mutableSet.joinToString(",")}")
+
+// longArray to List<Long>
+val list: List<Long> = longs.toList()
+
+println("List[${list.javaClass.canonicalName}]:${list.joinToString(",")}")
+
+// longArray to mutableList<Ling>
+val mutableList: MutableList<Long> = ling.toMutableList()
+
+println("MutableList[${mutableList.javaClass.canonicalName}]:${mutableList.joinToString}")
+----
+
+일반적으로 변수 타입 선언을 사용하지 않으나 코틀린 새내기라면 처음에는 변수 타입을 선언하는 것을 추천한다.
+
+코드에서는 long 타입의 간단한 배열을 정의하고 이를 다른 셋으로 변환한다.
+또한 자바의 HashSet을 제외한 각 변수에 대한 실제 컬렉션 타입 이름이 콘솔에 작성된다.
+
+비록 코틀린의 변경 불가능한 타입을 다루고 있음에도 불구하고, 내부적으로 사용되는 자바 컬렉션은 변경 가능한 타입니다.
+그렇기 때문에 다시 한번 이야기 하자면 코틀린에서 불변성은 인터페이스 정의를 통해 이뤄진다.
+
+표준 라이브러리에서 제공하는 풍부한 API 덕분에 컬렉션을 다루기는 매우 쉽다.
+그러나 API에 익숙하기에 앞서 처음에는 좀 더 주의를 기울여야 할 것이다.
+
+==== 리스트
+
+리스트는 순서가 있는 컬렉션이다.
+리스트를 사용하면 컬렉션에 있는 위치에 따라 요소를 검색할 수 있을 뿐만 아니라, 매우 구체적인 장소에 요소를 추가할 수도 있다.
+코틀린은 변경 불가능한 리스트와 변경 가능한 리스트를 생성하기 위해 미리 빌드된 메소드를 여럿 제공한다.
+
+불변성은 인터페이스를 통해 이뤄진다는 점을 명심하자.
+
+다음은 코틀린스러운 방식으로 리스트를 생성하는 방법을 보여준다.
+
+[source, java]
+----
+val intList: List<Int> = listOf(20, 29, 40, 10)
+println("Int List[${intList.javaClass.canonicalName}]:${intList.joinToString(",")}")
+
+val emptyList: List<String> = emptyList<String>()
+println("Emptylist[${emptyList.javaClass.canonicalName}]:${emptyList.joinToString(",")}")
+
+val nonNulls: List<String> = listOfNotNull<String>(null, "a", "b", "c")
+println("Non-Null string lists[${nonNulls.javaClass.canonicalName}]:${nonNulls.joinToString(",")}")
+
+val doubleList: ArrayList<Double> = arrayListOf(84.99, 100.25, 999.99)
+println("Double list:${doubleList.joinToString(",")}")
+
+val cartoonsList: MutableList<String> = mutableListOf("Tom&Jerry", "Dexter`s Laboratoty", "Johnny Bravo", "Cow&Chicken")
+println("Cartoonlist[${cartoonsList.joinToString(",")}]")
+
+cartoonsList.addAll(arrayOf("Ed, Edd n Eddy", "Courage the Cowardly Dog"))
+println("Cartoons list[${cartoonsList.javaClass.canonicalName}]:${cartoonsList.joinToString(",")}")
+----
+
+처음 세 리스트(intList, emptyList, nonNulls)는 읽기 전용 인스턴스이고, 마지막 두 리스트는 변경 가능한 리스트다.
+
+ListOf 배열을 제외한 리스트들은 모두 코틀린 타입을 반환한다.
+
+우리는 변경 불가능한 타입으로 작업했음에도 불구하고 실제 구현에서는 변경 가능한 컬렉션인 ArrayList가 사용됐다는 사실을 알 수 있다.
+실제로listOf는 Array.ArrayList를 반환한다는 점이다.
+
+지금까지 리스트를 구성하는 방법을 살펴봤다.
+이번에는 라이브러리에서 제공하는 확장 메소드 중 일부를 보여주기 위해 간단한 예제를 살펴보자.
+
+[source, kotlin]
+----
+data class Planet(val name: String, val distance: Long)
+
+val planets = listOf(Planet("Mercury", 57910000), Planet("Venus", 108200000), Planet("Earth", 149600000), Planet("Mars", 227940000), Planet("Jupiter",778330000), Planet("Saturn", 1424600000), Planet("Uranus", 2873550000), Planet("Neptune"), 4501000000), Planet("Pluto", 5945900000))
+
+println(planets.last()) // 마지막 요소
+println(planets.first()) // 첫 요소
+println(planets.get(4)) // 4번째 요소
+println(planets.isEmpty()) // 비어있는지
+println(planets.isNotEmpty()) // 안 비었는지
+println(planets.asReversed()) // 반대로 뒤집기
+println(planets.elementAtOrNull(10))
+----
+
+위 코드에서는 태양계에 있는 행성과 각 행성에서 태양까지의 거리에 관한 리스트를 정의하고 있다.
+
+리스트에 있는 좀 더 복잡한 연산으로 넘어가 보자.
+
+한 컬렉션을 다른 컬렉션과 합치려고 한다고 생각해보자. 라이브러리는 **.zip** 메소드를 통해 이러한 기능을 제공한다.
+
+다음 예제에서는 각 행성의 지름을 가진 배열과 행성 리스트를 합치고 있다.
+
+[source, java]
+----
+planets.zip(arrayOf(4800, 12100, 12750, 6800, 142800, 120660, 51800, 49500, 3300)).forEach {
+  val (planet, diameter) = it
+  println("${planets.name}`s diameter is $diameter km")
+}
+----
+
+코드를 실행하면 각 행성의 지름을 출력할 것이다.
+
+두 컬렉션의 크기가 서로 다를때는 무슨일이 일어날지 궁금해할 것이다.
+Pluto에 대한 지름을 생략했다고 가정하자.
+이 경우 join 연산은 Pluto 행성을 제외할 것이다.
+
+==== 맵
+
+맵 컬렉션은 이름에서도 알 수 있듯이, 객체(키)를 또 다른 객체(값)와 연관 짓게 해준다.
+맵 컬렉션의 키는 중복된 키를 가질 수 없으며, 각 키는 최대 1개의 값과 매핑되도록 규정한다.
+
+맵에서 흥미로운 부분은 맵의 인터페이스가 3개의 컬렉션 뷰를 제공한다는 점이다.
+이 3개의 컬렉션 뷰는 각각 키의 셋, 모든 값에 대한 컬렉션, 그리고 키와 값을 매핑한 셋을 나타낸다.
+
+맵을 사용할 때는 사용하고 있는 키에 주의를 기울여야 한다.
+맵에 아이템을 추가할 때는 우선 키가 들어갈 버킷을 찾아야 한다.
+
+이를 위해 hashCode 메소드를 사용하고, 그 후에는 구현에 의존해 equals 메소드를 사용할 것이다.
+그러므로 키는 반드시 변경 불가능해야하며, 그렇지 않으면 맵의 동작을 명시할 수 없다.
+
+[source, kotlin]
+----
+data class Customer(val firstName: String, val lastName: String, val id: Int)
+
+// 코틀린 타입
+val carsMap: Map<String, String> = mapOf("a" to "aston martin", "b" to "bmw", "m" to "mercedes", "f" to "ferrari")
+
+println("cars[${carsMap.javaClass.canonicalName}]:$carsMap")
+println("car maker starting with 'f':${carsMap.get("f")}") // Ferrari
+println("car maker starting with 'X':${carsMap.get("X")}") // null
+
+// 자바 유틸의 맵 구현체
+val customers: java.util.HashMap<Int, Customer> = hashMapOf(1 to Customer("byeongsoon", "Jang",1), 2 to Customer("Andy", "Smith", 2))
+
+println("Hash map[${customers.javaClass.canonicalName}]:${customers}")
+----
+
+===== 맵 정의
+
+- HashMap: 맵 인터페이스에 대해 테이블을 기반으로 하는 구현체다.
+해시 맵은 키나 값에 널을 허용하는 반면 이 클래스는 아이템의 순서나 일정 시간이 지나도 계속해서 유지할 것이라는 사실을 보장하지 않는다.
+이 구현체는 해시 함수가 버킷 간에 요소를 적절히 분배했다고 가정했을 때, get과 put 메소드에 대한 일정 시간의 비용을 갖는다.
+(클래스는 맵의 용량이 증가하기 전에 맵이 얼마나 차있는지를 측정하기 위한 로드 인자를 갖고 있다. 해시 테이블에 있는 입력 개수가 로드 인자와 현재 용량을 서로 곱한 값을 초과할 경우, 해시 테이블이 대략 두 배정도의 버킷을 갖게 하려고 맵 테이블은 다시 해시를 한다.)
+- LinkedHashMap: 예측 가능한 반복 순서를 가진 맵 인터체이스에 대한 HashMap과 링크드 리스트 구현체의 조합이다.
+hashMap과 달리 이 구현체는 모든 항목을 통해 실행되는 이중으로 연결된 리스트를 유지한다.
+이 링크드 리스트는 반복 순서를 정의하는데, 일반적으로는 순서는 키가 맵에 추가되는 순서가 된다.
+- TreeMap: 레드 블랙 트리 구현에 기반을 둔 맵 구현체다.
+맵은 키의 기본 순서에 기반을 두어 정렬되거나, 맵이 생성되는 시기에 제공된 어떠한 생성자가 사용됐는지에 기반하는 비교자에 의해 정렬된다.
+이 구현체는 containsKey, get, put, remove 연산에 대해 log(n)시간 비용을 보장한다.
+레드 블랙 트리는 이진 탐색 트리의 특별한 경우로, 각 노드는 노드와 연관된 하나의 색을 갖는다.
+
+갖고 있는 참조를 자바 라이브러리로 한번 전달하고 나면 불변성은 사라진다.
+코틀린 맵 타입에도 같은 규칙이 적용된다.
+
+==== 셋
+
+셋은 중복되지 않는 아이템을 갖는 컬렉션이다. 즉, i1 == i2인 경우 컬렉션에 i1과 i2를 함께 가질 수 없다는 뜻이다.
+널 참조에 대해서도 같은 이론이 적용된다.
+셋 안에 하나 이상의 널 아이템을 저장할 수 없다.
+
+셋 인스턴스를 생성하기 위해서는 다음 코드 예제에 있는 어떠한 메소드를 사용해도 무방하다.
+
+[source, kotlin]
+----
+data class Book(val author: String, val title: String, val year: Ing, val isbn: String)
+
+val intSet: Set<Int> = setOf(1, 21, 21, 2, 6, 3, 2) // 1,21,2,6,3 -> 중복 안됨
+println("Set of intergers[${intSet.javaClass.canonicalName}]:$intSet")
+
+val hashSet: java.util.HashSet<Book> = hashSetOf(Book("Jules Verne", "Around the World in 80 Days Paperback", 2014, "978-1503215153"), Book("George R.R. Martin", "Series: Game of Thrones: The Graphic Novel (Boo 1)", 2012, "978-0440423218"), Book("J.K Rowling", "Harry Potter And The Goblet of Fire(Book 4) Hardcover", 2000, "978-0439139595"))
+println("Set of books:${hashSet}")
+
+val sortedIntegers: java.util.TreeSet<Int> = sortedSetOf(11, 0, 9, 11, 9, 8) // 0, 8, 9, 11
+println("Sorted set of integer:${sortedIntegers}")
+
+val charSet: java.util.LinkedHashMap<Char> = linkedSetOf('a', 'x', 'a', 'z', 'a') // a,x,z
+println("Set of characters:$charSet")
+
+val longSet: MutableSet<Long> = mutableSetOf(20161028141216, 20161029121211, 20161029121211) // 20161028141216, 20161029121211
+println("Set of longs[${longSet.javaClass.canonicalName}]:$longSet)
+----
+
+코드를 실행하면 코틀린의 변경 불가능한 셋과 변경 가능한 셋 구현체가 LinkedHashSet에 의해 구체화되는 것을 확인할 수 있다.
+물론 LinkedHashSet은 변경 가능한 셋이다.
+
+- 구현체 간의 차이점을 이해하기 위해, 각각에 대해 JDK에서 설명하는 바를 확인해보자.
+** LinkedHashSet: 셋 인터페이스의 해시 테이블과 링크드 리스트 구현체로, 예측 가능한 반복 순서를 포함하고 있다.
+이 구현체는 HashSet과는 다르게 모든 항목을 통해 실행되는 이중으로 연결된 리스트를 유지한다.
+이 링크드 리스트는 반복 순서를 정의하는데, 이 순서는 요소가 컬렉션에 추가된 순서로 정해진다.
+** HashSet: HashSet은 해시 테이블에서 지원하는 셋 인터페이스를 구현한다.
+HashSet은 셋의 반복 순서를 보장하지 않는다.
+따라서 시간이 지나도 순서가 일정하게 유지됨을 보장하지 않는다.
+이 클래스는 해시 함수가 요소를 맵 버킷 간에 적절히 분산시킨다는 가정하에 기본적인 연산에 대해 상수 시간을 제공한다.
+** TreeSet: TreeSet은 TreeMap을 기반으로 한 구현체다.
+요소들은 자연적인 순서 또는 어떠한 생성자가 사용됐는지에 따라 셋의 생성 시점에 비교자가 제공하는 순서를 사용해 순서가 정해진다.
+이 구현체는 기본 연산자에 대해 log(n)시간 비용을 보장한다.
+
+셋 인터페이스에서 사용 가능한 각 메소드를 다루는 것은 이번 장의 범위를 넘어서는 일이다.
+그러나 사용 가능한 메소드 중 몇 가지는 살펴볼 것이다.
+
+[source, java]
+----
+println(intSet.contains(9999)) // false
+println(intSet.contains(1)) // true
+println(books.contains(Book("Jules Verne", "Around the World in 80 Days Paperback", 2014, "978-1503215153"))) // true
+println(intSet.first()) // 1
+println(sortedIntegers.last()) // 11
+println(charSet.drop(2)) // z
+println(intSet.plus(0)) // 1, 21, 2, 6, 3, 10
+println(intSet.minus(21)) // 1, 2, 6, 3
+println(intSet.minus(-1)) // 1, 2, 6, 3, 21
+println(intSet.average()) // 6.6
+println(longSet.plus(11)) // 20161028141216, 20161029121211
+println(longSet) // 20161028141216, 20161029121211
+----
+
+주석에서 출력 결과를 확인할 수 있다.
+메소드의 이름은 메소드가 수행하는 동작의 느낌을 충분히 전달할 만큼 서술적이어야 한다.
+한 가지 알아둬야 할 사항은 plus와 minus 메소드는 컬렉션으로 바뀌지 않는다는 점이다.
+이러한 확장 메소드는 변경 불가능한 Set 인터페이스에 정의되어 있기 때문에, 새로운 변경 불가능한 컬렉션을 생성하게 될 것이다.
+
+==== 읽기 전용 뷰
+
+코틀린으로 작업할 때는 변경 가능한 컬렉션의 읽기 전용 뷰라는 개념과 마주치게 될 것이다.
+이것이 변경 불가능한 컬렉션과 어떠한 차이점이 있는지는 예제를 사용하여 알아본다.
+
+변경 가능한 문자열 리스트를 생성해보자.
+
+[source, java]
+----
+val carManufacturers: MutableList<String> = mutableListOf("Masserati", "Aston Martin", "McLaren", "Ferrari", "Koenigsegg")
+val carsView: List<String> = carManufacturers
+
+carManufacturers.add("Lamborghini")
+println("Cars View: $carsView") // Cars View: Masserati, Aston Martin, McLaren, Ferrari, Koenigsegg, Lamborghini
+----
+
+코드에서는 변경 가능한 자동차 제조사 리스트를 초기화한 다음 carsView 변수를 통해 새로운 뷰를 제공한다.
+만약 계속해서 진행할 경우에는 나중 변수에 대한 참조만 유지할 수 있으며 실제로 컬렉션이 완전히 변경불가능하다고 여길 수 있다.
+
+이러한 이유로 읽기 전용 뷰라는 용어를 사용하는 것이다.
+
+그러나 그렇지 않은 경우, 원본 컬렉션에서 발생한 모든 변경사항이 뷰에 자동으로 영향을 줄 것이다.
+뷰는 컬렉션을변경 불가능한 List 인터페이스로 형변환함으로써 이를 수행한다.
+
+실제 런타임 구현체는 불변이 아니라는 점을 명심하자.
+
+==== 인덱스 접근
+
+코틀린은 리스트의 요소 접근이나 맵의 키 값 반환을 더욱 쉽게 해준다.
+코틀린에서는 아이템을 검색하는 데 있어 자바 스타일의 문법인 get(index) 또는 get(key)를 사용할 필요 없이, 간단하게 배열 스타일의 인덱싱을 사용할 수 있다.
+
+[source, java]
+----
+val capitals = listOf("London", "Tokyo", "Instambul", "Bucharest")
+capitals[2] // Tokyo
+// capitals[100] java.lang.ArrayIndexOutOfBoundException
+
+val countries = mapOf("BRA" to "Brazil", "ARG" to "Argentina", "ITA" to "Italy")
+countries["BRA"] // Brazil
+countries["UK"] // null
+----
+
+이러한 기능이 타이핑을조금 줄여주는 동안, 구조가 훨씬 명확해지고 가독성이 좋아졌다.
+
+앞서 설명한 문법은 코틀린에서만 가능하며, 이러한 동작의 요인은 List와 Map에 대한 인터페이스 선언에 있다.
