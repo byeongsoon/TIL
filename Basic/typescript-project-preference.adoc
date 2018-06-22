@@ -1,0 +1,326 @@
+= Typescript 프로젝트 설정 및 CI 설정
+
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.06.22
+:Revision: 1.0
+:imagesdir: ./image
+
+박사님이 진행해주신 Typescript 프로젝트 설정 및 CI 설정 세미나에 대한 정리
+
+- IDE는 WebStorm을 사용한다.
+- 언어는 Typescript를 사용한다.
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+우선 WebStorm에서 Create New Project를 클릴하고 Empty Project를 생성한다.
+
+----
+$ npm init
+// npm init을 통해 package.json 파일이 생성 된다.
+----
+
+package name, version, description, entry point, test command, git repository, keyword, author, license 등의 정보를 적어 준다.
+
+----
+$ npm i -S typescript // typescript를 npm을 통해서 install
+$ ./node_modules/.bin/tsc --init // tsc를 init하면 tsconfig.json 파일이 생성된다.
+----
+
+기본적으로 사용할 ts-node, tslint, mocha, chai 등을 npm을 통해 install 해준다.
+
+----
+$ npm i -S ts-node
+$ npm i -D @types/node
+$ npm i -S tslint
+
+// tslint를 init하면 tslint.json 파일이 생성된다.
+$ ./node_modules/.bin/tslint --init
+
+$ npm i -D mocha @types/mocha
+$ npm i -D chai @types/chai
+----
+
+위와 같은 작업을 마치면 package.json 파일의 dependencies와 devDependencies가 다음과 같은 형식으로 되어있는 것을 확인 할 수 있다.
+
+----
+"dependencies": {
+    "ts-node": "^6.1.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.2",
+    "@types/node": "^10.3.4",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  }
+----
+
+다음으로는 프로젝트를 git repository로 등록합니다.
+
+issue를 생성하고 branch를 변경한 뒤 작업을 시작합니다.
+
+1. .gitignore 파일 : Node, mac os, windows, jetbrain, WebStorm 등
+2. README.md 파일
+
+----
+:project_name: <project_name>
+:project_license: MIT
+:author: <author>
+:email: <email>
+:icons: font
+:imagesdir: ./image
+:git_service: https://git.wisoft.io/<git_service>
+:git_repo: <git_repo>
+:project_version: <예:2018.25.0>
+
+= {project_name}
+
+image:https://img.shields.io/badge/version-{project_version}-blue.svg[link="./CHANGELOG",title="version"] image:https://img.shields.io/badge/license-{project_license}-lightgrey.svg[link="./LICENSE",title="license"]
+
+
+== What is the Project
+
+이 프로젝트는 {author}가 제작한 {project_name} 저장소입니다.
+
+
+== Status
+
+Version {project_version}
+
+이 프로젝트의 버전 이력은 link:./CHANGELOG[CHANGELOG]에서 확인하실 수 있으며, 주요 안건은 프로젝트의 link:{git_service}/{git_repo}/issues[Issues 페이지]에서 확인하실 수 있습니다.
+
+
+== Building
+
+Clone a copy of the repository:
+
+[code, subs="attributes"]
+-----(-은 4개)
+current-directory: $DEVELOPMENT_HOME
+
+$ git clone {git_service}{git_repo}.git
+-----(-은 4개)
+
+Change to the project directory:
+
+[code, subs="attributes"]
+-----(-은 4개)
+current-directory: $DEVELOPMENT_HOME
+
+$ cd {git_repo}
+-----(-은 4개)
+
+
+== Contributors
+
+- {author} {email}
+
+----
+
+다음으로는 gitlab에서 제공하는 CI기능을 사용하기 위해서 .gitlab-ci.yml 파일을 작성한다.
+
+./project/.gitlab-ci.yml
+----
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - lint
+  - test
+  - deploy
+
+before_script:
+  - npm install
+
+build:
+  stage: build
+  script:
+    - npm run build
+
+lint:
+  stage: lint
+  script:
+    - npm run lint
+
+test:
+  stage: test
+  script:
+    - npm run test
+
+----
+
+이제부터는 package.json, tsconfig.json, tslint.json 파일을 다음과 같이 수정한다.
+
+.project/package.json 예시
+----
+{
+  "name": "typescript-cd-ci",
+  "version": "2018.25.0",
+  "description": "Simple CI CD",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git@git.wisoft.io:byeongsoon/typescript-cd-ci.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "node --require ts-node/register --require ./src/main/app.ts",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "test": "mocha --opts src/test/mocha.opts"
+  },
+  "dependencies": {
+    "ts-node": "^6.1.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.2",
+    "@types/node": "^10.3.4",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  }
+}
+----
+
+tsconfig.json 파일의 옵션들은 필요에 따라 추가하고 제거하면 된다.
+
+.project/tsconfig.json
+----
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "build",
+    "strict": true,
+    "moduleResolution": "node",
+    "types": [
+      "mocha"
+    ]
+  }
+}
+----
+
+.project/tslint.json
+----
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "array-type": [true, "generic"],
+        "max-classes-per-file": [true, 1],
+        "member-ordering": false,
+        "no-console": false,
+        "no-namespace": false,
+        "no-shadowed-variable": false,
+        "no-var-requires": false,
+        "object-literal-sort-keys": false,
+        "ordered-imports": false,
+        "prefer-const": false,
+        "quotemark": [true, "single"]
+    },
+    "rulesDirectory": []
+}
+----
+
+그 이후에는 mocha의 테스트 옵션을 위해서 ./project/src/test/mocaa.opts 파일을 작성한다.
+
+.project/src/test/mocha.opts
+----
+--compilers ts-node/register
+--recursive
+--full-trace
+--bail
+src/**/*.spec.ts
+----
+
+테스트와 CI 동작을 확인하기 위해서 간단한 .ts 파일을 작성한다.
+
+.project/src/main/App.ts
+[source, typescript]
+----
+export class App {
+  public greeting(): string {
+    return 'Hello, Koa.js!';
+  }
+
+  public static main(): App {
+    return new App();
+  }
+}
+
+App.main();
+----
+
+.project/src/test/app.spec.ts
+[source, typescript]
+----
+import * as Chai from 'chai';
+import {describe, it} from 'mocha';
+import {App} from '../main/App';
+
+const expect = Chai.expect;
+
+describe('App Specs', () => {
+  let app: App;
+
+  before(() => {
+    app = App.main();
+  });
+
+  describe('Call /greeting()', () => {
+    it('Call greeting() method', (done) => {
+      expect(app.greeting()).to.equal('Hello, Koa.js!');
+      done();
+    });
+  });
+});
+----
+
+app.spec.ts 파일에서 Run test를 통해서 Tests passed가 되면 gitlab에 올린다.
+
+----
+$ git add .
+$ git commit -m "<message>"
+$ git push origin <branch_name>
+----
+
+gitlab에 push를 한 뒤에는 gitlab에 자신의 repository에 들어가서 CI/CD에 들어가보면 Pipline이 올라가 있는걸 볼 수 있다.
+
+작성한 .gitlab-ci.yml파일에 의거하여 Docker 환경에서 build, lint, test 3단계의 job이 이루어 진다.
+
+만일 failed가 뜬다면 오류를 수정하고 다시 프로젝트를 push 한다.
+
+----
+$ git commit --amend
+$ git push -f origin <branch_name>
+----
+
+모든 job이 성공한다면 passed가 Status에 나타날 것이다.
+
+이런 과정을 모두 마친 뒤에 Merge Requests를 등록한다.
+
+[TIP]
+====
+CI에서 lint과정 중 .ts 파일에서 마지막 코드 이후에 개행이 이루어지지 않으면
+
+file should end with a newline이라는 오류가 발생하니 주의하자.
+====
