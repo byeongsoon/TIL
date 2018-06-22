@@ -68,7 +68,7 @@ $ npm i -D chai @types/chai
 issue를 생성하고 branch를 변경한 뒤 작업을 시작합니다.
 
 1. .gitignore 파일 : Node, mac os, windows, jetbrain, WebStorm 등
-2. README.md 파일
+2. README.adoc 파일
 
 ----
 :project_name: <project_name>
