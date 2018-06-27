@@ -1,0 +1,153 @@
+= Node.js로 서버와 클라이언트 만들기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.06.27
+:Revision: 1.0
+:imagesdir: ./image
+
+- 언어는 javascript를 사용한다.
+- IDE는 WebStorm을 사용한다.
+
+Node.js를 이용해서 HTTP 서버와 클라이언트, TCP 서버와 클라이언트를 만든다.
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+WebStorm에서 새 프로젝트를 만든 뒤, 터미널 창에서 npm i node를 하면 node_module이 생성된다.
+
+==== HTTP 서버 만들기
+
+http 모듈을 사용할 수 있도록 require 키워드를 이용해 http 모듈을 로드한다.
+
+.httpServer.js
+[source, javascript]
+----
+const http = require('http');
+
+var server = http.createServer((req, res) => { // HTTP 서버 인스턴스를 만든다.
+  res.end("hello world");
+});
+
+server.listen(8000); // 서버에 포트를 할당
+----
+
+httpServer.js 파일이 있는 경로로 이동하여
+
+----
+$ node httpServer.js
+----
+
+위 의 명령을 실행한 뒤에 웹 브라우저에서 http://127.0.0.1:8000으로 접속하면 "hello world" 문자가 보입니다.
+
+==== HTTP 클라이언트 만들기
+
+클라이언트에서는 서버를 만들 때와 동일하게 http 모듈을 로드하고 접속할 서버의 정보와 호출할 페이지 정보를 options 변수에 담는다.
+
+.httpClient.js
+[source, javascript]
+----
+var http = require('http');
+
+var options = { // 호출할 페이지 정보 설정
+  host: "127.0.0.1",
+  port: 8000,
+  path: "/"
+}
+
+var req = http.request(options, (res) => { // 페이지를 호출
+  var data = "";
+
+  res.on('data', (chunk) => { // 서버에서 받아온 데이터 수신
+    data += chunk;
+  });
+
+  res.on('end', () => { // 수신 완료하면 console에 출력
+    console.log(data);
+  });
+});
+
+req.end(); // 명시적 완료를 나타낸다.
+----
+
+위에서 만든 HTTP 서버 코드를 동작시켜놓고 다른 터미널을 열어 node 'httpClient.js'를 하게되면
+
+----
+$ node httpClient.js
+hello world
+----
+
+위와 같이 나타나게 된다.
+
+==== TCP 서버 만들기
+
+TCP는 인터넷 프로토콜 스위트의 핵심 프로토콜 중 하나로 TCP/IP라는 명칭으로도 많이 사용한다.
+
+Node.js에서는 net이라는 기본 모듈을 이용해 TCP 서버와 TCP 클라이언트 관련 API를 제공한다.
+
+.tcpServer.js
+[source, javascript]
+----
+var net = require('net'); // net 모듈 로드
+
+var server = net.createServer((socket) => { // TCP 서버를 만든다.
+  socket.end('hello world');
+});
+
+server.on('error', (err) => { // 네트워크 에러 처리
+  console.log(err);
+});
+
+server.listen(9000, () => {
+  console.log('listen', server.address());
+});
+----
+
+tcpServer.js 파일을 실행한다.
+
+----
+$ node tcpServer.js
+listen { address: '::', family: 'IPv6', port: 9000}
+----
+
+==== TCP 클라이언트 만들기
+
+.tcpClient.js
+[source, javascript]
+----
+var net = require('net');
+
+var options = { // 접속 정보 설정
+  port: 9000,
+  host: "127.0.0.1"
+};
+
+var client = net.connect(options, () => { // 서버 접속
+  console.log("connected");
+});
+
+client.on('data', (data) => { // 데이터 수신 이벤트
+  console.log(data.toString());
+});
+
+client.on('end', () => { // 접속 종료
+  console.log("disconnected");
+});
+----
+
+HTTP와 마찬가지로 tcpServer.js를 실행해 놓고 다른 터미널을 열어서 'node tcpClient.js'를 실행한다.
+
+----
+$ node tcpClient.js
+connected
+hello world
+disconnected
+----
+
+==== 참고
+
+- link:https://nodejs.org/api/http.html[http 모듈 공식 메뉴얼]
+- link:https://nodejs.org/api/net.html[net 모듈 공식 메뉴얼]
