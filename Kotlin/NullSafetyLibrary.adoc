@@ -1,0 +1,80 @@
+= Null Safety Equals 라이브러리
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.05.23
+:Revision: 1.0
+
+코틀린의 확장함수를 이용해 NullPointerException을 없앤 Equals 함수를 만들었다.
+
+link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/ch04_FunctionsInKotlin.adoc[여기]
+에서 널 값에서의 확장 함수를 살펴보았듯이 널 값에 대한 안전한 Equals 함수인 것이다.
+
+link:https://github.com/ByeongSoon/Null-Safety-Equals-Libarary[이곳]에 있는 .jar 파일을 다운받고,
+Java와 Kotlin의 jar파일이 다르기 때문에 사용하고 싶은 jar 파일을 Libarary에 import 해준다.
+
+사용법은 다음과 같다.
+
+==== Kotlin
+
+[source, kotlin]
+----
+fun main(args: Array<String>) {
+
+  val t1: String? = null // null String형
+  val t2 : String = "byeongsoon"
+
+  if (t1.nullSafetyEqualss(t2)) { // null 안정성을 가진 Equals 함수
+    println("Equal!!")
+  } else {
+    println("No!")
+  }
+
+  if (t1.equals(null)) { // 문자열에 대한 널처리는 되어있다.
+    println("Not NullPointerException!")
+  }
+
+  val t3: Int? = null
+  val t4: Int = 25
+
+  // println(t3.equals(t4)) // 문법 오류
+  println(t3.nullSafetyEqualss(t4)) // 가능
+
+  val t5: Boolean? = true
+  val t6: Boolean = true
+
+  //println(t5.equals(t6)) // 문법적 오류
+  println(t5.nullSafetyEqualss(t6))
+}
+----
+
+==== Java
+
+[source, java]
+----
+class Main{
+  public static void main(String[] args){
+
+    NullSafetyEquals safetyEquals = new NullSafetyEquals(); // 라이브러리에 있는 NullSafeEquals 객체를 생성
+
+    test t1 = new test(); // 테스트용 객체들
+    test t2 = null; // null 값을 가진 객체
+
+    if (safetyEquals.nullSafetyEqualss(t2,t1)){ // 두 객체가 같은지 판단(t1, t2의 순서는 상관 없다)
+      System.out.println("Equal");
+    }
+    /* NullPointerException
+    if (t2.equals(t1)) { 
+      System.out.println("Equal");
+    }
+    */
+
+    boolean test = safetyEquals.nullSafetyEqualss(null,null); // 반환형이 boolean이므로 null을 비교해도 true
+
+    System.out.println(test);
+
+    System.out.println(safetyEquals.nullSafetyEqualss(null,1)); // 이것 또한 가능하다.
+  }
+}
+----
