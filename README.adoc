@@ -89,6 +89,11 @@ link:http://bs-development.tistory.com/[블로그]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Javascript/javascriptBasic/Basic_js.adoc[자바스크립트기본]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Javascript/flowControl/flowControl_js.adoc[조건문과 반복문]
 
+== Typescript
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Typescript/typescript-inversify.adoc[Inversify]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Typescript/typescript-project-preference.adoc[Typescript 프로젝트 설정 및 CI 설정]
+
 == Node.js
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Nodejs/Node-js-server.adoc[HTTP,TCP 서버와 클라이언트 만들기]
@@ -101,5 +106,4 @@ link:http://bs-development.tistory.com/[블로그]
 == Basic
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/FrameworkVsLibray.adoc[프레임워크와 라이브러리 차이점]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/typescript-project-preference.adoc[Typescript 프로젝트 설정 및 CI 설정]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
