@@ -1,0 +1,96 @@
+= OpenJDK Download
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.02.09
+:Revision: 1.0
+:imagesdir: ./img
+
+JDK는 2개 버전으로 나뉜다. 하나는 폐쇄적인 상업 코드 기반의 Oracle JDK이고 하나는 오픈 소스 기반의 OpenJDK이다.
+
+Oracle의 Java JDK가 유료로 바뀔거라는 얘기가 나와 OpenJDK로 사용하는 개발자들이 늘어났다.
+
+이 글에서는 오픈소스 기반의 OpenJDK 설치 방법에 대해서 살펴본다.
+
+이 글은 OS X에서의 기준으로 작성했고, IDE는 IntelliJ를 사용한다.
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+우선 기존의 Java를 모두 제거한다.
+
+brew로 설치를 했을 경우엔
+
+----
+$ brew cask uninstall java
+----
+
+위 명령어를 통해 삭제하거나, brew를 통해 설치하지 않았을 경우엔 link:http://osxdaily.com/2017/06/16/uninstall-java-mac/[여기]에 나오는 방법으로 다음과 같이 삭제하면 된다.
+
+----
+sudo rm -rf "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin"
+
+sudo rm -rf "/Library/PreferencePanes/JavaControlPanel.prefPane"
+
+sudo rm -rf "~/Library/Application Support/Java"
+----
+
+[TIP]
+====
+여기서 알아두어야할 문제,
+
+jdk 버전 중에서 10버전을 사용하고 싶을 경우엔 intelliJ의 버전이 2018.* 이어야 한다.
+
+필자는 2017.2에서 jdk를 추가하려고 하였을 때 계속해서 오류가 발생하였다.
+====
+
+다음으로는 OpenJDK를 다운받는 방법이다.
+
+----
+$ brew search zulu
+
+$ brew cask install zulu zulu8
+----
+
+만약 zulu8이 설치되지 않을 경우
+
+----
+$ brew search zulu8
+homebrew/cask-versions/zulu8
+----
+
+위와 같이 나타날 것이다.
+
+----
+$ brew cask install homebrew/cask-versions/zulu8
+----
+
+위의 명령어를 실행하면 zulu8도 다운로드가 된다.
+
+여기서 zulu는 현재 나와있는 OpenJDK의 버전 중에서 가장 최신을 다운로드 하는 것이고, zulu8은 자바 1.8 버전을 다운로드 하는 것이다.
+
+이제 다운로드를 끝냈으면 .bash_profile 파일을 수정하여 alias 설정을 해준다.
+
+.(.bash_profile) file
+----
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:$JAVA_HOME"
+
+alias setJava8='export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)'
+alias setJava10='export JAVA_HOME=$(/usr/libexec/java_home -v 10)'
+----
+
+작성을 모두 했으면,
+
+----
+$ source .bash_profile
+----
+
+위의 명령어를 실행한다.
+
+이제 alias 설정을 해놓았으므로 setJava8, setJava10을 통해 Java의 버전을 변경할 수 있다.
+
+마지막으로는 IntelliJ에서 Project Structure에서 jdk를 추가해주면 된다.
