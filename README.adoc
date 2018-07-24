@@ -37,6 +37,7 @@ link:http://bs-development.tistory.com/[블로그]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/java_8_Download_Tutorial.adoc[Java 8 다운로드 및 환경변수 설정]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/equals()_method.adoc[equals() 메소드 사용 팁]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/Bean-Validation-Tutorial.adoc[Bean 검증]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Java/open-jdk-download.adoc[OpenJDK 다운로드]
 
 == Kotlin
 
