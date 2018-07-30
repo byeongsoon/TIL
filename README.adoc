@@ -43,6 +43,7 @@ link:http://bs-development.tistory.com/[블로그]
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/01-what-is-spring.adoc[1강 - 스프링이란?]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/02-creating-spring-priject.adoc[2강 - 스프링 프로젝트 만들기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/03-DI(Dependency-Injection-1).adoc[3강 - DI(Dependency Injection) (1)]
 
 == Kotlin
 
