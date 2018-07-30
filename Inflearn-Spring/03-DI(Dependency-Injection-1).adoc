@@ -1,0 +1,199 @@
+= 3강 DI(Dependency Injection) (1)
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.07.30
+:Revision: 1.0
+
+인프런 '신입 프로그래머를 위한 자바 스프링(Spring) 프레임워크 강좌’
+
+* 스플링을 이용한 객체 생성과 조립
+* 스프링 설정 파일의 이해
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+==== 강의 전 복습
+
+* DI
+** A라는 객체가 있는데 B/C라는 객체에 의존하고 이용한다.
+
+** B/C 객체를 이용하는데 두 가지 방법이 있다.
+*** 방법 1) A객체 안에서 new를 이용해서 B/C 객체를 직접 생성한다.
+*** 방법 2) A객체 외부에서 B/C객체를 만들어서 setter(), construct()를 통해서 넣어준다.
+
+** 스프링은 방법 2를 이용한다.
+
+==== 3-1 스프링을 이용한 객체 생성과 조립
+
+'스프링 = 생성과 조립'이라고 해도 과언이 아니다.
+
+지난 시간에 살펴본 예제는 스프링의 특징(사용법)이 적용되지 않은 프로젝트였다.
+
+이번 시간에는 스프링의 특징을 적용하여 스프링과 좀 더 친근해 질 수 있는 시간을 갖도록 한다.
+
+강의에는 나오지 않지만 porm.xml 파일을 먼저 설정을 해주어야 한다.
+아마 이클립스의 스프링 프로젝트에서는 자동으로 완성되나보다.
+
+IntelliJ에서도 스프링으로 프로젝트를 생성한다면 필요없는 작업일 것이다.
+
+.porm.xml
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>wisoft.io</groupId>
+    <artifactId>inflearn-spring</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.1.0.RELEASE</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>10</source>
+                    <target>10</target>
+                    <encoding>utf-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+----
+
+.스프링을 사용하지 않은 프로젝트(spring-03-ex01)
+[source, java]
+----
+public static void main(String[] args) {
+  MyCalculator myCalculator = new MyCalculator();
+  myCalculator.setCalculatortr(new Calculator);
+
+  myCalculator.setFirstNum(10);
+  myCalculator.setSecondNum(2);
+
+  myCalculator.add();
+  myCalculator.sub();
+  myCalculator.mult();
+  myCalculator.div();
+}
+----
+
+.스프링이 적용된 프로젝트(spring-03-ex02)
+[source, java]
+----
+public static void main(String[] args) {
+  String configuration = "classpath:applicationCTX.xml";
+  AbstracApplicationContext ctx = new GenericXmlApplicationContext(configuration);
+  MyCalculator myCalculator = ctx.getBean("myCalculator", MyCalculator.class);
+
+  myCalculator.add();
+  myCalculator.sub();
+  myCalculator.mult();
+  myCalculator.div();
+}// Spring의 DI 방식이 적용된 방법
+----
+
+예제 코드는 link:https://github.com/ByeongSoon/inflearn-spring-for-junior-developer/tree/master/spring-03-ex02/src/main/java/wisoft/io[여기]를 참조하길 바란다.
+
+* applicationCTX.xml 파일이 있다.
+** bean은 객체 하나하나를 bean이라고 생각하면 된다.
+*** bean의 id는 유니크한 값으로 고유 값이다.
+*** bean의 class는 실제로 어떠한 타입인지를 명시한다.
+
+** <property>는 필드에 있는 이름과 name을 맞춰줘야 한다.
+*** <ref>의 bean은 어떤 bean 객체를 참조할 것이지 적는 것이다.
+**** 다른 bean의 id값을 넣어준다.
+** <property>는 setter()를 이용한 주입 방법이다.
+
+.applicationCTX.xml
+[source, xml]
+----
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="calculator" class="wisoft.io.Calculator" />
+
+    <bean id="myCalculator" class="wisoft.io.MyCalculator">
+        <property name="calculator">
+            <ref bean="calculator" />
+        </property>
+        <property name="firstNum" value="10" />
+        <property name="secondNum" value="2" />
+    </bean>
+
+</beans>
+----
+
+스프링 config 파일을 만들 때, resources에서 오른쪽 마우스를 누른 후
+new -> XML Configuration File -> Spring Config를 누른다.
+
+==== 3-2 스프링 설정 파일의 이해
+
+스프링을 학습하는데 첫 단계는 스프링 설정 파일의 이해이다.
+
+* applicationCTX.xml 파일이 있다.
+** bean은 객체 하나하나를 bean이라고 생각하면 된다.(객체 생성)
+*** bean의 id는 유니크한 값으로 고유 값이다.(변수설정)
+*** bean의 class는 실제로 어떠한 타입인지를 명시한다.
+**** 클래스 이름만 작성하면 안되고 패키지 이름까지 포함한 풀네임을 적어줘야 한다.
+
+** <property>는 필드에 있는 이름과 name을 맞춰줘야 한다.(필드설정)
+*** <ref>의 bean은 어떤 bean 객체를 참조할 것이지 적는 것이다.
+**** 다른 bean의 id값을 넣어준다.
+
+** <property>는 setter()를 이용한 주입 방법이다.
+*** setter()가 없으면 안된다. 먼저 setter()를 작성한다.
+*** name 속성은 setter()에서 'set + 앞글자 대문자'인 규칙이다.
+
+.스프링설정 -> Java 소스
+[source, java]
+----
+// applicationCTX.xml 일부
+<bean id="myCalculator" class="wisoft.io.MyCalculator">
+    <property name="calculator">
+        <ref bean="calculator" />
+    </property>
+    <property name="firstNum" value="10" />
+    <property name="secondNum" value="2" />
+</bean>
+
+// MyCalculator.java 일부
+public void setCalculator(Calculator calculator) {
+  this.calculator = calculator;
+}
+
+public void setFirstNum(int firstNum) {
+  this.firstNum = firstNum;
+}
+
+public void setSecondNum(int secondNum) {
+  this.secondNum = secondNum;
+}
+----
+
+==== 정리
+
+* 항상 스프링 설정 파일과 Java 코드를 함께 보면서 필드 이름에 맞춰서 작성해야한다.
+* 어떠한 클래스가 필요할 때 new를 이용해서 생성할 수 있지만 좋은 방법이 아니다.
+* 스프링 설정을 통해서 객체를 주입하고 조립해 나가는 방법을 이용해야 한다.
