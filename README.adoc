@@ -42,6 +42,7 @@ link:http://bs-development.tistory.com/[블로그]
 == Inflearn-Spring
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/01-what-is-spring.adoc[1강 - 스프링이란?]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/02-creating-spring-priject.adoc[2강 - 스프링 프로젝트 만들기]
 
 == Kotlin
 
