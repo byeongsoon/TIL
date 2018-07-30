@@ -3,12 +3,12 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon@wisoft.io
-:Date: 2018.07.26
+:Date: 2018.07.30
 :Revision: 1.0
 
 인프런 '신입 프로그래머를 위한 자바 스프링(Spring) 프레임워크 강좌’
 
-* 이클립스에 스프링 플러그인 설치(STS)
+* 이클립스에 스프링 플러그인 설치(STS) - IntelliJ 사용자는 해당사항 없음.
 * 처음 만들어 보는 스프링 프로젝트
 * DI(Dependency Injection)와 IoC컨테이너
 
@@ -140,6 +140,8 @@ A객체는 B/C객체에 의존 한다.
 A라는 객체에서 B라는 객체가 필요하다.
 
 A객체의 setter()를 통해서,
+
+[source, java]
 ----
 class A {
   B b;
