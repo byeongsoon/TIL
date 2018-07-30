@@ -1,0 +1,165 @@
+= 2강 스프링 프로젝트 만들기
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.07.26
+:Revision: 1.0
+
+인프런 '신입 프로그래머를 위한 자바 스프링(Spring) 프레임워크 강좌’
+
+* 이클립스에 스프링 플러그인 설치(STS)
+* 처음 만들어 보는 스프링 프로젝트
+* DI(Dependency Injection)와 IoC컨테이너
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+==== 2-1 이클립스에 스프링 플로그인 설치(Spring Tool Suite)
+
+Help -> Eclipse Marketplace -> Find: STS -> Sprint Tool Suite Install
+
+설치가 완료되면 이클립스를 재부팅한다고 나온다.
+
+하지만 필자는 JetBrain사의 IntelliJ를 사용하기 때문에 이 과정은 생략했다.
+
+==== 2-2 처음 만들어 보는 스프링 프로젝트
+
+프로그래밍 언어를 처음 접할 때는 최대한 쉽게 접근해야 한다.
+
+처음부터 많은 내용과 깊이 내용을 학습하여 하다 보면, 잘못된 학습으로 이어질 수 있으며, 조기에 지쳐서 합슥에 흥미를 잃어 버릴 수 있다.
+
+스프링을 최대한 쉽게 접근하려는 또다른 의도는 기초부분에 대한 학습이 튼튼하게 되면, 추후에 스스로 스프링 레퍼런스 문서들을 참고로 해서 스스로 학습할 수 있기 때문이다.
+
+* 스프링 프로젝트 생성하기(IntelliJ 기준)
+** Create New Project
+** Maven -> jdk 버전은 OpenJDK 10버전을 사용했다.
+** groupID, artifactId를 작성하고 완료한다.
+
+* src/main/java/{packageName}/MainClass.java 생성
+
+[source, java]
+----
+package wisoft.io;
+
+public class MainClass {
+  public static void main(String[] args) {
+
+  }
+}
+----
+
+* src/main/java/{packageName}/Calculation.java 생성
+
+[source, java]
+----
+package wisoft.io;
+
+public class Calculation {
+
+  private int firstNum;
+  private int secondNum;
+
+  public int getFirstNum() {
+    return firstNum;
+  }
+
+  public int getSecondNum() {
+    return secondNum;
+  }
+
+  public void setFirstNum(int firstNum) {
+
+    this.firstNum = firstNum;
+  }
+
+  public void setSecondNum(int secondNum) {
+    this.secondNum = secondNum;
+  }
+
+  public void add() {
+    System.out.println("add()");
+    System.out.println(firstNum+ "+" + secondNum + " = " + (firstNum+secondNum));
+  }
+
+  public void sub() {
+    System.out.println("sub()");
+    System.out.println(firstNum+ "-" + secondNum + " = " + (firstNum-secondNum));
+  }
+
+  public void mult() {
+    System.out.println("mult()");
+    System.out.println(firstNum+ "x" + secondNum + " = " + (firstNum*secondNum));
+  }
+
+  public void div() {
+    System.out.println("div()");
+    System.out.println(firstNum+ "/" + secondNum + " = " + (firstNum/secondNum));
+  }
+
+}
+----
+
+간단한 스프링 프로젝트를 만들어 보았다.
+
+스프링 기법들이 적용 안되어 스프링 프로젝트라고 하기에는 많이 부족하다.
+
+프로젝트를 생성하는 방법에 대해서 살펴보았으니, 앞으로는 스프링이라는 프로그래밍틀의 특징(사용법)을 하나씩 보도록 한다.
+
+==== 2-3 DI(Dependency Injection)와 IOC컨테이너
+
+* "스프링은 IOC컨테이너다." 이렇게 생각을 해도 될 것 같다.
+* DI와 IOC컨테이너가 제일 중요하다.
+
+객체를 생성할 때 한 객체안에 여러 개의 객체를 생성도 할 수 있고, 가져와서 사용할 수도 있다.
+
+====
+A객체는 B/C객체에 의존 한다.
+
+위 예제에서 보면 MainClass에서 직접 사칙연산을 한것이 아니라 Calculation에서 사칙연산을 하고있다.
+
+한 객체가 어떤 다른 객체에게 작업을 맡겨서 진행하는 것을 의존한다고 말한다.
+
+다른 객체를 이용할 때 두 가지 방법이 있다.
+
+* 방법1) A객체가 B/C객체를 직접 생성한다.
+** 직접 new를 이용하여 직접 생성
+
+* 방법2) B/C객체 외부에 새 생성하여 A객체에 넣어 준다.
+** setter() or construct()를 이용해서 삽입 해준다.
+** 직접 생성하지 않고 필드를 만들어 놓은 다음에 필드에 대해서 setter(), construct()를 통해 매개변수로 받아서 로컬 필드에 객체를 넣어 준다.
+** 외부에서 생성해서 넣어주는 것이다.
+====
+
+방법 2가 프로그래밍 관점적으로 더 좋다고 하고, 스프링에서도 방법 2를 채택하여 사용하고 있다.
+이렇게 외부에서 의존하는 객체를 주입해주는것이 스프링 기법이다.
+
+====
+A라는 객체에서 B라는 객체가 필요하다.
+
+A객체의 setter()를 통해서,
+----
+class A {
+  B b;
+  public void setB(B b) {
+    this.b = b;
+  }
+}
+----
+
+====
+
+* 객체를 부품화해서 담고 있는 것이 IOC 컨테이너라고 할 수 있다.
+
+* 이 부품을 담는 컨테이너와 의존 주입을 하는 객체까지가 모두 합쳐서 스프링이라고 할 수 있다.
+
+* 결국 스프링이란?
+** 부품을 생성하고 조립하는 라이브러리 집합체 라고 할 수 있다.
+** 앞으로 이렇게 조립하는 방법에 대해서 살펴볼 것이다.
+
+==== 결론
+
+* STS 설치, 프로젝트 생성은 어렵지 않다.
+* DI(Dependency Injection), IOC 컨테이너는 확실하게 알아두고 넘어가면 좋겠다.
