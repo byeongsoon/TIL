@@ -1,0 +1,194 @@
+= 5강 DI 활용
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.08.01
+:Revision: 1.0
+
+인프런 '신입 프로그래머를 위한 자바 스프링(Spring) 프레임워크 강좌’
+
+* 의존 관계
+* DI사용에 따른 장점
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+|===
+|===
+
+==== 충고
+
+* 스프링의 학습이 0부터 100까지 있다고 하면, 현재는 엄청 천천히 진도를 나가는중.
+그 이유는 기초를 튼튼하게 잡아야 나중에 가속도를 받아서 빠르게 학습해 나갈 수 있다.
+
+* 처음에 건성건성, 띄엄띄엄 학습해 나가면 나중에 포기하는 현상이 일어날 수도 있다.
+
+* 5강까지의 내용을 잘 정리하고 이해해두길 바란다.
+
+==== 5-1 의존 관계
+
+DI는 Dependency Injection의 약자로 우리말로 하면 '의존 주입'이다.
+
+예제를 통해 '의존 주입'이 무엇인지 살펴본다.
+
+* DI에는 두가지 방법이 존재한다.
+** 생성자()를 사용하는 방법.(아직 학습하지 않음.)
+*** <constructor-arg>태그 내부의 <value> 태그를 사용.
+*** <constructor-arg value="홍길동">와 같은 방식으로 사용.
+** setter()를 사용하는 방법
+*** <property name"name">태그 내부의 <value> 태그를 사용.
+*** <property name"name" value="홍길동">와 같은 방식으로 사용.
+
+* bean 객체는 xml 파일형식과 java code로도 구현이 가능하다.
+
+예제 소스를 통해 의존 주입이 무엇인지 살펴본다.
+새롭게 나온 개념인 생성자()를 사용하는 방법을 사용한다.
+
+.Student.java
+[source, java]
+----
+package wisoft.io;
+
+public class Student {
+
+  private String name;
+  private String age;
+  private String gradeNum;
+  private String classNum;
+
+  public Student(String name, String age, String gradeNum, String classNum) {
+    this.name = name;
+    this.age = age;
+    this.gradeNum = gradeNum;
+    this.classNum = classNum;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getAge() {
+    return age;
+  }
+
+  public void setAge(String age) {
+    this.age = age;
+  }
+
+  public String getGradeNum() {
+    return gradeNum;
+  }
+
+  public void setGradeNum(String gradeNum) {
+    this.gradeNum = gradeNum;
+  }
+
+  public String getClassNum() {
+    return classNum;
+  }
+
+  public void setClassNum(String classNum) {
+    this.classNum = classNum;
+  }
+}
+
+----
+
+.StudentInfo.java
+[source, java]
+----
+package wisoft.io;
+
+public class StudentInfo {
+
+  private Student student;
+
+  public StudentInfo(Student student) {
+    this.student = student;
+  }
+
+  public void getStudentInfo() {
+    if (student != null) {
+      System.out.println("이름 : " + student.getName());
+      System.out.println("나이 : " + student.getAge());
+      System.out.println("학년 : " + student.getGradeNum());
+      System.out.println("반 : " + student.getClassNum());
+      System.out.println("================================");
+    }
+  }
+
+  public void setStudent(Student student) {
+    this.student = student;
+  }
+}
+
+----
+
+.MainClass.java
+[source, java]
+----
+package wisoft.io;
+
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+
+public class MainClass {
+
+  public static void main(String[] args) {
+    String configLocation = "classpath:applicationCTX.xml";
+    AbstractApplicationContext ctx = new GenericXmlApplicationContext(configLocation);
+    StudentInfo studentInfo = ctx.getBean("studentInfo", StudentInfo.class);
+
+    studentInfo.getStudentInfo();
+
+    Student student2 = ctx.getBean("student2", Student.class);
+    studentInfo.setStudent(student2);
+    studentInfo.getStudentInfo();
+
+    ctx.close();
+  }
+}
+
+----
+
+.applicationCTX.xml
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="student1" class="wisoft.io.Student">
+        <constructor-arg>
+            <value>홍길동</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>10살</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>3학년</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>10번</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="student2" class="wisoft.io.Student">
+        <constructor-arg value="홍길은"/>
+        <constructor-arg value="9살"/>
+        <constructor-arg value="2학년"/>
+        <constructor-arg value="20번"/>
+    </bean>
+
+    <bean id="studentInfo" class="wisoft.io.StudentInfo">
+        <constructor-arg>
+            <ref bean="student1"/>
+        </constructor-arg>
+    </bean>
+</beans>
+----
