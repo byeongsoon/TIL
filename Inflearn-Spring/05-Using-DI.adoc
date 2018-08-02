@@ -3,7 +3,7 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon@wisoft.io
-:Date: 2018.08.01
+:Date: 2018.08.02
 :Revision: 1.0
 
 인프런 '신입 프로그래머를 위한 자바 스프링(Spring) 프레임워크 강좌’
@@ -24,6 +24,50 @@ Byeongsoon Jang<byeongsoon@wisoft.io>
 * 처음에 건성건성, 띄엄띄엄 학습해 나가면 나중에 포기하는 현상이 일어날 수도 있다.
 
 * 5강까지의 내용을 잘 정리하고 이해해두길 바란다.
+
+==== 프로젝트 설정
+
+IntelliJ에서 maven으로 프로젝트를 만들면 스프링에 대한 설정을 해주어야 한다.
+
+다음의 xml 파일은 기본적인 스프링 사용과 자바의 버전을 명시하고 있다.
+
+.porm.xml
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>wisoft.io</groupId>
+    <artifactId>spring-inflearn</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.1.0.RELEASE</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <target>10</target>
+                    <source>10</source>
+                    <encoding>utf-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+----
 
 ==== 5-1 의존 관계
 
@@ -192,3 +236,107 @@ public class MainClass {
     </bean>
 </beans>
 ----
+
+==== 5-2 DI 사용에 따른 장점
+
+아직은 스프링의 DI사용에 따른 장점을 많이 느끼지 못할 수 있다.
+또는 DI를 사용하니 더욱 복잡하고 시간이 더 많이 소요된다고 생각할 수 있다.
+
+사실 작은 규모의 프로젝트에서는 스프링의 DI를 사용하는 것 보다 일반적인 방법을 사용하여 개발하는 것이 더욱 빠르고,
+개발에 따른 스트레스를 줄일 수 있다.
+
+하지만 규모가 어느정도 커지고, 추후 유지보수 업무가 발생시에는 DI를 이용한 개발의 장점을 느낄 수 있다.
+
+스프링 DI 사용에 따른 장점을 예제를 통해 살펴 본다.
+
+* Java 파일의 수정 없이 스프링 설정 파일만을 수정하여 부품들을 생성/조립 한다.
+
+.Pencil.java
+[source, java]
+----
+package wisoft.io;
+
+public interface Pencil {
+  public void use();
+}
+----
+
+.Pencil4B.java
+[source, java]
+----
+package wisoft.io;
+
+public class Pencil4B implements Pencil{
+  @Override
+  public void use() {
+    System.out.println("4B 굵기로 쓰이고 있습니다.");
+  }
+}
+----
+
+.Pencil6B.java
+[source, java]
+----
+package wisoft.io;
+
+public class Pencil6B implements Pencil {
+  @Override
+  public void use() {
+    System.out.println("6B굵기로 쓰이고 있습니다.");
+  }
+}
+----
+
+.Pencil6BWithEraser.java
+[source, java]
+----
+package wisoft.io;
+
+public class Pencil6BWithEraser implements Pencil {
+  @Override
+  public void use() {
+    System.out.println("6B굵기로 쓰이고, 지우개가 있습니다.");
+  }
+}
+----
+
+.MainClass.java
+[source, java]
+----
+package wisoft.io;
+
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+
+public class MainClass {
+  public static void main(String[] args) {
+
+    String configLocation = "classpath:applicationCTX.xml";
+    AbstractApplicationContext ctx = new GenericXmlApplicationContext(configLocation);
+    Pencil pencil = ctx.getBean("pencil", Pencil.class);
+
+    pencil.use();
+
+    ctx.close();
+  }
+}
+----
+
+소스코드는 위와 같고 이제 스프링 설정파일인 applicationCTX.xml을 통해서 Java 코드의 변경없이 결과가 변하는 것을 확인해 볼 수 있다.
+
+.applicationCTX.xml
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<bean id="pencil" class="wisoft.io.Pencil4B" />-->
+    <!--<bean id="pencil" class="wisoft.io.Pencil6B" />-->
+    <bean id="pencil" class="wisoft.io.Pencil6BWithEraser" />
+</beans>
+----
+
+* <bean> 태그에서 class 속성만 변경해주면 결과가 달라지는 것을 볼 수 있다.
+* interface를 활용하여 코드의 수정을 용이하게 만들수 있다는 것을 볼 수 있다.
