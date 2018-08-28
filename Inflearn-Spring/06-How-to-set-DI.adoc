@@ -1,0 +1,17 @@
+= 6강 DI 설정 방법
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon@wisoft.io
+:Date: 2018.08.23
+:Revision: 1.0
+
+인프런 '신입 프로그래머를 위한 자바 스프링(Spring) 프레임워크 강좌’
+
+* XML 파일을 이용한 DI설정 방법
+* JAVA를 이용한 DI설정 방법
+* XML과 JAVA를 같이 사용
+
+Byeongsoon Jang<byeongsoon@wisoft.io>
+
+---
