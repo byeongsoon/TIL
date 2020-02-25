@@ -1,0 +1,102 @@
+= 1~3장. 자바 시작하기, 변수와 타입, 연산자
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: qudtns1223@gmail.com
+:Date: 2020.02.25
+:Revision: 1.0
+:imagesdir: ./img
+
+
+책 '이것이 자바다 - 신용권'를 학습하면서 기억해두면 좋은점을 기록한다.
+
+여러번 보면서 놓쳤던 부분들을 체크하며, 기본에 충실한다.
+
+Byeongsoon Jang<qudtns1223@gmail.com>
+
+---
+
+=== 1장. 자바 시작하기
+
+====
+* 자바는 객체지향 언어
+* 함수적 스타일 코딩을 지원
+* 메모리를 자동으로 관리한다.
+** 객체 생성 시 자동적으로 메모리 영역을 찾아서 할당하고, 사용이 완료되면 Garbage Collector를 실행시켜 자동적으로 사용하지 않는 객체를 제거
+* 다양한 Application을 개발할 수 있다.
+* Multi-Thread를 쉽게 구현
+* 오픈소스 라이브러리가 풍부
+====
+
+Java는 JVM(Java Virtual Machine)를 통하여 실행된다.
+
+'.java' 파일은 컴파일러(javac.exe)를 통해 '.class' 파일로 변환되고 각 운영체제에 맞게 JVM(java.exe)에서 기계어로 번역하여 실행시켜준다.
+
+[source, java]
+----
+public class className {
+  public static void main(String[] args) {
+    System.out.println("Hello, World!");
+  }
+}
+----
+
+Java의 기본 구성이다.
+
+---
+
+=== 2장. 변수와 타입
+
+====
+변수란, 하나의 값을 저장할 수 있는 메모리 공간이다.
+
+* 작성규칙
+** 첫 번째 글자는 문자이거나 '$', '_'이어야 하고 숫자로 시작할 수 없다.(필수)
+** 영어 대소문자가 구분된다.
+** 자바 예약어는 사용할 수 없다.
+*** boolean, byte, char, short, int, long, float, double 등
+** 개발자는 변수 이름을 보고 어떤 의미를 갖는지 쉽게 알 수 있도록 이름이 지어야 한다.
+
+* 변수는 선언된 블럭 내에서만 사용이 가능하다.
+
+* 데이터 타입
+** 정수형
+*** byte, char, short, int, long
+** 실수형
+*** float, double
+** 논리형
+*** boolean
+
+* char형 변수는 초기화를 할 때, 빈(empty) 문자를 대입하여야 한다.
+----
+char test = ' ';
+----
+* 큰 크기의 타입에 작은 크기의 타입을 대입(저장)하면 자동 타입 변환(Promotion)이 일어난다.
+
+====
+
+---
+=== 3장. 연산자
+
+====
+Java에서는 다양한 연산자를 제공하고 있다.
+
+산술, 부호, 문자열 연결, 대입, 증감, 비교, 논리, 조건, 비트 등
+====
+
+증감연산자의 경우 피연산자의 앞에 붙어 있으면 해당 값을 증감 시키고 다른연산을 수행한다.
+
+반대로, 뒤에 붙어 있을경우 다른 연산을 수행한 후에 피연산자의 값을 증감한다.
+
+정수 타입 연산 중 long을 제외한 정수 타입 연산은 int 타입으로 결과가 산출된다.
+
+[source, java]
+----
+byte byte1 = 1;
+byte byte2 = 1;
+byte byte3 = byte1 + byte2; // 컴파일 에러
+
+int result = byte1 + byte2;
+----
+
+정수 타입 연산의 결과가 int 타입으로 나오는 이유는 JVM이 기본적으로 32비트 단위로 계산하기 때문이다.
