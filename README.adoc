@@ -3,8 +3,8 @@ Today I Learned
 
 :icons: font
 :Author: Byeongsoon Jang
-:Email: byeongsoon@wisoft.io
-:Date: 2020.02.18
+:Email: qudtns1223@gmail.com
+:Date: 2020.02.25.
 :Revision: 2.0
 
 실력있는 개발자가 되기 위해 매일 학습한 내용이나 개발에 관련된 간단한 기록을 남긴다.
@@ -13,7 +13,9 @@ Today I Learned
 
 Restarting on February 18, 2020.
 
-Byeongsoon Jang<byeongsoon@wisoft.io>
+'생각을 바꿔라. 그러면 세상을 바꾼다.  - 스튜어트 B.존슨'
+
+Byeongsoon Jang<qudtns1223@gmail.com>
 
 |===
 |===
@@ -33,6 +35,10 @@ Byeongsoon Jang<byeongsoon@wisoft.io>
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/equals()_method.adoc[equals() 메소드 사용 팁]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/Bean-Validation-Tutorial.adoc[Bean 검증]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/open-jdk-download.adoc[OpenJDK 다운로드]
+
+===== ThisIsJava
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter01-03.adoc[1-3장. 자바 시작하기, 변수와 타입, 연산자]
 
 == Inflearn-Spring
 
@@ -87,11 +93,6 @@ Byeongsoon Jang<byeongsoon@wisoft.io>
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/JumpCase.adoc[멀리 뛰기]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NextBigNumber.adoc[다음 큰 숫자]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Expressions.adoc[숫자의 표현]
-
-== Javascript
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/Javascript/javascriptBasic/Basic_js.adoc[자바스크립트기본]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Javascript/flowControl/flowControl_js.adoc[조건문과 반복문]
 
 == Typescript
 
