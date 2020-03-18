@@ -110,6 +110,7 @@ Byeongsoon Jang<qudtns1223@gmail.com>
 
 == Basic
 
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/VirtualBox_Ubuntu.adoc[VirtualBox를 이용한 Ubuntu환경 만들기]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/FrameworkVsLibray.adoc[프레임워크와 라이브러리 차이점]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/TDDandDDD.adoc[TDD와DDD]
