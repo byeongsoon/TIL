@@ -118,7 +118,7 @@ Byeongsoon Jang<qudtns1223@gmail.com>
 
 == Linux
 
-
+** link:https://github.com/ByeongSoon/TIL/blob/master/Linux/LAMP-Server.adoc[미디어위키 서버 구축하기]
 
 == Basic
 
