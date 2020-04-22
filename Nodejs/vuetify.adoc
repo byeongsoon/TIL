@@ -1,0 +1,13 @@
+npm install -g @vue/cli
+653  brew install node
+654  brew upgrade node
+vue create mobius-ui
+cd mobius-ui
+code .
+
+이후 들어가서
+
+npm run serve
+vue add vuetify
+
+vutifyjs 검색하면 layout 제공
