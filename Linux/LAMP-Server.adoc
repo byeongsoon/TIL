@@ -3,48 +3,69 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: qudtns1223@gmail.com
-:Date: 2020.4.20.
+:Date: 2020.4.23.
 :Revision: 1.0
 :imagesdir: ./image
 
-우분투에서 오픈소스 위키엔진인 미디어 위키 서버 구축하기
+우분투에서 오픈소스 위키엔진인 미디어위키 서버 구축하기
+
+미디어위키 서버를 구축하면서 전체 웹서버의 3분의 2를 차지하는 리눅스의 웹서버에 대해서 학습한다.
+
+생각보다 간단하게 명령어를 따라하면서 해볼 수 있는 실무형 학습으로 처음 접하는 이들도 쉽게 따라할 수 있다.
 
 
 Byeongsoon Jang<qudtns1223@gmail.com>
 
 ---
 
-VirtualBox에서 네트워크 설정을 어댑터에 브릿지로 변경하고 ssh 접속을 위해 어댑터2번을 호스트전용 어댑터로 바꾸고 vboxnet0을 선택해준다.
+VirtualBox에서 네트워크 설정을 어댑터에 브릿지로 변경하고
+ssh 접속을 위해 어댑터2번을 호스트전용 어댑터로 바꾸고 vboxnet0을 선택해준다.
+
+image::lamp01.png[어댑터에 브릿지,600]
+image::lamp02.png[어댑터2,600]
+
 그리고 ubuntu에서 ifconfig를 통해 ip주소를 알아내어 호스트에서 원격 접속을 시도한다.
 
-image::lamp01.png[어댑터에 브릿지]
-image::lamp02.png[어댑터2]
+image::lamp14.png[ifconfig]
 
-=== 1. CMS란
+192.168.0.8이나 192.168.99.100 모두 연결 가능하다.
 
+image::lamp15.png[ssh]
+
+=== 1. CMS(Contents Management System)란
+
+사실 웹사이트를 만드는데 있어서 CMS는 절대 필수 조건은 아니다.
+
+코드를 직접 구현하여 웹사이트를 만들 수 있지만,
+CMS를 이용하면 웹사이트의 다양한 리소스 및 컨텐츠, 데이터를 보다 쉽게 관리할 수 있다.
+
+특히 웹사이트와 관련된 지식이 없거나, 이제 시작하는 초보자들에게 CMS를 이용해 웹사이트 만들기를 추천한다.
+
+====
 Apache와 Mysql, PhP를 한번에 다운받을 수 있는 명령어도 존재한다.
 ----
 # sudo apt install lamp-server^
 //^(캐럿) :
 ----
-
 하지만 우분투 환경에서 웹서버에 필요한 요소들을 하나씩 설치하고 설정해 나가면서 직접 서버를 구축하는 방법을 학습한다.
+====
 
 === 2. Apache 다운로드 설정
 
 ----
-# sudo apt update
-# sudo apt upgrade -y
-# sudo apt install apache2
+# sudo apt update && sudo apt upgrade -y
+# sudo apt install apache2 // 아파치 설치
+
 
 # cd /etc/apache2sites-available
-# cat 000-default.conf
+# cat 000-default.conf // DocumentRoot를 확인하기 위함.
 ----
 
 아래 이미지에 보이는 것처럼 /var/www/html이라는 디렉토리가 DocumentRoot란걸 알 수 있다.
 ====
 DocumentRoot란?
-
+DOCUMENT_ROOT는 웹 상에서 최상위 폴더가 되는 OS 상의 절대경로를 말한다.
+실제로 DOCUMENT_ROOT라는 이름의 폴더가 있는 것은 아니다. 환경변수(설정값)라고 생각하면 된다.
 ====
 
 image::lamp03.png[DocumentRoot]
@@ -52,20 +73,29 @@ image::lamp03.png[DocumentRoot]
 === 3. SQL DataBase 설치하기
 
 ----
-# sudo apt install mariadb-server -y
-# systemctl status mysql
+# sudo apt install mariadb-server -y // mariaDB를 설치
+# systemctl status mysql // mariaDB도 linux에서는 mysql로 확인
 ----
 
 image::lamp04.png[status]
 
+mysql 상태를 확인하여 mariaDB.Service가 정상적으로 동작하는 것을 확인할 수 있다.
+
 ----
-# mysql_secure_installation // 보안강화하기
+# mysql_secure_installation
 // 여기서 sudo 권한이 필요하다면 이후에 처리해야 될 숙제가 있다.
 # mysql -u root -p // 여기서도 sudo 권한이 필요하다.
 ----
 
+mysql_secure_installation는 기본적인 보안 명령어이다. mysql 초기설치나 재설치 하는 경우에
+기본적으로 보안을 적용할 수 있는 명령어로 실행해주는 걸 추천한다.
+
+====
+
+* sudo 권한으로 mysql_secure_installation를 실행한경우
+
 ----
-// sudo 권한으로 mysql_secure_installation를 실행한경우
+
 MriaDB [(none)]> SET PASSWORD = PASSWORD('myPassword');
 MriaDB [(none)]> update mysql.user set plugin = 'mysql_native_password' where User='root';
 MriaDB [(none)]> FLUSH PRIVILEGES;
@@ -75,9 +105,13 @@ MriaDB [(none)]> FLUSH PRIVILEGES;
 
 image::lamp05.png[]
 image::lamp06.png[]
+====
 
 ----
-MriaDB [(none)]> CREATE DATABASE testdb;
+
+DataBase가 정상적으로 설치되었는지 확인해보자
+
+MriaDB [(none)]> CREATE DATABASE testdb; //DB 생성
 MriaDB [(none)]> use testdb;
 // use를 통해 DB를 사용하면 다음과 같이 프롬프트의 none이었던 부분이 DB이름으로 변경된다.
 MriaDB [(testdb)]> CREATE TABLE Contacts(
@@ -85,7 +119,7 @@ MriaDB [(testdb)]> CREATE TABLE Contacts(
   Name varchar(255),
   Address varchar(255),
   City varchar(255)
-);
+); // 테이블 생성
 MriaDB [(testdb)]> INSERT INTO Contacts(ID, Name, Address, City) VALUES ('01','Jang','123 Any st','Boeun');
 MriaDB [(testdb)]> SELECT * FROM Contacts;
 ----
@@ -94,11 +128,15 @@ MriaDB [(testdb)]> SELECT * FROM Contacts;
 
 image::lamp07.png[400,400]
 
-미디어 위키에 사용할 데이터베이스와 user를 생성하고 권한을 부여한다.
+미디어위키에서 사용할 DataBase와 User를 생성하고 권한을 부여한다.
 ----
 MriaDB [(none)]> CREATE DATABASE wikidb;
 MriaDB [(none)]> CREATE USER 'mw-admin'@'localhost' IDENTIFIED BY 'myPassword';
+//myPassword는 본인이 사용할 Password
+
 MriaDB [(none)]> GRANT ALL PRIVILEGES ON wikidb.* TO 'mw-admin'@'localhost' IDENTIFIED BY 'myPassword';
+// wikidb에 관한 모든 권한을 mw-admin에게
+
 MriaDB [(none)]> FLUSH PRIVILEGES;
 MriaDB [(none)]> exit;
 ----
@@ -106,7 +144,7 @@ MriaDB [(none)]> exit;
 === 4. php 설치하기
 
 ----
-# apt install php libapache2-mod-php -y
+# sudo apt install php libapache2-mod-php -y
 // php와 확장모듈 함께 설치
 
 # systemctl restart apache2
@@ -131,7 +169,7 @@ image::lamp08.png[phpinfo]
 
 지금까지 LAMP에 해당하는 각각의 패키지들을 설치하고 설정해보았다.
 
-이제는 이 학습의 목표인 미디어 위키를 설치하고 설정하겠다.
+이제는 이 학습의 목표인 미디어위키를 설치하고 설정하겠다.
 
 link:https://www.mediawiki.org/wiki/Download[미디어위키를 내려받는 페이지]에서 직접 다운로드 받던지 wget을 이용해서 다운로드 받는다.
 ----
@@ -171,7 +209,7 @@ image::lamp10.png[]
 
 apache를 한번만 더 재시작하고 브라우저 화면을 새로고침하면 문제가 해결된다.
 
-=== 6. DataBase에 미디어 위키 연결하기
+=== 6. DataBase에 미디어위키 연결하기
 
 이 창은 홈페이지에서 진행한다.
 
@@ -194,4 +232,10 @@ LocalSetting.php 파일을 DocumentRoot에 이동시킨 후 브라우저를 다�
 image::lamp12.png[]
 image::lamp13.png[]
 
+DataBase를 연결할 때 정보를 잘못 입력하더라도 LocalSetting.php을 수정하면 되므로 신경쓰지말고 넘어간다.ㄴ
+
 === 7. CentOS에 Apache Web-Server 설치방법
+
+위에서는 Ubuntu에서의 웹서버 구축을 알아보았다.
+
+CentOS에서는 패키시를 설치하는 방법이 조금 다르다.
