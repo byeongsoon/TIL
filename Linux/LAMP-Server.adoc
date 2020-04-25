@@ -3,8 +3,8 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: qudtns1223@gmail.com
-:Date: 2020.4.23.
-:Revision: 1.0
+:Date: 2020.4.25.
+:Revision: 1.1
 :imagesdir: ./image
 
 우분투에서 오픈소스 위키엔진인 미디어위키 서버 구축하기
@@ -17,6 +17,13 @@
 Byeongsoon Jang<qudtns1223@gmail.com>
 
 ---
+
+====
+미디어위키란,
+미디어위키(MediaWiki)는 자유 웹 기반 위키 소프트웨어이며, MySQL(MariaDB)과 PHP을 사용하고 GNU GPL 라이선스로 배포된다.
+
+이 프로그램은 현재 위키백과와 같은 위키미디어 재단의 여러 프로젝트에 사용되며, 다른 백과사전 형식의 위키에서도 많이 사용된다.
+====
 
 VirtualBox에서 네트워크 설정을 어댑터에 브릿지로 변경하고
 ssh 접속을 위해 어댑터2번을 호스트전용 어댑터로 바꾸고 vboxnet0을 선택해준다.
@@ -45,7 +52,6 @@ CMS를 이용하면 웹사이트의 다양한 리소스 및 컨텐츠, 데이터
 Apache와 Mysql, PhP를 한번에 다운받을 수 있는 명령어도 존재한다.
 ----
 # sudo apt install lamp-server^
-//^(캐럿) :
 ----
 하지만 우분투 환경에서 웹서버에 필요한 요소들을 하나씩 설치하고 설정해 나가면서 직접 서버를 구축하는 방법을 학습한다.
 ====
@@ -232,7 +238,7 @@ LocalSetting.php 파일을 DocumentRoot에 이동시킨 후 브라우저를 다�
 image::lamp12.png[]
 image::lamp13.png[]
 
-DataBase를 연결할 때 정보를 잘못 입력하더라도 LocalSetting.php을 수정하면 되므로 신경쓰지말고 넘어간다.ㄴ
+DataBase를 연결할 때 정보를 잘못 입력하더라도 LocalSetting.php을 수정하면 되므로 신경쓰지말고 넘어간다.
 
 === 7. CentOS에 Apache Web-Server 설치방법
 
