@@ -47,6 +47,12 @@ Byeongsoon Jang<qudtns1223@gmail.com>
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter01-03.adoc[1-3장. 자바 시작하기, 변수와 타입, 연산자]
 
+== Spring
+
+== SpringBoot
+
+== JPA
+
 == Inflearn-Spring
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/01-what-is-spring.adoc[1강 - 스프링이란?]
@@ -72,35 +78,13 @@ Byeongsoon Jang<qudtns1223@gmail.com>
 
 == Algorithm
 
-** link:https://github.com/ByeongSoon/TIL/tree/master/Algorithm[Algorithm Directory(ALL)]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/FindIndex.adoc[두 수의 합]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/FindKim.adoc[서울에서 김서방 찾기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/MatrixSum.adoc[행렬의 덧셈]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/StringToInt.adoc[문자열을 숫자로]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/WaterMelon.adoc[수박수박수?]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/GcdLcm.adoc[최대공약수와 최소공배수]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/ReverseString.adoc[문자열 내림차순으로 배치하기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/GetMaxMinString.adoc[문자열에서 최댓값 최소값]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/EvenOrOdd.adoc[짝수와 홀수]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/SumDivisor.adoc[약수의 합]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/StringExercise.adoc[가운데 글자 가져오기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/PrintTriangle.adoc[삼각형 출력하기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Fibonacci.adoc[피보나치 수]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Divisible.adoc[나누어 떨어지는 숫자 배열]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/GetMean.adoc[평균구하기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Collatz.adoc[콜라츠 추측]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/ReverseInt.adoc[정수 내림차순으로 배치하기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NumOfPrime.adoc[소수 찾기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/HarshadNumber.adoc[하샤드수]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/ProductMatrix.adoc[행렬의 곱셈]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/MinSum.adoc[최솟값 만들기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/GetDayName.adoc[요일 알아내기(2018년)]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Caesar.adoc[시저 암호]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NoOverTime.adoc[야근 지수]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NLCM.adoc[N개의 최소공배수]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/JumpCase.adoc[멀리 뛰기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/NextBigNumber.adoc[다음 큰 숫자]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Algorithm/Expressions.adoc[숫자의 표현]
+** link:https://github.com/ByeongSoon/TIL/tree/master/Algorithm/Level1[Level1]
+
+== Linux
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Linux/LAMP-Server.adoc[미디어위키 서버 구축하기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/ubuntu_ssh_scp.adoc[원격 연결: 네트워크에 연결된 서버에 안전하게 접근하기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/VirtualBox_Ubuntu.adoc[VirtualBox를 이용한 Ubuntu환경 만들기]
 
 == Typescript
 
@@ -115,12 +99,6 @@ Byeongsoon Jang<qudtns1223@gmail.com>
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/DesignPattern/SingletonPattern.adoc[싱글톤 패턴]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/DesignPattern/DecoratorPattern.adoc[데커레이터 패턴]
-
-== Linux
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/Linux/LAMP-Server.adoc[미디어위키 서버 구축하기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/ubuntu_ssh_scp.adoc[원격 연결: 네트워크에 연결된 서버에 안전하게 접근하기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/VirtualBox_Ubuntu.adoc[VirtualBox를 이용한 Ubuntu환경 만들기]
 
 == Basic
 
