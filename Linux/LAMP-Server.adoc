@@ -249,9 +249,3 @@ image::lamp12.png[]
 image::lamp13.png[]
 
 DataBase를 연결할 때 정보를 잘못 입력하더라도 LocalSetting.php을 수정하면 되므로 신경쓰지말고 넘어간다.
-
-=== 7. CentOS에 Apache Web-Server 설치방법
-
-위에서는 Ubuntu에서의 웹서버 구축을 알아보았다.
-
-CentOS에서는 패키시를 설치하는 방법이 조금 다르다.
