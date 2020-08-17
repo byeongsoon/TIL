@@ -1,0 +1,87 @@
+= 4장. 조건문과 반복문
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon94@gmail.com
+:Date: 2020.08.17
+:Revision: 1.0
+:imagesdir: ./img
+
+
+책 '이것이 자바다 - 신용권'를 학습하면서 기억해두면 좋은점을 기록한다.
+
+여러번 보면서 놓쳤던 부분들을 체크하며, 기본에 충실한다.
+
+Byeongsoon Jang<byeongsoon94@gmail.com>
+
+---
+
+==== if문
+
+조건문과 반복문은 코딩을 통해서 흐름을 제어하게 해준다.
+
+조건문은 조건식의 연산 결과에 따라 블록 내부의 실행 여부를 결정한다.
+
+[source, java]
+----
+// if문의 괄호안에는 boolean 타입이 올 수 있다.
+if(age >= 27) {
+  System.out.println("나이가 27세보다 많습니다.");
+} else if(age < 0) {
+  System.out.;println("아직 태어나질 않았나봐요.");
+} else{
+  System.out.println("나이가 27세보다 어립니다.");
+}
+----
+
+====
+* 중첩 if문
+** if문 내부에 또 다른 if문을 사용할 수 있다.
+** 중첩의 단계는 제한이 없으나 2중이상 늘어나는 것은 좋지않다.
+** if, switch, for, while, do-while은 서로 중첩시킬 수 있다.
+====
+
+==== switch문
+
+if문을 사용하다가 조건이 너무 많아지거나 조건의 값이 boolean 타입이 아니라 어떠한 값에 대해 실행문을 정하고 싶다면 switch문을 사용하면 된다.
+
+[source, java]
+----
+public class SwitchExaple {
+  public static void main(String[] args) {
+    int number = (int)(Math.random()*6) + 1;//1부터 6까지 숫자중에서 랜덤으로 하나 뽑기
+
+    switch(number) {
+      case 1:
+        System.out.println("1번이 나왔습니다.");
+        break;
+      case 2:
+        System.out.println("2번이 나왔습니다.");
+        break;
+      case 3:
+        System.out.println("3번이 나왔습니다.");
+        break;
+      case 4:
+        System.out.println("4번이 나왔습니다.");
+        break;
+      case 5:
+        System.out.println("5번이 나왔습니다.");
+        break;
+      default:
+        System.out.println("6번이 나왔습니다.");
+        break;
+    }
+  }
+}
+----
+
+
+
+==== 반복문(for문, while문, do-while문)
+
+[source, java]
+----
+
+----
+
+---
