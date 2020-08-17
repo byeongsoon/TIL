@@ -3,8 +3,8 @@ Today I Learned
 
 :icons: font
 :Author: Byeongsoon Jang
-:Email: qudtns1223@gmail.com
-:Date: 2020.05.23.
+:Email: byeongsoon94@gmail.com
+:Date: 2020.08.17.
 :Revision: 2.1
 
 실력있는 개발자가 되기 위해 매일 학습한 내용이나 개발에 관련된 간단한 기록을 남긴다.
@@ -22,7 +22,7 @@ Restarting on February 18, 2020.
 
 '생각을 바꿔라. 그러면 세상을 바꾼다.  - 스튜어트 B.존슨'
 
-Byeongsoon Jang<qudtns1223@gmail.com>
+Byeongsoon Jang<byeongsoon94@gmail.com>
 
 |===
 |===
@@ -46,6 +46,7 @@ Byeongsoon Jang<qudtns1223@gmail.com>
 ===== ThisIsJava
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter01-03.adoc[1-3장. 자바 시작하기, 변수와 타입, 연산자]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter04.adoc[4장 조건문과 반복문]
 
 == Spring
 
