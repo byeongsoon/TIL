@@ -3,7 +3,7 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
-:Date: 2020.08.17
+:Date: 2020.08.19
 :Revision: 1.0
 :imagesdir: ./img
 
@@ -75,13 +75,123 @@ public class SwitchExaple {
 }
 ----
 
+case 끝에 break가 붙어 있는 것은 다음 case를 실행하지 않고 switch문을 빠져나가기 위해서다.
 
+[TIP]
+====
+break문,
+
+switch문을 빠져나오거나 반복문(for, while, do-while문을 빠져나올때 사용된다.
+
+break문을 포함하고 있는 가장 가까운 중괄호를 종료하고 빠져나간다.
+
+헷갈리지 않게 사용하려면 "break labelName;"을 사용하면된다.
+====
+
+switch문의 괄호에는 정수타입(byte, char, short, int, long) 변수나 정수값을 산출하는 연산식이 올 수 있다.
+
+자바 7부터는 String 타입의 변수도 올 수 있다.
 
 ==== 반복문(for문, while문, do-while문)
 
+어떠한 행위를 반복적으로 실행할때 사용된다.
+
+1부터 10까지의 합을 구한다고 했을때, 하드코딩으로 1부터 10까지 더하는 코드를 작성하면 지저분한 코딩이 될 것이다.
+
 [source, java]
 ----
-
+int sum = 0;
+sum = sum + 1;
+sum = sum + 2;
+....
+sum = sum + 10;
 ----
 
----
+이때 반복문을 사용하면 가독성과 효율성을 모두 챙기는 코드를 작성할 수 있다.
+
+for문을 가장 많이 사용하는 것 같은데, 위의 코드와 비교해도 코드가 간결해진 것을 볼 수 있다.
+
+코드가 간결해지면 개발시간도 줄이고, 오류가 날 확률도 줄어든다.
+
+for문의 실행 흐름을 살펴보면
+
+첫 번째, 초기화식이 제일 먼저 실행된다. i라는 변수가 0으로 초기화된다.
+
+두 번째, 조건식을 통해서 조건을 만족하는지 검사한다. 조건의 결과가 true라면 반복문이 수행된다.
+
+세 번째, 실행문 내부의 코드가 실행된다.
+
+네 번째, 증감식을 실행한다. 이때 증감식은 보통 i를 1씩 증가시키거나 2씩 증가시키는 등 수식을 이용할 수 있다.
+
+초기화식이나 증감식은 둘 이상일수도 있다.
+
+[source, java]
+----
+// for
+for(int i=0; i<10 ; i++) {
+  sum += i;
+}
+// 초기화를 생략한 for문
+int i = 0;
+for(; i<10 ; i++) {
+  sum += i;
+}
+----
+
+for문이 정해진 횟수만큼 반복한다면 while문은 조건식이 true일 경우에 반복한다.
+
+조건식에 결과값이 true일 경우 계속해서 반복하고 false일 경우 while문을 종료한다.
+
+[source, java]
+----
+// while
+while(i<10) {
+  sum += i;
+  i++;
+}
+----
+
+do-while문은 조건식에 의해 반복 실행하는 점에서 while문과 같아보이지만
+
+while문은 시작할때 조건을 검사하여 조건의 결과값이 true일 경우에만 동작하지만 do-while문은 일단 한번은 실행하고 조건을 검사한다.
+
+보통 한번은 꼭 실행해야하는 부분에서 do-while문을 사용한다.
+
+[source, java]
+----
+//do-while문
+do{
+  i++;
+  sum += i;
+}while(i<9)
+----
+
+[TIP]
+====
+문자열 입력,
+
+[source, java]
+----
+Scanner scanner = new Scanner(System.in);
+String inputString = scanner.nextLine();
+----
+====
+
+==== continue문
+
+continue문은 반복문인 for, while, do=while에서만 사용되는데 블록 내부에서 continue문이 실행되면 그 다음에 오는 코드는 실행되지 않고,
+for문의 증감식 또는 while, do-while문의 조건식으로 이동한다.
+
+보통은 짝수나 홀수만을 뽑을 때 자주 사용한다.
+
+[source, java]
+----
+for(int i=0; i<10 ; i++) {
+  if(i%2 != 0) {
+    continue;
+  }
+  System.out.println(i);
+}
+----
+
+위와 같이 작성하면 짝수만 출력되는 것을 볼 수 있다.
