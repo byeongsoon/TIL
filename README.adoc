@@ -4,8 +4,8 @@ Today I Learned
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
-:Date: 2020.08.19.
-:Revision: 2.1
+:Date: 2020.08.20.
+:Revision: 2.2
 
 실력있는 개발자가 되기 위해 매일 학습한 내용이나 개발에 관련된 간단한 기록을 남긴다.
 
@@ -17,6 +17,8 @@ Today I Learned
 쉽게 접근하는 분야이지만 전문성을 갖추면 그 어느 분야보다 인정받는게 개발자라고 생각한다.
 오래걸리더라도 천천히 노력한 만큼의 성과를 낼 수 있기를 바라며 최선을 다하자.
 ====
+
+---
 
 '생각을 바꿔라. 그러면 세상을 바꾼다.  - 스튜어트 B.존슨'
 
@@ -35,6 +37,8 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 ** 오래걸리더라도 대충하지 않는다.
 ** 기본에 충실하기위해 반복 또 반복한다.
 
+---
+
 = 분류
 
 == Java
@@ -48,20 +52,6 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter01-03.adoc[1-3장. 자바 시작하기, 변수와 타입, 연산자]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter04.adoc[4장 조건문과 반복문]
-
-== Spring
-
-== SpringBoot
-
-== JPA
-
-== Inflearn-Spring
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/01-what-is-spring.adoc[1강 - 스프링이란?]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/02-creating-spring-priject.adoc[2강 - 스프링 프로젝트 만들기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/03-DI(Dependency-Injection-1).adoc[3강 - DI(Dependency Injection) (1)]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/04-DI(Dependency-Injection-2).adoc[4강 - DI(Dependency Injection) (2)]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/05-Using-DI.adoc[5강 - DI 활용]
 
 == Kotlin
 
@@ -78,24 +68,23 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/ch10_Collection.adoc[컬렉션]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/NullSafetyLibrary.adoc[Null Safety Equals Library]
 
-== Algorithm
+== Spring
+
+== SpringBoot
+
+== JPA
+
+== Inflearn-Spring
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/01-what-is-spring.adoc[1강 - 스프링이란?]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/02-creating-spring-priject.adoc[2강 - 스프링 프로젝트 만들기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/03-DI(Dependency-Injection-1).adoc[3강 - DI(Dependency Injection) (1)]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/04-DI(Dependency-Injection-2).adoc[4강 - DI(Dependency Injection) (2)]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/05-Using-DI.adoc[5강 - DI 활용]
+
+== Algorithm Test
 
 ** link:https://github.com/ByeongSoon/TIL/tree/master/Algorithm/Level1[Level1]
-
-== Linux
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/Linux/LAMP-Server.adoc[미디어위키 서버 구축하기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/ubuntu_ssh_scp.adoc[원격 연결: 네트워크에 연결된 서버에 안전하게 접근하기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/VirtualBox_Ubuntu.adoc[VirtualBox를 이용한 Ubuntu환경 만들기]
-
-== Typescript
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/Typescript/typescript-inversify.adoc[Inversify]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Typescript/typescript-project-preference.adoc[Typescript 프로젝트 설정 및 CI 설정]
-
-== Node.js
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/Nodejs/Node-js-server.adoc[HTTP,TCP 서버와 클라이언트 만들기]
 
 == DesignPattern
 
@@ -109,3 +98,18 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/TDDandDDD.adoc[TDD와DDD]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/aggregate.adoc[애그리거트]
+
+== Linux
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Linux/LAMP-Server.adoc[미디어위키 서버 구축하기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/ubuntu_ssh_scp.adoc[원격 연결: 네트워크에 연결된 서버에 안전하게 접근하기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/VirtualBox_Ubuntu.adoc[VirtualBox를 이용한 Ubuntu환경 만들기]
+
+== Node.js
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Nodejs/Node-js-server.adoc[HTTP,TCP 서버와 클라이언트 만들기]
+
+== Typescript
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Typescript/typescript-inversify.adoc[Inversify]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Typescript/typescript-project-preference.adoc[Typescript 프로젝트 설정 및 CI 설정]
