@@ -3,7 +3,7 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
-:Date: 2020.08.20
+:Date: 2020.08.22
 :Revision: 1.0
 :imagesdir: ./image
 
