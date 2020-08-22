@@ -98,6 +98,37 @@ NullPointerException이 발생하면, 발생된 곳에서 객체를 참조하지
 
 자바는 문자열을 String 타입의 변수에 저장한다.
 
+하지만 문자열을 String 타입에 저장한다는 말은 틀린 표현이다.
+
+문자열은 String 객체로 생성되고 변수는 이 객체를 참조하기 때문에 정확히 말하자면 String 타입의 참조된 객체에 저장하는게 맞는 표현이다.
+
+[TIP]
+====
+자바는 문자열 리터럴이 동일하다면 String 객체를 공유하도록 되어 있다.
+
+다음과 같이 name1과 name2 변수가 동일한 리터럴인 경우에 name1, name2는 동일한 String 객체를 참조한다.
+
+[source,java]
+----
+String name1 = "장봉";
+String name2 = "장봉";
+----
+====
+
+일반적으로 변수에 문자열을 저장할 경우에는 리터럴을 사용하지만 new 연산자를 이용해서 직접 String 객체를 생성할 수 있다.
+
+new 연산자는 새로운 Heap 영역에 객체를 생성하므로 객체 생성 연산자라고도 불린다.
+
+[source, java]
+----
+String name1 = new String("장봉");
+String name2 = new String("장봉");
+----
+
+위의 경우는 name1, name2 각각 다른 객체를 참조한다.
+
+문자열 리터럴로 생성하느냐 아니면 new 연산자로 생성하느냐에 따라 비교 연산자의 결과가 달라진다.
+
 [source, java]
 ----
 
