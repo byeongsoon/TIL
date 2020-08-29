@@ -3,7 +3,7 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
-:Date: 2020.08.28
+:Date: 2020.08.29
 :Revision: 1.0
 :imagesdir: ./image
 
@@ -17,3 +17,11 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 ---
 
 ==== 상속이란
+
+상속이란 현실세계에서 부모가 자식에게 재산을 물려주는 것과 비슷한 양상을 보인다.
+
+부모클래스를 상속받은 자식클래스는 부모 클래스의 필드, 메소드 등을 이용할 수 있다.
+
+하지만 모든 멤버를 이용가능한 것은 아니고 접근 제한자가 private로 되어있는 멤버는 상속 대상에서 제외된다.
+
+==== 클래스 상속
