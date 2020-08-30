@@ -12,7 +12,7 @@
 
 여러번 보면서 놓쳤던 부분들을 체크하며, 기본에 충실한다.
 
-Byeongsoon Jang<byeongsoon94@gmail.com>
+{Author}<{Email}>
 
 ---
 
@@ -473,3 +473,59 @@ IntelliJ에서 Getter, Setter 자동생성 방법,
 ====
 
 ===== 어노테이션
+
+어노테이션은 컴파일 과정과 싱행 과정에서 코드를 어떻게 컴파일하고 처리할 것인지를 알려준다.
+
+* 어노테이션 사용 용도
+. 컴파일러에게 코드 문법 에러 체크하도록 정보 제공
+. 개발 툴이 빌드나 배치 시 코드를 자동으로 생성하도록 정보 제공
+. 실행(런타임) 시 특정 기능을 실행하도록 정보 제공
+
+대표적인 어노테이션으로는 @Override가 있다. 상속받은 메소드를 재정의한 것을 컴파일러가 알 수 있게 표현해 준다.
+
+어노테이션은 빌드 시 자동적으로 XML파일이나 JAR파일을 생성하는데에도 사용된다.
+
+어노테이션의 선언은 @interface를 사용한다.
+
+[source,java]
+----
+public @interface AnnotationName {
+  Type elementName1() [default value];
+  Type elementName2() [default value];
+  ...
+}
+
+@AnnotationName(elementName1="값", elementName2="값")
+
+// elementName을 사용하지 않고 기본 엘리먼트인 value를 가질 수 있다.
+public @interface AnnotationName {
+  Type value();
+  int elementName() default 5;
+}
+
+@AnnotationName(value="값", elementName=3)
+----
+
+[IMPORTANT]
+====
+어노테이션 적용 대상,
+
+클래스, 필드, 메소드만 어노테이션을 적용할 수 있고 생성자에는 적용할 수 없다.
+
+[source,java]
+----
+@AnnotationName
+public class ClassName {
+  @AnnotationName
+  private String field;
+
+  //@AnnotationName (x)
+  public ClassName() { }
+
+  @AnnotationName
+  public void setField(int field) {
+    this.field = field;
+  }
+}
+----
+====
