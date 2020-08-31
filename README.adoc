@@ -4,7 +4,7 @@ Today I Learned
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
-:Date: 2020.08.26.
+:Date: 2020.08.28.
 :Revision: 2.2
 
 ---
@@ -58,6 +58,7 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter05.adoc[5장. 참조 타입]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter06.adoc[6장. 클래스]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter07.adoc[7장. 상속]
+** link:https://github.com/ByeongSoon/TIL/tree/master/Java/ThisIsJava/%EC%A4%91%EA%B0%84%EC%A0%90%EA%B2%80(chapter01-07)[중간점검]
 
 == Kotlin
 
