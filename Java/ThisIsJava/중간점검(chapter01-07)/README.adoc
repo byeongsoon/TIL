@@ -1,0 +1,13 @@
+= 중간점검 코드
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon94@gmail.com
+:Date: 2020.09.01.
+:Revision: 1.0
+
+1장부터 7장까지의 학습한 내용을 바탕으로 간단한 프로그램을 작성했다.
+
+{Author}<{Email}>
+
+---
