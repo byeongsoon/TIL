@@ -12,7 +12,7 @@
 
 여러번 보면서 놓쳤던 부분들을 체크하며, 기본에 충실한다.
 
-Byeongsoon Jang<byeongsoon94@gmail.com>
+{Author}<{Email}>
 
 ---
 

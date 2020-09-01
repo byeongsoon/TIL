@@ -1,5 +1,5 @@
-public class Caculator {
-  Caculator() { }
+public class Calculator {
+  Calculator() { }
 
   public double add(double x, double y) {
     return x+y;

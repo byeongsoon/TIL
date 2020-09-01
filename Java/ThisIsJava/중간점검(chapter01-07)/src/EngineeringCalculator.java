@@ -1,15 +1,16 @@
-public class EngineeringCaculator extends Caculator{
-  static EngineeringCaculator INSTANCE = new EngineeringCaculator();
+public class EngineeringCalculator extends Calculator{
+  static EngineeringCalculator INSTANCE = new EngineeringCalculator();
 
-  public static EngineeringCaculator getINSTANCE() {
+  public static EngineeringCalculator getINSTANCE() {
     return INSTANCE;
   }
 
-  private EngineeringCaculator() { }
+  private EngineeringCalculator() { }
 
   @Override
   public void powerOn() {
     System.out.println("공학용 계산기 전원을 켭니다.");
+    System.out.println("사용법 : 숫자 계산식 [숫자]");
   }
 
   @Override
