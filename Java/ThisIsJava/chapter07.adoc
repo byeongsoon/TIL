@@ -25,3 +25,149 @@
 하지만 모든 멤버를 이용가능한 것은 아니고 접근 제한자가 private로 되어있는 멤버는 상속 대상에서 제외된다.
 
 ==== 클래스 상속
+
+상속은 자식 클래스에서 extends 키워드를 이용해 상속받을 부모클래스를 결정한다.
+
+java는 C++ 등 다른 언어처럼 다중 상속을 허용하지 않는다.
+
+예전에 학부시절 C++ 배웠을 때는 다이아몬드 상속 처럼 클래스들간의 다중 상속이 가능했었지만 java에서는 다중 상속을 지원하지 않는다.
+
+[source, java]
+----
+class Calculator {
+  String model;
+  String color;
+
+  Calculator();
+
+  public double add(double x, double y) {
+    return x + y;
+  }
+
+  ...
+}
+
+class EngineeringCalculator extends Calculator {
+  String price;
+
+  EngineeringCalculator(String model, String color, String price) {
+    this.model = model;
+    this.color = color;
+    this. price = price;
+  }
+
+  public double pow(double x) { // x의 2승을 리턴한다.
+    return Math.pow(x,2);
+  }
+}
+----
+
+==== 부모 생성자 호출
+
+[source, java]
+----
+EngineeringCalculator myCalculator = new EngineeringCalculator("공학용", "black", "15,000원");
+----
+
+위 코드를 보면 부모클래스를 상속받은 자식클래스의 객체를 생성하는 것처럼 보이지만 실제로 메모리 영역에서는 부모 객체를 생성한다.
+
+내부적으로는 부모클래스의 객체가 먼저 생성되고, 자식클래스의 객체가 생성된다.
+
+이때 객체는 생성되려면 생성자를 호출해야만 한다. 부모의 생성자 호출은 자식클래스 생성자에 맨 첫 줄에서 호출된다.
+
+[source, java]
+----
+EngineeringCalculator(String model, String color, String price) {
+  super(); // 이 부분이 컴파일러에 의해 자동적으로 생성된다.
+
+  this.model = model;
+  this.color = color;
+  this. price = price;
+}
+----
+
+부모클래스에 생성자가 매개값을 갖고있다면 super(매개값, ...)을 사용해 호출해주면 된다.
+
+==== 메소드 재정의(@Override)
+
+@Override 어노테이션은 메소드 내용을 재정의 할 수 있도록 해준다.
+
+오버라이딩할 때는 부모의 메소드와 동일한 시그니처를 가져야하고 접근 제한을 더 강하게 할 수 없다.
+
+접근 제한을 강하게 한다는 것은 기존에 부모클래스의 메소드가 접근 제한자가 public이면, 자식클래스의 메소드를 default나 private로 할 수 없다는 뜻이다.
+
+우리가 메소드 오버라이딩을 했더라도 부모클래스의 메소드를 호출하고 싶다면 super 키워드를 이용하면 된다.
+
+[source, java]
+----
+super.메소드이름();
+----
+
+==== final 클래스와 final 메소드
+
+final 키워드는 클래스, 메소드, 필드 선언 시에 사용할 수 있다. 6장에서 살펴본바와 같이 선언 이후 수정할 수 없다.
+
+final 키워드를 클래스 선언 시에 사용하면 그 클래스는 상속할 수 없는 클래스가 된다.
+
+대표적인 예로는 String 클래스가 있다. String 클래스는 final 키워드를 이용해 선언되어 있다.
+
+또한 final을 메소드 선언 시에 사용하게되면 해당 메소드는 오버라이딩할 수 없다.
+
+==== protected 접근 제한자
+
+접근 제한은 public < protected < default < private 순으로 강화된다.
+
+protected 접근 제한자로 필드, 생성자, 메소드를 선언하면 같은 패키지에서는 상관없이 접근할 수 있고, 다른 패키지에서는 상속받은 자식 클래스에서만 접근이 가능하다.
+
+==== 타입 변환과 다형성
+
+객체 지향 프로그래밍의 3가지 특성 중 하나인 다형성은 간단하게 말하면 하나의 타입에 여러 객체를 대입함으로써 다양한 기능을 이용할 수 있도록 해주는 것이다.
+
+다형성 제공을 위해서 java에서는 자식클래스의 객체를 부모클래스로 타입 변환을 허용한다.
+
+[source,java]
+----
+class Tire{
+
+}
+
+class HankookTire extends Tire {
+
+}
+
+class kumhoTire extends Tire {
+
+}
+
+public class Car {
+  Tire t1 = new HankookTire();
+  Tire t2 = new kumhoTire();
+}
+----
+
+여기서 주의할 점은 부모 타입으로 자동 타입 변환된 이후에는 부모클래스에 선언된 필드와 메소드만 접근이 가능하다는 것이다.
+
+==== 강제 타입 변환
+
+부모 타입을 자식 타입으로 변환하는 것을 강제 타입 변환이라고 하는데, 언제나 가능한 것은 아니다.
+
+자식 타입이 부모 타입으로 자동 변환한 후에 다시 자식 타입으로 변환할 때만 사용 가능하다.
+
+강제 타입 변환은 우리가 자동 타입 변환을 하면 부모클래스에 있는 메소드만을 사용할 수 있기 때문에 자식클래스에 있는 메소드를 꼭 써야할 경우에 사용할 수 있다.
+
+[TIP]
+====
+객체 타입 확인(instanceof),
+
+변수가 참조하는 객체가 어떤 타입인지를 확인하는 방법이다.
+
+[source,java]
+----
+boolean = result = parent instanceof Child
+// 좌항은 확인하고싶은 객체, 우항은 타입(클래스)이다.
+----
+
+좌항의 객체가 우항의 타입이면 true를 아니면 false를 반환한다.
+====
+
+==== 추상 클래스
