@@ -69,3 +69,43 @@
 
 * 정적 메소드(Static Method)
 ** 디폴트 메소드와 달리 객체가 없어도 인터페이스만으로 호출이 가능하다.
+
+상수는 선언할 때 public static final로 선언하는데 인터페이스에 선언된 필드는 모두 이 상수의 특성을 갖기 때문에 public, static, final을 생략하더라도 자동적으로 컴파일 과정에서 붙게 된다.
+
+[TIP]
+====
+상수명은 대문자로 작성하되, 서로 다른 단어로 구성되어 있을 경우에는 언더바로 연결하는 것이 관례이다.
+
+[source,java]
+----
+public interface Control {
+  public int MAX_VOLUME = 10;
+  public int MIN_VOLUME = 0;
+}
+----
+====
+
+인터페이스의 멤버 중 대표적인 추상 메소드는 실행 블록이 없이 리턴 타입, 메소드명, 매개 변수만 기술한다.
+
+인터페이스에 선언된 추상 메소드는 모두 public abstract 특성을 갖기 때문에 생략해도 자동적으로 컴파일 과정에서 붙게 된다.
+
+[source,java]
+----
+public void setVolume(int volume);
+----
+
+디폴트 메소드는 default 키워드가 맨앞에 위치하고, 작성 방법은 클래스의 메소드와 같다. public 특성을 갖기 때문에 생략해도 컴파일 과정에서 붙게 된다.
+
+정적 메소드는 인터페이스로 바로 호출이 가능하다.
+
+==== 인터페이스 구현
+
+인터페이스에 정의한 추상 메소드의 실행 가능한 실체 메소드를 가진 객체를 구현(implement) 객체라고 하고, 구현 객체를 생성하는 클래스를 구현 클래스라고 한다.
+
+.interface 구현 클래스
+[source, java]
+----
+public class ClassName implements InterfaceName {
+  // 인터페이스에 선언된 추상 메소드의 실체 메소드
+}
+----
