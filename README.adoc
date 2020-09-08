@@ -5,7 +5,7 @@ Today I Learned
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
 :Date: 2020.08.28.
-:Revision: 2.2
+:Revision: 2.3
 
 ---
 
@@ -44,6 +44,15 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 
 = 분류
 
+== Spring
+
+== SpringBoot
+
+== MSA(MicroService Architecture)
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
+** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/EventSourcing.adoc[이벤트 소싱]
+
 == Java
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/java_8_Download_Tutorial.adoc[Java 8 다운로드 및 환경변수 설정(Window)]
@@ -76,10 +85,6 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/ch10_Collection.adoc[컬렉션]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/NullSafetyLibrary.adoc[Null Safety Equals Library]
 
-== Spring
-
-== SpringBoot
-
 == JPA
 
 == Inflearn-Spring
@@ -103,7 +108,6 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/http_https.adoc[http와 https란]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/FrameworkVsLibray.adoc[프레임워크와 라이브러리 차이점]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/TDDandDDD.adoc[TDD와DDD]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/aggregate.adoc[애그리거트]
 
