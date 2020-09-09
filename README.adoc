@@ -52,6 +52,7 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/EventSourcing.adoc[이벤트 소싱]
+** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/CQRS.adoc[CQRS]
 
 == Java
 
