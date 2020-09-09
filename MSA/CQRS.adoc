@@ -1,0 +1,48 @@
+= CQRS
+
+:icons: font
+:Author: Byeongsoon Jang
+:Email: byeongsoon94@gmail.com
+:Date: 2020.09.08
+:Revision: 1.0
+:imagesdir: ./image
+
+MSA에서 사용하는 CQRS 패턴에 대해서 알아본다.
+
+실제 적용한 코드 내용은 추후 링크로 달아놓는다.
+
+{Author}<{Email}>
+
+---
+
+==== CQRS(Command and Query Responsibility Segregation)
+
+CQRS는 Command and Query Responsibility Segregation(명령과 조회의 책임 분리)를 나타낸다.
+
+이름 자체에서 나와있는 것처럼 어떠한 명령을 처리하는 로직과 조회를 처리하는 로직을 분리하는 것이 CQRS의 핵심이다.
+
+여기서 명령은 시스템의 상태를 변경하는 작업을 의미한다. 조회는 현재 시스템의 상태를 알아보는 것이다.
+
+CQRS를 처음 들어본 나로서는 처음엔 어렵고 복잡한 패턴이라고 생각했지만, 생각보다 단순한 패턴이었다.
+
+명령과 조회의 기능만 분리하면 된다는 점에서 복잡하지 않기 때문에 단순하게 느껴지기까지 한다.
+
+====
+CQRS를 처음 소개한 Greg Young은 다음과 같이 말했다.
+
+'CQRS is a very simple pattern'
+====
+
+보통 CQRS는 DDD에서 사용하지만 꼭 DDD에서만 사용하는 것은 아니다.
+
+명령과 조회를 분리한다는 내용을 우리가 코딩을 할때에 적용해서 살펴보자면, 데이터베이스에 CRUD를 통해서 우리는 생성, 조회, 변경, 삭제 등의 작업을 수행한다.
+
+여기서 R 부분에 해당하는 조회 부분만 따로 분리해서 다른 객체로 만들어 사용하면 된다.
+
+이렇게 된다면 우리는 DTO(Data Transfer Object)를 조회 부분에서만 사용하기 때문에 명령 사이드 영역에서는 DTO를 사용할 일이 없어진다.
+
+DTO를 사용하지 않는다는 것은 명령사이드의 도메인 객체는 더 이상 내부 상태를 노출하지 않아도 된다는 것이다.
+
+또한 조회부분은 DTO를 사용할 때 도메인 객체를 사용할 필요가 없다.
+
+대신 사용하는 것이 데이터베이스로부터 읽어와 바로 DTO에 투영시키는 Thin Read Layer가 도메인 계층을 대신한다.

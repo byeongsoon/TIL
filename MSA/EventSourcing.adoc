@@ -7,7 +7,9 @@
 :Revision: 1.0
 :imagesdir: ./image
 
+이벤트 소싱에 대한 정리를 남긴다.
 
+최근 많이 사용되고 있는 데이터 저장방법이다.
 
 {Author}<{Email}>
 
