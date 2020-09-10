@@ -86,6 +86,8 @@ image::next05.png[nextcloud, 600]
 
 === 3. AWS s3 버킷 생성하기
 
+Nextcloud의 저장소로 AWS의 s3를 사용할 수 있다.
+
 우선 AWS를 설치를 해야한다.
 
 설치도 다음과같은 간단한 명령어로 이루어진다.
@@ -145,7 +147,9 @@ image::next08.png[aws 콘솔,700]
 
 Nextcloud에서 오른쪽 상단의 설정을 들어가면 왼쪽에 비활성화된 앱이라는 메뉴가 있다.
 
-image::[]
+image::next09.png[aws 설정,700]
+
+image::next11.png[700]
 
 거기서 External storage support의 오른쪽 사용함 버튼을 클릭한다.
 
@@ -153,6 +157,6 @@ image::[]
 
 왼쪽편의 관리메뉴 하단의 외부 저장소를 클릭하면 다음과 같은 창이 나온다.
 
-image::[]
+image::next10.png[버킷 설정,700]
 
 이 창에서 버킷, 지역, 접근 키, 비밀 키를 입력해주면 연결이 성공적으로 완료된다.
