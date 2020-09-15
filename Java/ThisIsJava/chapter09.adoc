@@ -97,3 +97,122 @@ class ClassName {
 로컬 클래스는 접근 제한자, static을 붙일 수 없다.
 
 로컬 클래스는 메소드 내부에서만 사용되므로 접근을 제한할 필요가 없고 인스턴스 필드와 메소드만 선언이 가능하다.
+
+===== 중첩 클래스의 접근 제한
+
+멤버 클래스가 인스턴스, 정접으로 선언됨에 따라 바깥쪽 클래스의 필드와 메소드에 사용 제한이 생긴다.
+
+* 인스턴스 멤버 클래스
+** 바깥 클래스의 인스턴스 필드의 초기값, 인스턴스 메소드에서 객체 생성 가능(정적 필드의 초기값이나 정적 메소드에서는 객체 생성 안됨)
+** 바깥 클래스의 모든 필드와 모든 메소드에 접근 가능
+
+* 정적 멤버 클래스
+** 바깥 클래스의 모든 필드의 초기값이나 메소드에서 객체 생성 가능
+** 바깥 클래스의 정적 필드와 정적 메소드에만 접근 가능
+
+* 로컬 클래스
+** 바깥 클래스의 필드나 메소드를 제한 없이 사용할 수 있지만 메소드의 매개 변수나 로컬변수를 사용하면 메소드 실행이 끝나면 메모리에서 사라지기 때문에 로컬 클래스에서 사용할 경우 문제가 발생한다.
+** 로컬 클래스에서 사용하는 매개 변수나 로컬 변수의 값을 로컬 클래스 내부에 복사한다.
+** final 키워드 존재 여부로 로컬 클래스의 필드 복사 위치가 달라진다.
+
+.로컬 클래스 필드 복사
+[source, java]
+----
+void outMethod(final int arg1, int arg2) {
+  final int var1 = 1;
+  int var2 = 2;
+
+  class LocalClass {
+    void method() {
+      int result = arg1 + arg2 + var1 + var2;
+    }
+  }
+}
+
+// 필드 복사 위치(위의 코드가 컴파일시 아래와 같이)
+class LocalClass {
+  int arg2 = 매개값;
+  int var2 = 2;
+
+  void method() {
+    int arg1 = 매개값;
+    int var1 = 1;
+    int result = arg1 + arg2 + var1 + var2;
+  }
+}
+----
+
+로컬 클래스에서 사용된 매개 변수와 로컬 변수는 모두 final 특성을 갖는다.
+
+자바 7까지는 반드시 final 키워드를 붙여야 했지만 자바 8부터는 붙이지 않아도 final 특성을 가지고 있다.
+
+==== 중첩 인터페이스
+
+중첩 인터페이스는 안드로이드 어플 등의 UI 프로그래밍에서 이벤트를 처리할 목적으로 많이 활용한다.
+
+.Button.java
+[source, java]
+----
+public class Button {
+  OnClickListener listener;
+
+  void setOnClickListener(OnClickListener listener) {
+    this.listener = listener;
+  }
+
+  void touch() {
+    listener.onClick();
+  }
+
+  interface OnClickListener {
+    void onClick();
+  }
+}
+----
+
+.CallListener.java
+[source, java]
+----
+public class CallListener implements Button.OnClickListener {
+  @Override
+  public void onClick() {
+    System.out.println("전화를 겁니다");
+  }
+}
+----
+
+.MessageListener.java
+[source, java]
+----
+public class MessageListener implements Button.OnClickListener {
+  @Override
+  public void onClick() {
+    System.out.println("메시지를 보냅니다.");
+  }
+}
+----
+
+.ButtonExample.java
+[source, java]
+----
+public class ButtonExample {
+  public static void main(String[] args) {
+    Button btn = new Button();
+
+    btn.setOnClickListener(new CallListener());
+    btn.touch();
+
+    btn.setOnClickListener(new MessageListener());
+    btn.touch();
+  }
+}
+----
+
+.실행결과
+[source, java]
+----
+전화를 겁니다.
+메시지를 보냅니다.
+----
+
+==== 익명 객체
