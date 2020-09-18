@@ -131,11 +131,11 @@ void outMethod(final int arg1, int arg2) {
 
 // 필드 복사 위치(위의 코드가 컴파일시 아래와 같이)
 class LocalClass {
-  int arg2 = 매개값;
+  int arg2 = 매개값; // final 키워드 없던 변수는 필드로
   int var2 = 2;
 
   void method() {
-    int arg1 = 매개값;
+    int arg1 = 매개값; // final 키워드 붙은 변수는 로컬 변수
     int var1 = 1;
     int result = arg1 + arg2 + var1 + var2;
   }
@@ -216,3 +216,144 @@ public class ButtonExample {
 ----
 
 ==== 익명 객체
+
+익명 객체는 이름이 없는 객체를 말한다. 이전에 인터페이스에서 학습할 때, 익명 구현 객체는 살펴보았다.
+
+익명 객체는 단독으로 생성할 수 없고 클래스를 상속하거나 인터페이스를 구현해야만 생성할 수 있다.
+
+[TIP]
+====
+익명 객체는 필드의 초기값이나 로컬 변수의 초기값, 매개 변수의 매개값으로 주로 대입된다.
+
+UI 이벤트 처리 객체나 스레드 객체를 간편하게 생성할 목적으로 많이 활용
+====
+
+===== 익명 자식 객체 생성
+
+부모 타입으로 필드나 변수를 선언하고 자식 객체를 초기값으로 대입할 경우엔 다음 내용이 기본적이다.
+
+[source, java]
+----
+class Child extends Parent { }
+
+class A {
+  Parent field = new Child();
+
+  void method() {
+    Parent localValue = new Child();
+  }
+}
+----
+
+익명 자식 객체가 필요한 상황은 자식 클래스가 재사용되지 않고, 필드나 변수의 초기값으로만 사용할 경우에 사용한다.
+
+[source, java]
+----
+Class A {
+  Parent field = new Parent() { // A클래스 필드로 선
+    int childField;
+    void childMethod();
+
+    @Override
+    void parentMethod() { }
+  }; // 세미콜론 중요
+}
+
+class A {
+  void method() {
+    Parent localValue = new Parent() { // A클래스 메소드의 로컬 변수 선언
+      int childField;
+      void childMethod();
+
+      @Override
+      void parentMethod() { }
+    };
+  }
+}
+----
+
+하나의 실행문이므로 세미콜론은 반드시 붙여야 한다.
+
+익명 자식 객체는 메소드의 매개 변수로도 사용할 수 있다.
+
+[source, java]
+----
+class A {
+  void method1(Parent parent) { }
+
+  void method2() { // method1의 매개값으로 익명 자식 객체를 대입
+    method1(
+      new Parent() {
+        int childField;
+        void childMethod();
+
+        @Override
+        void parentMethod() { }
+      }
+    );
+  }
+}
+----
+
+익명 자식 객체에 장의된 필드와 메소드는 객체 내부에서만 사용되고 외부에서는 접근할 수 없다.
+
+===== 익명 구현 객체 생성
+
+인터페이스 타입으로 필드나 변수를 선언하고 구현 객체를 초기값으로 대입하는 경우이다.
+
+다음 내용이 기본적이다.
+
+[source, java]
+----
+class TV implements RemoteControl { }
+
+class A {
+  RemoteControl field = new TV();
+
+  void method() {
+    RemoteControl localValue = new TV();
+  }
+}
+----
+
+여기서도 마찬가지로 구현 클래스가 재사용되지 않고 필드와 변수의 초기값으로만 사용하는 경우라면 익명 구현 객체를 초기값으로 대입하는 방법이 있다.
+
+[source, java]
+----
+class A { // 필드를 선언할 때 초기값 사용
+  RemoteControl field = new RemoteControl() {
+    @Override
+    void turnOn() { }
+  };
+}
+
+class A { // 로컬 변수를 선언할 때 초기값 사용
+  void method() {
+    RemoteControl localValue = new RemoteControl() {
+      @Override
+      void turnOn() { }
+    };
+  }
+}
+
+class A {
+  void method1(RemoteControl rc) { }
+
+  void methid2() { // 메소드의 매개 변수가 인터페이스 타입일 경우
+    method1(
+      new RemoteControl() {
+        @Override
+        void turnOn();
+      }
+    ); // 매개 변수는 실행문이 아니므로 세미콜론 없음, 주의!
+  }
+}
+----
+
+===== 익명 객체의 로컬 변수 사용
+
+익명 객체 내부에서는 바깥 클래스의 필드나 메소드를 제한없이 사용한다.
+
+문제는 메소드의 매개 변수나 로컬변수를 익명 객체로 사용할 때 나타난다.
+
+익명 객체는 메소드의 실행이 끝나도 힙 메모리에 존재해서 계속 사용 가능하다.
