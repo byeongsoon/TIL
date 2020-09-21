@@ -3,7 +3,7 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
-:Date: 2020.09.16
+:Date: 2020.09.19
 :Revision: 1.0
 :imagesdir: ./image
 
@@ -17,3 +17,11 @@
 ---
 
 ==== 예외와 예외 클래스
+
+자바에서는 에러 이외에 예외(exception)이라고 부르는 오류가 있다.(에러는 하드웨어 오동작 또는 고장으로 인해 실행 오류가 발생하는 것)
+
+예외란 사용자의 잘못된 조작이나 개발자의 잘못된 코딩으로 인해 발생하는 프로그램 오류이다.
+
+예외는 발생되면 프로그램이 종료되는데 예외 처리를 통해 프로그램을 종료하지 않고 정상 실행 상태가 유지되도록 할 수 있다.
+
+예외에는 일반 예외(Exception)과 실행 예외(Runtime Exception)이 있다.
