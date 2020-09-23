@@ -37,7 +37,7 @@ JVM은 프로그램을 실행하는 도중에 예외 발생 시 해당 예외 �
 
 모든 예외 클래스는 java.lang.Exception을 상속받는다.
 
-===== 실행 예외
+==== 실행 예외
 
 * NullPointerException
 
@@ -129,3 +129,78 @@ public class NumberFormatExceptionExample {
 이런 관계가 아니라면 다른 클래스로 타입 변환할 수 없다.
 
 억지로 타입 변환을 시도할 때 ClassCastException이 발생한다.
+
+==== 예외 처리 코드
+
+예외가 발생했을 때 프로그램의 종료를 막고, 정상 실행을 유지하도록 도와주는 것이 예외 처리 코드라고 한다.
+
+예외 처리 코드는 try-catch-finally 블록을 이용한다.
+
+try 블록에는 예외 발생 가능 코드가 온다. 예외가 발생하면 catch 블록으로 이동해서 예외 처리 코드가 실행된다.
+
+예외 발생 여부와 상관없이 실행해야 되는 내용이 있다면 finally 블록을 작성해주면 된다.
+
+try와 catch 블록에서 return문을 사용하더라도 finally 블록은 항상 실행된다.
+
+.일반 예외 처리
+====
+Class.forName() 메소드는 매개값으로 주어진 클래스가 존재하면 객체를 리턴하지만 존재하지 않으면 ClassNotFoundException 예외를 발생시킨다.(ClassNotFoundException은 일반 예외)
+
+.TryCatchFinallyExample.java
+[source, java]
+----
+public class TryCatchFinallyExample {
+  public static void main(String[] args) {
+    try {
+      Class clazz = Class.forName("java.lang.String2");
+    } catch (ClassNotFoundException e) {
+      System.out.println("클래스가 존재하지 않습니다.");
+    }
+  }
+}
+----
+
+====
+
+.실행 예외 처리
+====
+ArrayIndexOutOfBoundsException이나 NumberFormatException 같은 실행 예외는 컴파일러가 예외 처리 코드를 처리하지 않기 때문에 빨간 밑줄이 생기지 않는다.
+
+개발자의 경험과 눈썰미로 예외 처리를 작성해야 한다.
+
+.TryCatchFinallyRuntimeExceptionExample.java
+[source, java]
+----
+public class TryCatchFinallyRuntimeExceptionExample {
+  public static void main(String[] args) {
+    String data1 = null;
+    String data2 = null;
+
+    try{
+      data1 = args[0];
+      data2 = args[1];
+    } catch(ArrayIndexOutOfBoundsException e) {
+      System.out.println("실행 매개값의 수가 부족합니다.");
+      System.out.println("[실행 방법]");
+      System.out.println("java TryCatchFinallyRuntimeExceptionExample num1 num2");
+      return;
+    }
+
+    try {
+      int value1 = Integer.parseInt(data1);
+      int value2 = Integer.parseInt(data2);
+      int result = value1 + value2;
+
+      System.out.println(data1 + "+" + data2 + "=" + result);
+    } catch(NumberFormatException e) {
+      System.out.println("숫자로 변환할 수 없습니다.");
+    } finally {
+      System.out.println("다시 실행하세요");
+    }
+  }
+}
+----
+
+====
+
+==== 예외 종류에 따른 처리 코드
