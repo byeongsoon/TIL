@@ -282,3 +282,30 @@ try {
   // 예외 처리2
 }
 ----
+
+==== 자동 리소스 닫기
+
+자바 7에서 새로 추가된 try-with-resource를 사용하면 예외 발생 여부와 상관없이 사용했던 리소스 객체의 close() 메소드를 호출해서 안전하게 리소스를 닫는다.
+
+[TIP]
+====
+리소스란 여러가지 의미가 있지만 여기서는 간단하게 데이터를 읽고 쓰는 객체라고 생각.
+
+파일의 데이터를 읽는 FileInputStream, 객체와 파일에 쓰는 FileOutputStream은 리소스 객체
+====
+
+.try-with-resource예제
+[source, java]
+----
+try(FileInputStream fis = new FileInputStream("file.txt")) {
+  ...
+} catch(IOException e) {
+  ...
+}
+----
+
+try-with-resource를 사용하기 위해서는 조건이 있는데, 리소스 객체는 java.lang.AutoCloseable 인터페이스를 구현하고 있어야 한다.
+
+AutoCloseable에는 close() 메소드가 정의되어 있어서 이 메소드를 자동 호출한다.
+
+==== 예외 떠넘기기
