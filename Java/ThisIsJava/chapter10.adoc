@@ -337,4 +337,32 @@ public void method2() throws ClassNotFoundException {
 
 ===== 사용자 정의 예외와 예외 발생
 
+프로그램을 개발하다보면 자바 표준 API에서 제공하는 예외말고도 다른 예외가 필요할 경우가 생긴다.
+
+애플리케이션 서비스와 관련된 예외를 애플리케이션 예이라고 하고 개발자가 직접정의해서 만드므로 사용자 정의 예외라고도 한다.
+
+일반 예외로 선언할 경우 Exception을 상속하면 되고, 실행 예외로 선언할 경우에는 RuntimeException을 상속하면 된다.
+
+사용자 정의 예외 클래스 이름은 Exception으로 끝나는 것이 좋다.
+
+[source, java]
+----
+public class xxxException extends [ Exception | RuntimeException] {
+  public xxxException() { }
+  public xxxException(String message) { super(message); }
+}
+----
+
+생성자는 두개를 선언하는 것이 일반적이다. 하나는 매개 변수가 없는 기본 생성자이고, 다른 하나는 예외 발생 원인을 전달하기 위해 메시지 매개 변수를 갖는 생성자이다.
+
+사용자 정의 예외 또는 자바에서 제공하는 표준 예외를 발생시키는 방법으로는 throw 키워드를 사용한다.
+
+[source, java]
+----
+throw new xxxException();
+throw new xxxException("메시지");
+----
+
+예외 발생 코드를 가지고 있는 메소드느 내부에서 try-catch 블록으로 예외를 처리할 수 있지만 자신을 호출한 곳에서 예외를 처리하도록 throws 키워드로 예외를 떠넘긴다.
+
 ===== 예외 정보 얻기
