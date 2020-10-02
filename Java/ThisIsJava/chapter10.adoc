@@ -366,3 +366,22 @@ throw new xxxException("메시지");
 예외 발생 코드를 가지고 있는 메소드느 내부에서 try-catch 블록으로 예외를 처리할 수 있지만 자신을 호출한 곳에서 예외를 처리하도록 throws 키워드로 예외를 떠넘긴다.
 
 ===== 예외 정보 얻기
+
+try 블록에서 예외가 발생하면 catch 블록의 매개 변수에서 참조하게 되므로 매개 변수를 이용하면 예외 객체의 정보를 알 수 있다.
+
+* getMessage() : 예외 메시지
+* printStackTrace() : 예외 발생 코드를 추적 후 콘솔에 출력
+** 프로그램을 테스트하면서 오류를 찾을 때 활용
+
+[source, java]
+----
+try {
+  // 예외 발생
+} catch(예외클래스 e) {
+  // 예외가 가지고 있는 Message 얻기
+  String message = e.getMessage();
+
+  // 예외의 발생 경로 추적
+  e.printStackTrace();
+}
+----
