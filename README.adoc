@@ -87,6 +87,7 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 ** link:https://github.com/ByeongSoon/TIL/tree/master/Java/ThisIsJava/%EC%A4%91%EA%B0%84%EC%A0%90%EA%B2%80(chapter01-07)[중간점검]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter08.adoc[8장. 인터페이스]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter09.adoc[9장. 중첩 클래스와 중첩 인터페이스]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Java/ThisIsJava/chapter10.adoc[10장. 예외 처리]
 
 == Kotlin
 
