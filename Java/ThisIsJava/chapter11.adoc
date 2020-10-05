@@ -23,3 +23,24 @@
 API는 라이브러리라고 부르기도 하는데, 프로그램 개발에 자주 사용되는 클래스 및 인터페이스의 모음을 말한다.
 
 String 클래스와 System 클래스도 모두 API에 속하는 클래스들이다.
+
+[TIP]
+====
+API 도큐먼트는 HTML 페이지로 작성되어 있기 때문에 웹 브라우저를 열고 오라클에서 제공하는 URL을 방문하면 볼 수 있다.
+
+link:http://docs.oracle.com/javase/8/docs/api/[JAVA8 API Document]
+====
+
+==== java.lang과 java.util 패키지
+
+자바를 이용해 개발할 때 가장 만이 사용하는 패키지는 java.lang, java.util, java.time 패키지일 것이다.
+
+* java.lang
+** 자바 프로그램의 기본적인 클래스를 담고 있는 패키지
+** import 없이 사용할 수 있음
+** Object, System, Class, String, StringBuffer, StringBuilder, Math, Wrapper 등
+
+* java.util
+** 자바 프로그램 개발에 조미료 같은 역할을 하는 클래스를 포함
+** 컬렉션 클래스들이 대부분을 차지(15장에서 학습)
+** Arrays, Calendar, Date, Objects, StringTokenizer, Random 등
