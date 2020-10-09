@@ -3,7 +3,7 @@
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
-:Date: 2020.10.01
+:Date: 2020.10.10
 :Revision: 1.0
 :imagesdir: ./image
 
@@ -29,6 +29,11 @@ String 클래스와 System 클래스도 모두 API에 속하는 클래스들이�
 API 도큐먼트는 HTML 페이지로 작성되어 있기 때문에 웹 브라우저를 열고 오라클에서 제공하는 URL을 방문하면 볼 수 있다.
 
 link:http://docs.oracle.com/javase/8/docs/api/[JAVA 8 API Document]
+
+다른 버전의 API Document를 확인하고 싶다면
+link:https://docs.oracle.com/en/java/javase/index.html[여기]에서 확인할 수 있다.
+
+현재 Latest Release는 JDK 15 버전이다.
 ====
 
 ==== java.lang과 java.util 패키지
