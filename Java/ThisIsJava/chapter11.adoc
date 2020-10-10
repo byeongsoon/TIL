@@ -49,3 +49,58 @@ link:https://docs.oracle.com/en/java/javase/index.html[여기]에서 확인할 �
 ** 자바 프로그램 개발에 조미료 같은 역할을 하는 클래스를 포함
 ** 컬렉션 클래스들이 대부분을 차지(15장)
 ** Arrays, Calendar, Date, Objects, StringTokenizer, Random 등
+
+==== Object 클래스
+
+클래스를 선언할 때 extends 키워드로 다른 클래스를 상속하지 않으면 암시적으로 java.lang.Object 클래스를 상속하게 된다.
+
+Object 클래스는 자바의 최상위 부모 클래스이다.
+
+* equals()
+** 비교 연산자인 ==과 동일한 결과를 리턴한다.
+** equals() 메소드의 매개 타입은 Object로 모든 객체가 매개값으로 대입될 수 있다.
+** 두 객체를 비교해서 논리적으로 동등하면 true, 논리적으로 동등하단 것은 같은 객체이건 다른 객체이건 상관없이 객체가 저장하고 있는 데이터가 동일함을 뜻한다.
+** Object의 equals() 메소드는 직접 사용되지 않고 하위 클래스에서 재정의하여 사용된다.
+
+[source, java]
+----
+public boolean equals(Object obj) { ... }
+
+// 예시
+
+Object obj1 = new Object();
+Object obj2 = new Object();
+
+// 결과 동일
+boolean result = obj1.equals(obj2);
+boolean result = (obj1 == obj2);
+----
+
+.equals() 메소드 재정의
+[source, java]
+----
+public class Member {
+  public String id;
+
+  public Member(String id) {
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if(obj instanceof Member) { // 매개값이 해당 클래스 타입인지 확인
+      Member member = (Member) obj;
+      if(id.equals(member.id)) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+----
+
+
+* hashCode()
+* toString()
+* clone()
+* finalize()
