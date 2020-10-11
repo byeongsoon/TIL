@@ -99,8 +99,87 @@ public class Member {
 }
 ----
 
-
 * hashCode()
+** 객체 해시코드란 객체를 식별할 하나의 정수값이다.
+** hashCode() 메소드는 객체의 메모리 번지를 이용해 해시코드를 만들어 리턴하기 때문에 객체마다 다른 값을 가지고 있다.
+** 컬렉션 프레임워크에서 HashSet, HashMap, HashTable은 hashCode() 메소드를 실행해서 리턴된 해시코드 값이 같은지를 비교하고, 같다면 equals() 메소드로 다시 비교한다.
+** hashCode() 메소드는 재정의를 통해서 많이 사용한다.
+
+.hashCode() 재정의하지 않음
+[source, java]
+----
+public class Key {
+  public int number;
+
+  public Key(int number) {
+    this.number = number;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if(obj instanceof Key) {
+      Key compareKey = (Key) obj;
+      if(this.number == compareKey.number) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+// hashCode() 메소드 재정의 하지 않으면 다른 키로 인식
+public class KeyExample {
+  public static void main(String[] args) {
+    HashMap<Key, String> hashMap = new HashMap<Key, String>();
+
+    hashMap.put(new Key(1), "장봉");
+
+    String value = hashMap.get(new Key(1));
+    System.out.println(value); // null 값이 출력
+  }
+}
+----
+
+.hashCode() 메소드 재정의
+[source, java]
+----
+public class Key {
+  ...
+
+  @Override
+  public int hashCode() {
+    return number;
+  }
+
+  ...
+}
+----
+
 * toString()
+** 객체의 문자 정보를 리턴한다.
+** Object 클래스의 toString() 메소드는 "클래스명@16진수 해시코드"로 구성된 문자 정보 리턴
+** Object의 toString() 메소드의 리턴값은 별 의미가 없으므로 메소드를 재정의하여 유용한 정보를 리턴하도록 한다.
+** 예를들어 java.util의 Date 클래스는 toString() 메소드로 현재 시스템의 날짜와 시간 정보를 리턴한다.
+** 예 : SmartPhone 클래스에서 toString() 메소드를 오버라이딩하여 제작사와 운영체제를 리턴
+
+.toString() 예제
+[source, java]
+----
+public class ToStringExample {
+  public static void main(String[] args) {
+    Object obj1 = new Object();
+    Date obj2 = new Date();
+
+    System.out.println(obj1.toString());
+    System.out.println(obj2.toString());
+  }
+}
+----
+
+----
+java.lang.Object@11bbd2
+SUN OCT 11 21:00:05 KST 2020
+----
+
 * clone()
 * finalize()
