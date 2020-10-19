@@ -130,7 +130,7 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/FrameworkVsLibray.adoc[프레임워크와 라이브러리 차이점]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/TDDandDDD.adoc[TDD와DDD]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/aggregate.adoc[애그리거트]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/ER%20%EB%AA%A8%EB%8D%B8%20%EA%B5%AC%EC%84%B1%20%EC%9A%94%EC%86%8C.pdf[ER 모델 구성 요소(대학원 발표)]
+** ER 모델 구성 요소
 
 == Linux
 
