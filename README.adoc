@@ -9,6 +9,9 @@ Today I Learned
 
 ---
 
+image:https://img.shields.io/badge/version-2020.08.28-green.svg[Version]
+image:https://img.shields.io/badge/license-MIT-blue.svg[License]
+
 실력있는 개발자가 되기 위해 매일 학습한 내용이나 개발에 관련된 간단한 기록을 남긴다.
 
 겉모습을 위한 공부가 아닌 진짜 **개발자**가 되기위한 학습을 목표로 한다.
