@@ -216,3 +216,32 @@ java.lang.System 클래스를 이용하면 운영체제의 기능중 일부를 �
 예를 들어 프로그램 종료, 키보드 입력, 모니터 출력, 메모리 정리, 현재 시간 읽기, 시스템 프로퍼티 읽기, 환경 변수 읽기 등이 가능하다.
 
 System 클래스의 모든 필드와 메소드는 정적(static) 필드와 정적(static) 메소드로 구성되어 있다.
+
+==== Class 클래스
+
+클래스와 인터체이스의 메타 데이터를 java.lang.Class 클래스로 관리한다.
+(메타 데이터란 클래스의 이름, 생성자 정보, 필드 정보, 메소드 정보 등)
+
+* getClass(), forName()
+* getDeclaredConstructors(), getDeclaredFields(), getDeclaredMethods()
+* newInstance()
+
+
+==== String 클래스
+
+프로그램을 작성할때 문자열이 많이 사용된다. 문자열을 생성, 추출, 비교, 분리, 변환 등을 제공하는 메소드에 대해서 알아본다.
+
+====== String 생성자
+
+====== String 메소드
+
+* charAt()
+* equals()
+* getBytes()
+* indexOf()
+* length()
+* replace()
+* substring()
+* toLowerCase(), toUpperCase()
+* trim()
+* valueOf()
