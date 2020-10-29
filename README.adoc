@@ -9,18 +9,20 @@ Today I Learned
 
 ---
 
-image:https://img.shields.io/badge/version-2020.08.28-green.svg[Version]
+image:https://img.shields.io/badge/version-2020.02.18-green.svg[Version]
 image:https://img.shields.io/badge/license-MIT-blue.svg[License]
 
 실력있는 개발자가 되기 위해 매일 학습한 내용이나 개발에 관련된 간단한 기록을 남긴다.
 
-겉모습을 위한 공부가 아닌 진짜 **개발자**가 되기위한 학습을 목표로 한다.
+의무적으로 하는 공부가 아닌 진짜 **개발자**가 되기위한 학습을 목표로 한다.
 
 ====
 항상 생각하자. 진짜로 내가 되고자하는 모습의 개발자는 어떤 모습일지.
 
 쉽게 접근하는 분야이지만 전문성을 갖추면 그 어느 분야보다 인정받는게 개발자라고 생각한다.
 오래걸리더라도 천천히 노력한 만큼의 성과를 낼 수 있기를 바라며 최선을 다하자.
+
+직장보다는 직업을 선택한다.
 ====
 
 |===
