@@ -186,9 +186,59 @@ SUN OCT 11 21:00:05 KST 2020
 ** 객체 복제 이유는 원본 객체를 보호하기 위함
 ** 객체 복제 방법에는 얕은 복제와 깊은 복제가 있다.
 ** 얕은 복제(thin clone) : 단순히 필드값을 복사해서 객체를 복제하는 것
+*** 필드값만 복제하기 때문에 필드가 기본 타입일 경우 값 복사가 일어나고, 필드가 참조 타입일 경우에는 객체의 번지가 복사된다.
 ** 깊은 복제(deep clone) : 참조하고 있는 객체도 복제하는 것
+*** 깊은 복제를 하려면 Object의 clone() 메소드를 재정의해서 참조 객체를 복제하는 코드를 직접 작성해야 한다.
+** clone() 메소드로 객체를 복제하려면 원본 객체는 반드시 java.lang.Cloneable 인터페이스를 구현하고 있어야 한다.
 
-(복제 관련 내용 추가해야함)
+.복제할 수 있는 클래스 선언(얕은 복제)
+[source, java]
+----
+public class Member implements Cloneable {
+  public String id;
+  public String name;
+  public String password;
+  public int age;
+  public boolean adult;
+
+  public Member(String id, String name, String password, int age, boolean adult) {
+    this.id = id;
+    this.name = name;
+    this.password = password;
+    this.age = age;
+    this.adult = adult;
+  }
+
+  public Member getMember() {
+    Member cloned = null;
+
+    try {
+      cloned = (Member) clone();
+    } catch(CloneNotSupportedException e) {
+      return cloned;
+    }
+  }
+}
+----
+
+.얕은 복제 Example
+[source, java]
+----
+public class MemberExample {
+  public static void main(String[] args) {
+    // 원본 객체 생성
+    Member original - new Member("jang", "장봉", "123", 27, true);
+
+    // 복제 객체를 얻은 후에 패스워드 변경
+    Member cloned = original.getMember();
+    cloned.password = "456";
+  }
+}
+----
+
+----
+위 예제에서 복제된 객체에서 패스워드만 변경하여도 원본 객체의 패스워드는 변함 없음
+----
 
 * finalize()
 ** 참조하지 않는 배열이나 객체는 Garbage Collector가 힙 영역에서 자동적으로 소멸시킨다.
