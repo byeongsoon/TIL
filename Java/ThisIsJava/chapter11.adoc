@@ -336,10 +336,22 @@ public class Counter {
 Object와 유사한 이름을 가진 java.util.Objects 클래스는 객체비교, 해시코드 생성, null 여부, 객체 문자열 리턴 등의 연산을 수행하는 정적 메소드들로 구성된 클래스이다.
 
 * 객체 비교(compare(T a, T b, Comparator<T>c))
+** java.util.Comparator<T> 는 재네릭 인터페이스 타입이다. 재네릭은 13장에서 학습
+** compare() 메소드의 리턴 타입은 int이다.
+
 * 동등 비교(equals()와 deepEquals())
+** Object.equals(Object a, Object b)는 두 객채의 동등을 비교하는데 a와 b가 모두 null일 경우 true를 리턴한다.
+** Object.deepEquals(Object a, Object b)는 a와 b가 서로 다른 배열일 경우, 항목 값이 같다면 true를 리턴한다.
+** p477 예제 참고
+
 * 해시코드 생성(hash(), hashCode())
+
 * 널 여부(isNull(), nonNull(), requireNonNull())
+
 * 객체 문자 정보(toString())
+** Object.toString()은 객체의 문자 정보를 리턴한다.
+** toString(Object o)
+** toString(Object o, String nullDefault) : o가 널일경우 nullDefault
 
 ==== System 클래스
 
@@ -367,7 +379,78 @@ System 클래스의 모든 필드와 메소드는 정적(static) 필드와 정�
 
 ====== String 생성자
 
+자바의 문자열은 java.lang.String 클래스의 인스턴스로 관리된다.
+
+소스에서의 문자열 리터럴은 String 객체로 자동 생성되지만 String 클래스는 다양한 생성자를 제공한다.
+
+Deprecated된 생성자를 제외한 약 13개의 생성자를 제공한다.
+
+[source, java]
+----
+// 자주 사용하는 생성자들
+String str = new String(byte[] bytes);
+// 지정된 문자셋으로 디코딩
+String str = new String(byte[] bytes, String decoding);
+
+// 배열의 offset index 위치부터 length 만큼 String 객체로 생성
+String str = new(byte[] bytes, int offset, int length);
+// 지정한 문자셋으로 디코딩
+String str = new(byte[] bytes, int offset, int length, String decoding);
+----
+
+.바이트 배열을 문자열로 변환
+[source, java]
+----
+public class ByteToStringExample {
+  public static void main(String[] args) {
+    byte[] bytes = {72, 101, 108, 108, 111, 32, 74, 97, 118, 97};
+
+    String str1 = new String(bytes);
+    System.out.println(str1);
+
+    String str2 = new String(bytes, 6, 4);
+    System.out.println(str2);
+  }
+}
+----
+
+----
+Hello Java
+Java
+----
+
+키보드로부터 입력 받은 바이트 배열을 문자열로 변환할 때는 주의해야 한다.
+
+예를 들어 Hello를 입력하고 엔터(Enter)를 눌렀다면 Hello + 캐리지리턴(\r) + 라인피드(\n)의 코드값이 바이트 배열에 저장되고 총7개의 바이트를 읽는다.
+
+System.in.read()를 통해서 키보드 값을 입력 받았다면 다음 예제와 같이 이용하면 원하는 문자열만 얻어낼 수 있다.
+
+.KeyboardToStringExample.java
+[source, java]
+----
+public class KeyboardToStringExample {
+  public static void main(String[] args) {
+    byte[] bytes = new byte[100];
+
+    System.out.print("입력 : ");
+    int readByteCount = System.in.read(bytes);
+
+    String str = new String(bytes, 0, readByteCount-2);
+    System.out.println(str);
+  }
+}
+----
+
+----
+입력 : Hello
+Hello
+----
+
 ====== String 메소드
+
+String은 문자열의 추출, 비교, 찾기, 분리, 변환 등과 같은 다양한 메소드를 가지고 있다.
+
+String 클래스의 메소드는 모든 프로그램에서 자주 사용된다. 메소드의 이름을 보면 기능과 연관이 있기 때문에 쉽게 기억할 수 있다.
 
 * charAt()
 * equals()
