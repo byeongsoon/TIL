@@ -22,13 +22,17 @@ image:https://img.shields.io/badge/license-MIT-blue.svg[License]
 쉽게 접근하는 분야이지만 전문성을 갖추면 그 어느 분야보다 인정받는게 개발자라고 생각한다.
 오래걸리더라도 천천히 노력한 만큼의 성과를 낼 수 있기를 바라며 최선을 다하자.
 
-직장보다는 직업을 선택한다.
+직장보다는 직업을 선택한다는 느낌으로 임한다. 보다 일하기 좋은 직장을 다니는 것은 내 실력에 따라 달렸다.
 ====
 
 |===
 |===
 
 '생각을 바꿔라. 그러면 세상을 바꾼다.  - 스튜어트 B.존슨'
+
+Notion에 학습과 평상시에 읽은 책들을 정리해두었다.
+
+link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c[Notion Book List]
 
 Restarting on February 18, 2020.
 
