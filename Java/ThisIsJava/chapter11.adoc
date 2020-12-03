@@ -507,3 +507,98 @@ String 클래스의 메소드는 모든 프로그램에서 자주 사용된다. 
 문자열이 특정 구분자로 연결되어 있는 경우, 구분자를 기준으로 부분 문자열을 분리할 때 우리는 String의 split() 메소드를 이용하거나, java.util 패키지의 StringTokenizer 클래스를 이용할 수 있다.
 
 split()은 정규 표현직으로 구분하고, StringTokenizer는 문자로 구분한다는 차이점이 있다.
+
+====== split() 메소드
+
+String 클래스의 split() 메소드는 아래와 같이 호출한다.
+
+정규표현식을 구분자로 사용해 문자열을 분리하고 배열에 저장한 뒤 리턴한다.
+
+[source, java]
+----
+String[] result = "문자열".split("정규표현식");
+
+// Example
+public class StringSplitExample {
+  public static void main(String[] args) {
+    String text = "장병순&장봉, 홍길동, 장보고, 병순-봉";
+
+    String[] result = text.split("&|,|-");
+
+    for(String name : result) {
+      System.out.println(name);
+    }
+  }
+}
+----
+
+----
+장병순
+장봉
+홍길동
+장보고
+병순
+봉
+----
+
+====== StringTokenizer 클래스
+
+구분하려는 문자열이 한 종류의 구분자로 연결되어 있을 경우, StringTokenizer 클래스를 사용하면 쉽게 토큰을 분리할 수 있다.
+
+StringTokenizer 객체를 생성할 때 첫 번째 매개값으로 전체 문자열을 주고, 두 번째 매개값으로 구분자를 준다.
+
+[source, java]
+----
+StringTokenizer stringTokenizer = new StringTokenizer("문자열", "구분자");
+----
+
+만약 구분자를 생략하면 공백(Space)이 기본 구분자가 된다.
+
+.StringTokenizer 예제
+[source, java]
+----
+String text = "장병순/장봉/봉";
+StringTokenizer stringTokenizer = new StringTokenizer(text, "/");
+----
+
+* StringTokenizer 객체 생성되면 부분 문자열 분리를 위해 다음 메소드를 통해서 전체 토큰 수, 남아있는 토큰 여부를 확인하고 토큰을 읽으면 된다.
+** int countTokens() : 꺼내지 않고 남아있는 토큰의 수
+** boolean hasMoreTokens() : 남아있는 토큰이 있는지에 대한 여부
+** String nextToken() : 토큰을 하나씩 꺼냄
+
+[TIP]
+====
+nextToken() 메소드로 토큰을 하나 꺼내오면 StringTokenizer 객체에는 해당 토큰이 없어진다.
+
+만약 StringTokenizer 객체에서 더 이상 가져올 토큰이 없다면 nextToken() 메소드는 java.util.NoSuchElementException 예외를 발생시킨다.
+
+nextToken() 메소드를 사용하기 전에 hasMoreTokens() 메소드로 꺼내올 수 있는 토큰이 있는지에 대해서 체크한 후에 호출하는 것이 좋다.
+====
+
+.StringTokenizer로 토큰을 분리하는 두가지 방법
+[source, java]
+----
+public class StringTokenizerExample{
+  public static void main(String[] args) {
+    String text = "장병순/병순/장봉";
+
+    // 방법 1: 전체 토큰 수를 구해서 for문으로 해당 수 만큼 반복
+    StringTokenizer stringTokenizer = new StringTokenizer(text, "/");
+    int countTokens = stringTokenizer.countTokens();
+
+    for(int=0; int<countTokens ; i++) {
+      String token = stringTokenizer.nextToken();
+      System.out.println(token);
+    }
+
+    System.out.println();
+
+    // 방법 2: 남아 있는 토큰을 확인하고 while문으로 반복
+    StringTokenizer stringTokenizer = new StringTokenizer(text, "/");
+    while(stringTokenizer.hasMoreTokens()) {
+      String token = stringTokenizer.nextToken();
+      System.out.println(token);
+    }
+  }
+}
+----
