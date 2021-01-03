@@ -67,7 +67,11 @@ max_contributions = 10
 
 설정이 끝났다면 bitbar의 Preferences - Refresh All을 클릭하면 된다.
 
+image:
+
 하지만 오류가 난다!! 그 이유는 우선 .rb 파일을 내가 만들었기 때문에 실행파일이 아닌 일반 텍스트 파일이었다.
+
+image:
 
 ----
 chmod 744 github-contribution.10m.rb
