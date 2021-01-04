@@ -148,3 +148,7 @@ link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Typescript/typescript-inversify.adoc[Inversify]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Typescript/typescript-project-preference.adoc[Typescript 프로젝트 설정 및 CI 설정]
+
+== Tip
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Tip/bitbar-github-contribution.adoc[bitbar를 이용한 github 잔디관리]
