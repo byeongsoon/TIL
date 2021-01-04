@@ -1,4 +1,4 @@
-==== bitbat를 이용한 github 잔디관리
+==== bitbar를 이용한 github 잔디관리
 
 :icons: font
 :Author: Byeongsoon Jang
