@@ -16,8 +16,6 @@ image:https://img.shields.io/badge/license-MIT-blue.svg[License]
 
 오래걸리더라도 천천히 노력한 만큼의 성과를 낼 수 있기를 바라며 최선을 다하자.
 
-보다 일하기 좋은 직장을 다니는 것은 내 실력에 따라 달렸다.
-
 |===
 |===
 
@@ -50,6 +48,14 @@ link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c
 = 분류
 
 == Spring
+
+===== Inflearn-Spring
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/01-what-is-spring.adoc[1강 - 스프링이란?]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/02-creating-spring-priject.adoc[2강 - 스프링 프로젝트 만들기]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/03-DI(Dependency-Injection-1).adoc[3강 - DI(Dependency Injection) (1)]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/04-DI(Dependency-Injection-2).adoc[4강 - DI(Dependency Injection) (2)]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/05-Using-DI.adoc[5강 - DI 활용]
 
 == SpringBoot
 
@@ -108,14 +114,6 @@ link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/NullSafetyLibrary.adoc[Null Safety Equals Library]
 
 == JPA
-
-== Inflearn-Spring
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/01-what-is-spring.adoc[1강 - 스프링이란?]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/02-creating-spring-priject.adoc[2강 - 스프링 프로젝트 만들기]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/03-DI(Dependency-Injection-1).adoc[3강 - DI(Dependency Injection) (1)]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/04-DI(Dependency-Injection-2).adoc[4강 - DI(Dependency Injection) (2)]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/05-Using-DI.adoc[5강 - DI 활용]
 
 == Algorithm Test
 
