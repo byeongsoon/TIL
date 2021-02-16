@@ -81,7 +81,7 @@ case 끝에 break가 붙어 있는 것은 다음 case를 실행하지 않고 swi
 ====
 break문,
 
-switch문을 빠져나오거나 반복문(for, while, do-while문을 빠져나올때 사용된다.
+switch문을 빠져나오거나 반복문(for, while, do-while문)을 빠져나올때 사용된다.
 
 break문을 포함하고 있는 가장 가까운 중괄호를 종료하고 빠져나간다.
 
@@ -145,7 +145,7 @@ for문이 정해진 횟수만큼 반복한다면 while문은 조건식이 true�
 [source, java]
 ----
 // while
-while(i<10) {
+while(i < 10) {
   sum += i;
   i++;
 }
