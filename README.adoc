@@ -4,12 +4,12 @@ Today I Learned
 :icons: font
 :Author: Byeongsoon Jang
 :Email: byeongsoon94@gmail.com
-:Date: 2020.08.28.
+:Date: 2023.02.21.
 :Revision: 2.3
 
 ---
 
-image:https://img.shields.io/badge/version-2020.02.18-green.svg[Version]
+image:https://img.shields.io/badge/version-2023.02.21-green.svg[Version]
 image:https://img.shields.io/badge/license-MIT-blue.svg[License]
 
 실력있는 개발자가 되기 위해 매일 학습한 내용이나 개발에 관련된 간단한 기록을 남긴다.
@@ -22,8 +22,6 @@ image:https://img.shields.io/badge/license-MIT-blue.svg[License]
 ====
 '끊임없이 노력하라 체력이나 지능이 아니라 노력이야말로 잠재력의 자물쇠를 푸는 열쇠이다. - 윈스터 처칠'
 ====
-
-Restarting on February 18, 2020.
 
 Byeongsoon Jang<byeongsoon94@gmail.com>
 
@@ -41,13 +39,13 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 
 Notion에 학습과 평상시에 읽은 책들을 정리해두었다.
 
-link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c[Notion Book List]
+link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c[📚 Book List]
 
 ---
 
 = 분류
 
-== Spring
+== Spring & SpringBoot
 
 ===== Inflearn-Spring
 
@@ -57,29 +55,7 @@ link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/04-DI(Dependency-Injection-2).adoc[4강 - DI(Dependency Injection) (2)]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Inflearn-Spring/05-Using-DI.adoc[5강 - DI 활용]
 
-== SpringBoot
-
-== MSA
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
-** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/EventSourcing.adoc[이벤트 소싱]
-** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/CQRS.adoc[CQRS]
-
-===== MicroService Patterns
-
-** 1장. 모놀리식 지옥에서 벗어나라
-** 2장. 분해 전략
-** 3장. 프로세스 간 통신
-** 4장. 트랜잭션 관리: 사가
-** 5장. 비즈니스 로직 설계
-** 6장. 비즈니스 로직 개발: 이벤트 소싱
-** 7장. 마이크로서비스 쿼리 구현
-** 8장. 외부 API 패턴
-** 9장. 마이크로서비스 테스트 1부
-** 10장. 마이크로서비스 테스트 2부
-** 11장. 프로덕션 레디 서비스 개발
-** 12장. 마이크로서비스 배포
-** 13장. 마이크로서비스 리팩터링
+==== JPA
 
 == Java
 
@@ -113,11 +89,39 @@ link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/ch10_Collection.adoc[컬렉션]
 ** link:https://github.com/ByeongSoon/TIL/blob/master/Kotlin/NullSafetyLibrary.adoc[Null Safety Equals Library]
 
-== JPA
+== Database
 
-== Algorithm Test
+==== RealMySQL 8.0
 
-** link:https://github.com/ByeongSoon/TIL/tree/master/Algorithm/Level1[Level1]
+** link:https://byeongsoon.notion.site/2-0e3890efa1a74a2482a0ae6a3b1fc872[2장. 설치와 설정]
+
+== MSA
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
+** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/EventSourcing.adoc[이벤트 소싱]
+** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/CQRS.adoc[CQRS]
+
+===== MicroService Patterns(시작 전)
+
+** 1장. 모놀리식 지옥에서 벗어나라
+** 2장. 분해 전략
+** 3장. 프로세스 간 통신
+** 4장. 트랜잭션 관리: 사가
+** 5장. 비즈니스 로직 설계
+** 6장. 비즈니스 로직 개발: 이벤트 소싱
+** 7장. 마이크로서비스 쿼리 구현
+** 8장. 외부 API 패턴
+** 9장. 마이크로서비스 테스트 1부
+** 10장. 마이크로서비스 테스트 2부
+** 11장. 프로덕션 레디 서비스 개발
+** 12장. 마이크로서비스 배포
+** 13장. 마이크로서비스 리팩터링
+
+== Datastructure
+
+==== 누구나 자료 구조와 알고리즘
+
+** 1장. 자료 구조가 중요한 
 
 == DesignPattern
 
