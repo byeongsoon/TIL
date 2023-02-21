@@ -95,6 +95,25 @@ link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c
 
 ** link:https://byeongsoon.notion.site/2-0e3890efa1a74a2482a0ae6a3b1fc872[2장. 설치와 설정]
 
+== Datastructure
+
+==== 누구나 자료 구조와 알고리즘
+
+** link:https://byeongsoon.notion.site/1-bb9294961bad4a75ad9e82b67ce07a10[1장. 자료 구조가 중요한]
+
+== DesignPattern
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/DesignPattern/SingletonPattern.adoc[싱글톤 패턴]
+** link:https://github.com/ByeongSoon/TIL/blob/master/DesignPattern/DecoratorPattern.adoc[데커레이터 패턴]
+
+== Basic
+
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/http_https.adoc[http와 https란]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/FrameworkVsLibray.adoc[프레임워크와 라이브러리 차이점]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/TDDandDDD.adoc[TDD와DDD]
+** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/aggregate.adoc[애그리거트]
+** ER 모델 구성 요소
+
 == MSA
 
 ** link:https://github.com/ByeongSoon/TIL/blob/master/MSA/MonolithicAndMicroserviceArchitecture.adoc[모놀리식 아키텍처와 마이크로서비스 아키텍처]
@@ -116,25 +135,6 @@ link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c
 ** 11장. 프로덕션 레디 서비스 개발
 ** 12장. 마이크로서비스 배포
 ** 13장. 마이크로서비스 리팩터링
-
-== Datastructure
-
-==== 누구나 자료 구조와 알고리즘
-
-** 1장. 자료 구조가 중요한 
-
-== DesignPattern
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/DesignPattern/SingletonPattern.adoc[싱글톤 패턴]
-** link:https://github.com/ByeongSoon/TIL/blob/master/DesignPattern/DecoratorPattern.adoc[데커레이터 패턴]
-
-== Basic
-
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/http_https.adoc[http와 https란]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/FrameworkVsLibray.adoc[프레임워크와 라이브러리 차이점]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/TDDandDDD.adoc[TDD와DDD]
-** link:https://github.com/ByeongSoon/TIL/blob/master/Basic/aggregate.adoc[애그리거트]
-** ER 모델 구성 요소
 
 == Linux
 
