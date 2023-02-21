@@ -39,7 +39,7 @@ Byeongsoon Jang<byeongsoon94@gmail.com>
 
 Notion에 학습과 평상시에 읽은 책들을 정리해두었다.
 
-link:https://www.notion.so/byeongsoon/Book-List-f0d052c6f2f64febb62d743c1c91bd1c[📚 Book List]
+link:https://byeongsoon.notion.site/09fd964f81c24b6785d9c26ef70bcd5e?v=ba133aa1ff7f476c81895db92346dac2[📚 Book List]
 
 ---
 
